@@ -7,3 +7,9 @@ Thumbs.db
 .env.*
 node_modules/
 vendor/
+
+# Kept on this machine. Not published to GitHub.
+/context/
+/logos/
+/liftedpath-design-main/
+/Six-File+Context+Methodology/

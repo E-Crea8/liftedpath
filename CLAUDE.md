@@ -12,6 +12,8 @@ Read the following files in order before implementing or making any architectura
 6. `context/progress-tracker.md` — current phase, completed work, open questions, and next steps
 7. `context/github.md` — GitHub repository, SSH remote, and related code that is not in this repo
 
+`context/`, `logos/`, `liftedpath-design-main/`, and `Six-File+Context+Methodology/` stay on this machine. They are not on GitHub.
+
 The build order lives in `context/specs/00-build-plan.md`. Implement one unit at a time, from a spec file written immediately before that unit.
 
 Update `context/progress-tracker.md` after each meaningful implementation change.
