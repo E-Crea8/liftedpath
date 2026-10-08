@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { CSSProperties } from "react";
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { PreviewBanner } from "@/components/preview/PreviewBanner";
@@ -43,11 +44,13 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
 		<html
 			data-design-version={design.version}
 			lang="en"
-			style={{
-				...designCssVariables(design),
-				"--logo-height": `${settings.logoHeight}px`,
-				"--footer-logo-height": `${settings.footerLogoHeight}px`,
-			}}
+			style={
+				{
+					...designCssVariables(design),
+					"--logo-height": `${settings.logoHeight}px`,
+					"--footer-logo-height": `${settings.footerLogoHeight}px`,
+				} as CSSProperties
+			}
 		>
 			<head>
 				<link

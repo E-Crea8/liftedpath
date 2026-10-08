@@ -20,7 +20,7 @@ function hoverColor(value: JsonValue | undefined): string {
 	return /^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(color) ? color : "";
 }
 
-function titleWeight(value: JsonValue | undefined): string {
+function titleWeight(value: JsonValue | Block[] | undefined): string {
 	const weight = text(value);
 	return weight === "400" || weight === "500" || weight === "600" || weight === "700" ? weight : "";
 }
