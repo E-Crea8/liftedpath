@@ -91,7 +91,7 @@ export function mapDiscovery(value: unknown): Discovery {
 	}
 
 	return {
-		siteUrl: siteUrl.replace(/\/$/, ""),
+		siteUrl: publicSiteUrl(siteUrl),
 		areaServed: optionalString(record.area_served),
 		geoSummary: optionalString(record.geo_summary),
 		sameAs: httpList(record.same_as),
@@ -584,4 +584,26 @@ function isHttpUrl(value: string): boolean {
 	} catch {
 		return false;
 	}
+}
+
+function publicSiteUrl(value: string): string {
+	const url = new URL(value);
+	const host = url.hostname.toLowerCase();
+	const local = host === "localhost" || host === "127.0.0.1" || host.endsWith(".local");
+	let apiHost = "";
+	try {
+		apiHost = new URL(process.env.WORDPRESS_API_URL ?? "").hostname.toLowerCase();
+	} catch {
+		apiHost = "";
+	}
+	const productionApi =
+		apiHost === "cms.liftedpathfoundation.org" ||
+		apiHost === "liftedpathfoundation.org" ||
+		apiHost === "www.liftedpathfoundation.org";
+
+	if ((local && productionApi) || host === "liftedpathfoundation.org") {
+		return "https://www.liftedpathfoundation.org";
+	}
+
+	return value.replace(/\/$/, "");
 }

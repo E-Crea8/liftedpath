@@ -90,6 +90,7 @@ require get_template_directory() . '/inc/rest.php';
 require get_template_directory() . '/inc/preview.php';
 require get_template_directory() . '/inc/revalidate.php';
 require get_template_directory() . '/inc/vercel-env.php';
+require get_template_directory() . '/inc/site-icon.php';
 require get_template_directory() . '/inc/seo.php';
 require get_template_directory() . '/inc/blocks.php';
 require get_template_directory() . '/inc/seed.php';

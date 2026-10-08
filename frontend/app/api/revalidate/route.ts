@@ -69,8 +69,10 @@ export async function POST(request: Request) {
 	}
 
 	if (path) {
+		revalidateTag("page", profile);
 		revalidateTag(path, profile);
 		revalidatePath(path);
+		revalidatePath("/", "layout");
 	}
 
 	if (tag === "seo") {

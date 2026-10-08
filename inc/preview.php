@@ -241,10 +241,10 @@ function liftedpath_preview_public_base(): string {
 
 	$parts  = wp_parse_url( $candidate );
 	$scheme = ( is_array( $parts ) && isset( $parts['scheme'] ) ) ? $parts['scheme'] : '';
-	$host   = ( is_array( $parts ) && isset( $parts['host'] ) ) ? $parts['host'] : '';
+	$host   = ( is_array( $parts ) && isset( $parts['host'] ) ) ? strtolower( (string) $parts['host'] ) : '';
 
 	if ( ! in_array( $scheme, array( 'http', 'https' ), true ) || '' === $host ) {
-		return 'http://localhost:3000';
+		return liftedpath_preview_production_base( 'http://localhost:3000' );
 	}
 
 	$base = $scheme . '://' . $host;
@@ -253,8 +253,58 @@ function liftedpath_preview_public_base(): string {
 		$base .= ':' . (int) $parts['port'];
 	}
 
+	return liftedpath_preview_production_base( $base );
+}
+
+/**
+ * Point a local or apex address at the public site when this WordPress is the live CMS.
+ *
+ * The forms setting was still http://localhost:3000, so saves never reached Vercel.
+ */
+function liftedpath_preview_production_base( string $base ): string {
+	$host = strtolower( (string) wp_parse_url( $base, PHP_URL_HOST ) );
+	$home = strtolower( (string) wp_parse_url( home_url(), PHP_URL_HOST ) );
+	$live = str_contains( $home, 'liftedpathfoundation.org' );
+	$local_host = in_array( $host, array( 'localhost', '127.0.0.1' ), true ) || str_ends_with( $host, '.local' );
+
+	if ( $live && $local_host ) {
+		return 'https://www.liftedpathfoundation.org';
+	}
+
+	if ( 'liftedpathfoundation.org' === $host ) {
+		return 'https://www.liftedpathfoundation.org';
+	}
+
 	return $base;
 }
+
+/**
+ * Store the corrected public site URL so the forms screen matches the webhook.
+ */
+function liftedpath_correct_public_site_url(): void {
+	if ( ! function_exists( 'liftedpath_forms_get' ) ) {
+		return;
+	}
+
+	$settings  = liftedpath_forms_get();
+	$current   = isset( $settings['public_site_url'] ) && is_string( $settings['public_site_url'] ) ? $settings['public_site_url'] : '';
+	$corrected = liftedpath_preview_public_base();
+	$host      = strtolower( (string) wp_parse_url( $current, PHP_URL_HOST ) );
+	$wrong     = in_array( $host, array( 'localhost', '127.0.0.1', 'liftedpathfoundation.org' ), true ) || str_ends_with( $host, '.local' );
+
+	if ( ! $wrong || 'https://www.liftedpathfoundation.org' !== $corrected || untrailingslashit( $current ) === $corrected ) {
+		return;
+	}
+
+	$saved = get_option( 'liftedpath_forms_settings', array() );
+	if ( ! is_array( $saved ) ) {
+		$saved = array();
+	}
+
+	$saved['public_site_url'] = $corrected;
+	update_option( 'liftedpath_forms_settings', $saved, false );
+}
+add_action( 'init', 'liftedpath_correct_public_site_url', 20 );
 
 /**
  * Page statuses an editor may preview.

@@ -6,7 +6,7 @@ import { WordpressError } from "@/lib/wp/types";
 
 export async function getPage(path: string): Promise<Page> {
 	"use cache";
-	cacheLife({ stale: 300, revalidate: 3600, expire: 86400 });
+	editorCache();
 	const publicPath = assertPublicPath(path);
 	cacheTag("page", publicPath);
 
@@ -49,7 +49,7 @@ export async function exchangePreviewToken(token: string): Promise<string> {
 
 export async function getPaths(): Promise<PathIndex> {
 	"use cache";
-	cacheLife({ stale: 300, revalidate: 3600, expire: 86400 });
+	editorCache();
 	cacheTag("sitemap");
 
 	const url = new URL(`${apiUrl()}/liftedpath/v1/paths`);
@@ -58,7 +58,7 @@ export async function getPaths(): Promise<PathIndex> {
 
 export async function getNavigation(): Promise<Navigation> {
 	"use cache";
-	cacheLife({ stale: 300, revalidate: 3600, expire: 86400 });
+	editorCache();
 	cacheTag("nav");
 
 	const url = new URL(`${apiUrl()}/liftedpath/v1/navigation`);
@@ -67,7 +67,7 @@ export async function getNavigation(): Promise<Navigation> {
 
 export async function getSettings(): Promise<SiteSettings> {
 	"use cache";
-	cacheLife({ stale: 300, revalidate: 3600, expire: 86400 });
+	editorCache();
 	cacheTag("settings");
 
 	const url = new URL(`${apiUrl()}/liftedpath/v1/settings`);
@@ -76,7 +76,7 @@ export async function getSettings(): Promise<SiteSettings> {
 
 export async function getDiscovery(): Promise<Discovery> {
 	"use cache";
-	cacheLife({ stale: 300, revalidate: 3600, expire: 86400 });
+	editorCache();
 	cacheTag("seo");
 
 	const url = new URL(`${apiUrl()}/liftedpath/v1/seo`);
@@ -85,7 +85,7 @@ export async function getDiscovery(): Promise<Discovery> {
 
 export async function getMedia(ids: number[]): Promise<FeaturedImage[]> {
 	"use cache";
-	cacheLife({ stale: 300, revalidate: 3600, expire: 86400 });
+	editorCache();
 	const unique = [...new Set(ids.filter((id) => Number.isInteger(id) && id > 0))].sort((left, right) => left - right);
 	if (unique.length === 0) {
 		return [];
@@ -106,11 +106,16 @@ export async function getMedia(ids: number[]): Promise<FeaturedImage[]> {
 
 export async function getDesign(): Promise<Design> {
 	"use cache";
-	cacheLife({ stale: 300, revalidate: 3600, expire: 86400 });
+	editorCache();
 	cacheTag("design");
 
 	const url = new URL(`${apiUrl()}/liftedpath/v1/design`);
 	return mapDesign(await readJson(url));
+}
+
+function editorCache(): void {
+	// A published save has to be on the next view. The previous hour-long cache kept the old heading.
+	cacheLife({ stale: 0, revalidate: 0, expire: 60 });
 }
 
 function apiUrl(): string {

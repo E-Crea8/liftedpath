@@ -8,6 +8,8 @@ import { designCssVariables } from "@/lib/tokens";
 import { getDesign, getDiscovery, getNavigation, getSettings } from "@/lib/wp/client";
 import "@/styles/globals.css";
 
+export const instant = false;
+
 export async function generateMetadata(): Promise<Metadata> {
 	const settings = await getSettings();
 	const discovery = await getDiscovery();
