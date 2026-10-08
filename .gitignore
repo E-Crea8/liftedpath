@@ -8,6 +8,9 @@ Thumbs.db
 node_modules/
 vendor/
 
+# Local copy of another project's SiteGround workflow. Not part of this repo.
+/deploy-sample.yml
+
 # Kept on this machine. Not published to GitHub.
 /context/
 /logos/

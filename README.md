@@ -117,11 +117,14 @@ Set these in `.env.local` locally and in the Vercel project for production. Do n
 
 | Variable | Role |
 | --- | --- |
-| `WORDPRESS_API_URL` | WordPress REST root, such as `http://liftedpath.local/wp-json` |
-| `WORDPRESS_PREVIEW_USER` | User that can read drafts |
-| `WORDPRESS_PREVIEW_APP_PASSWORD` | Application password for that user |
+| `WORDPRESS_API_URL` | WordPress REST root, such as `https://liftedpathfoundation.org/wp-json` |
+| `WORDPRESS_PREVIEW_USER` | Administrator username |
+| `WORDPRESS_PREVIEW_APP_PASSWORD` | Application password for that user, not the wp-admin password |
 | `REVALIDATE_SECRET` | Shared with the WordPress option `liftedpath_revalidate_secret` |
 | `PREVIEW_SECRET` | Shared with the WordPress option `liftedpath_preview_secret` |
+| `FORM_SECRET` | Shared with the WordPress option `liftedpath_forms_secret` |
+
+LiftedPath settings → Vercel Environment Variables shows these six values for the WordPress site you are logged into. Copy them from that tab.
 
 `next.config.ts` allows `next/image` to load `/wp-content/uploads/` from the host in `WORDPRESS_API_URL`.
 
@@ -202,6 +205,33 @@ Set these in `.env.local` locally and in the Vercel project for production. Do n
 5. Deploy.
 
 WordPress and media stay on the WordPress host. Only `frontend/` is the Vercel project.
+
+## SiteGround
+
+The theme deploys with the manual action **Deploy to SiteGround** (`.github/workflows/deploy-siteground.yml`). Open Actions, choose the workflow, and run it on `main`.
+
+| Input | What to enter |
+| --- | --- |
+| Deployment target | `staging`, `live`, or `both` |
+| Confirmation | `DEPLOY` |
+| Deployment mode | `changed_files` (last commit, or a range), `specific_files`, or `full` |
+| Commit range | Optional, such as `677a07e..499619a`. Empty uses the last commit |
+| Specific files | Theme paths, separated by commas, when the mode is `specific_files` |
+
+`changed_files` and `specific_files` send theme files only: PHP, CSS, JS, HTML, JSON, SVG, fonts, and `readme.txt`. `frontend/` is never synced. A commit that only changes the Next.js app skips the SiteGround upload. `full` syncs the theme and leaves `frontend/`, docs, and this workflow on GitHub.
+
+Add these repository secrets before the first run. The port secrets are optional and default to SiteGround’s `18765`.
+
+| Secret | Staging | Live |
+| --- | --- | --- |
+| Private key | `SITEGROUND_SSH_KEY` | `SITEGROUND_LIVE_SSH_KEY` |
+| SSH host | `SITEGROUND_HOST` | `SITEGROUND_LIVE_HOST` |
+| SSH port | `SITEGROUND_PORT` | `SITEGROUND_LIVE_PORT` |
+| SSH user | `SITEGROUND_USER` | `SITEGROUND_LIVE_USER` |
+| Theme directory on the server | `SITEGROUND_PATH` | `SITEGROUND_LIVE_PATH` |
+| WordPress root, for `wp cache flush` | `SITEGROUND_WP_PATH` | `SITEGROUND_LIVE_WP_PATH` |
+
+`SITEGROUND_PATH` is the remote `wp-content/themes/liftedpath` directory. The public Next.js site still deploys from `frontend/` on Vercel.
 
 ## Local-only folders
 
