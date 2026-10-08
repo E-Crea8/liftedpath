@@ -1,21 +1,15 @@
-import { cacheLife, cacheTag } from "next/cache";
 import { draftMode } from "next/headers";
 import { assertPublicPath, mapDesign, mapDiscovery, mapMedia, mapNavigation, mapPage, mapPaths, mapSettings } from "@/lib/wp/map";
 import type { Design, Discovery, FeaturedImage, Navigation, Page, PathIndex, SiteSettings } from "@/lib/wp/types";
 import { WordpressError } from "@/lib/wp/types";
 
 export async function getPage(path: string): Promise<Page> {
-	"use cache";
-	editorCache();
 	const publicPath = assertPublicPath(path);
-	cacheTag("page", publicPath);
 
 	const draft = await draftMode();
 	if (draft.isEnabled) {
 		const url = new URL(`${apiUrl()}/liftedpath/v1/preview`);
 		url.searchParams.set("path", publicPath);
-		// Draft mode skips this cache and does not store the preview result.
-		// Passing cache: "no-store" here is rejected inside "use cache".
 		return mapPage(await readJson(url, { headers: previewHeaders() }), "preview");
 	}
 
@@ -48,50 +42,31 @@ export async function exchangePreviewToken(token: string): Promise<string> {
 }
 
 export async function getPaths(): Promise<PathIndex> {
-	"use cache";
-	editorCache();
-	cacheTag("sitemap");
-
 	const url = new URL(`${apiUrl()}/liftedpath/v1/paths`);
 	return mapPaths(await readJson(url));
 }
 
 export async function getNavigation(): Promise<Navigation> {
-	"use cache";
-	editorCache();
-	cacheTag("nav");
-
 	const url = new URL(`${apiUrl()}/liftedpath/v1/navigation`);
 	return mapNavigation(await readJson(url));
 }
 
 export async function getSettings(): Promise<SiteSettings> {
-	"use cache";
-	editorCache();
-	cacheTag("settings");
-
 	const url = new URL(`${apiUrl()}/liftedpath/v1/settings`);
 	return mapSettings(await readJson(url));
 }
 
 export async function getDiscovery(): Promise<Discovery> {
-	"use cache";
-	editorCache();
-	cacheTag("seo");
-
 	const url = new URL(`${apiUrl()}/liftedpath/v1/seo`);
 	return mapDiscovery(await readJson(url));
 }
 
 export async function getMedia(ids: number[]): Promise<FeaturedImage[]> {
-	"use cache";
-	editorCache();
 	const unique = [...new Set(ids.filter((id) => Number.isInteger(id) && id > 0))].sort((left, right) => left - right);
 	if (unique.length === 0) {
 		return [];
 	}
 
-	cacheTag("media");
 	const images: FeaturedImage[] = [];
 	for (let start = 0; start < unique.length; start += 100) {
 		const chunk = unique.slice(start, start + 100);
@@ -105,17 +80,8 @@ export async function getMedia(ids: number[]): Promise<FeaturedImage[]> {
 }
 
 export async function getDesign(): Promise<Design> {
-	"use cache";
-	editorCache();
-	cacheTag("design");
-
 	const url = new URL(`${apiUrl()}/liftedpath/v1/design`);
 	return mapDesign(await readJson(url));
-}
-
-function editorCache(): void {
-	// A published save has to be on the next view. The previous hour-long cache kept the old heading.
-	cacheLife({ stale: 0, revalidate: 0, expire: 60 });
 }
 
 function apiUrl(): string {
@@ -151,6 +117,7 @@ async function readJson(url: URL, init?: RequestInit): Promise<unknown> {
 		response = await fetch(url, {
 			...init,
 			headers,
+			cache: "no-store",
 		});
 	} catch {
 		throw new WordpressError("unavailable", "WordPress did not respond.", 503);
