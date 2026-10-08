@@ -97,6 +97,10 @@ function liftedpath_vercel_env_render( array $field ): void {
 	echo '<p class="description">';
 	echo esc_html__( 'Copy these into the Vercel project for the frontend. They belong to this WordPress site. The public site address stays on the Forms settings screen.', 'liftedpath' );
 	echo '</p>';
+
+	if ( function_exists( 'liftedpath_revalidate_status_note' ) ) {
+		echo '<p class="description">' . esc_html( liftedpath_revalidate_status_note() ) . '</p>';
+	}
 	echo '<table class="form-table" role="presentation">';
 
 	foreach ( $rows as $row ) {

@@ -1,7 +1,16 @@
+import { io } from "next/cache";
 import { draftMode } from "next/headers";
 import { assertPublicPath, mapDesign, mapDiscovery, mapMedia, mapNavigation, mapPage, mapPaths, mapSettings } from "@/lib/wp/map";
 import type { Design, Discovery, FeaturedImage, Navigation, Page, PathIndex, SiteSettings } from "@/lib/wp/types";
 import { WordpressError } from "@/lib/wp/types";
+
+/**
+ * Cache Components still inlines a finished fetch into the prerender when the
+ * segment is allowed to block. io() keeps this read on the visitor's request.
+ */
+async function readOnRequest(): Promise<void> {
+	await io();
+}
 
 export async function getPage(path: string): Promise<Page> {
 	const publicPath = assertPublicPath(path);
@@ -13,6 +22,7 @@ export async function getPage(path: string): Promise<Page> {
 		return mapPage(await readJson(url, { headers: previewHeaders() }), "preview");
 	}
 
+	await readOnRequest();
 	const url = new URL(`${apiUrl()}/liftedpath/v1/page`);
 	url.searchParams.set("path", publicPath);
 	return mapPage(await readJson(url));
@@ -42,21 +52,25 @@ export async function exchangePreviewToken(token: string): Promise<string> {
 }
 
 export async function getPaths(): Promise<PathIndex> {
+	await readOnRequest();
 	const url = new URL(`${apiUrl()}/liftedpath/v1/paths`);
 	return mapPaths(await readJson(url));
 }
 
 export async function getNavigation(): Promise<Navigation> {
+	await readOnRequest();
 	const url = new URL(`${apiUrl()}/liftedpath/v1/navigation`);
 	return mapNavigation(await readJson(url));
 }
 
 export async function getSettings(): Promise<SiteSettings> {
+	await readOnRequest();
 	const url = new URL(`${apiUrl()}/liftedpath/v1/settings`);
 	return mapSettings(await readJson(url));
 }
 
 export async function getDiscovery(): Promise<Discovery> {
+	await readOnRequest();
 	const url = new URL(`${apiUrl()}/liftedpath/v1/seo`);
 	return mapDiscovery(await readJson(url));
 }
@@ -67,6 +81,7 @@ export async function getMedia(ids: number[]): Promise<FeaturedImage[]> {
 		return [];
 	}
 
+	await readOnRequest();
 	const images: FeaturedImage[] = [];
 	for (let start = 0; start < unique.length; start += 100) {
 		const chunk = unique.slice(start, start + 100);
@@ -80,6 +95,7 @@ export async function getMedia(ids: number[]): Promise<FeaturedImage[]> {
 }
 
 export async function getDesign(): Promise<Design> {
+	await readOnRequest();
 	const url = new URL(`${apiUrl()}/liftedpath/v1/design`);
 	return mapDesign(await readJson(url));
 }

@@ -24,7 +24,7 @@ export async function POST(request: Request) {
 	}
 
 	const expected = process.env.REVALIDATE_SECRET?.trim() ?? "";
-	const given = typeof body.secret === "string" ? body.secret : "";
+	const given = typeof body.secret === "string" ? body.secret.trim() : "";
 	if (!expected || !given || !secretsMatch(given, expected)) {
 		return revalidateFailure(401, "forbidden", "The revalidate request was not accepted.");
 	}
@@ -72,12 +72,12 @@ export async function POST(request: Request) {
 		revalidateTag("page", profile);
 		revalidateTag(path, profile);
 		revalidatePath(path);
-		revalidatePath("/", "layout");
 	}
 
-	if (tag === "seo") {
-		revalidatePath("/", "layout");
-	}
+	revalidatePath("/", "layout");
+	revalidatePath("/sitemap.xml");
+	revalidatePath("/robots.txt");
+	revalidatePath("/llms.txt");
 
 	return Response.json(
 		{ revalidated: true },

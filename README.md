@@ -15,8 +15,8 @@ Connect the GitHub repository [E-Crea8/liftedpath](https://github.com/E-Crea8/li
 
 1. An editor changes a page, a menu, a global style, or a LiftedPath setting in wp-admin.
 2. WordPress stores that content and exposes it on the REST API under `liftedpath/v1`.
-3. On save, WordPress calls `frontend` at `/api/revalidate`.
-4. The next visit to the public site serves the updated page. Published pages are static and refresh on demand, with a one-hour fallback.
+3. The next visit reads that content from WordPress. Published pages are not stored as a build snapshot.
+4. On save, WordPress also calls `frontend` at `/api/revalidate` so any route cache is dropped.
 
 Draft preview uses `/api/preview` and a WordPress application password. Contact and donate forms post to Next.js, which calls WordPress. Card details stay on the payment provider’s hosted page.
 
