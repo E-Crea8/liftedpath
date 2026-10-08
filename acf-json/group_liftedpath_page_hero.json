@@ -1,0 +1,235 @@
+{
+    "key": "group_liftedpath_page_hero",
+    "title": "Page hero",
+    "fields": [
+        {
+            "key": "field_liftedpath_page_hero_image",
+            "label": "Photograph",
+            "name": "image",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "Still image behind the heading. It also shows before a background video and for visitors who prefer less motion. Set the alt text on the media item.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array",
+            "library": "all",
+            "preview_size": "medium",
+            "mime_types": "jpg,jpeg,png,webp",
+            "min_width": 0,
+            "min_height": 0,
+            "min_size": 0,
+            "max_width": 0,
+            "max_height": 0,
+            "max_size": 0
+        },
+        {
+            "key": "field_liftedpath_page_hero_video_url",
+            "label": "Video link",
+            "name": "video_url",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Cloudinary or other MP4\/WebM address. This is used before an uploaded file. The photograph stays visible if the video cannot play.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "https:\/\/",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_liftedpath_page_hero_video_muted",
+            "label": "Mute audio",
+            "name": "video_muted",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Browsers start a background video on their own only when the audio is muted.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "33",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 1,
+            "allow_in_bindings": 0,
+            "ui": 1,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_liftedpath_page_hero_video_loop",
+            "label": "Auto replay",
+            "name": "video_loop",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Play the video again when it ends.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "33",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 1,
+            "allow_in_bindings": 0,
+            "ui": 1,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_liftedpath_page_hero_video_autoplay",
+            "label": "Autoplay",
+            "name": "video_autoplay",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Start playing as soon as the page loads.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "33",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 1,
+            "allow_in_bindings": 0,
+            "ui": 1,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_liftedpath_page_hero_video",
+            "label": "Uploaded video",
+            "name": "video",
+            "aria-label": "",
+            "type": "file",
+            "instructions": "Optional file. A video link is used instead when both are set.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "id",
+            "library": "all",
+            "min_size": "",
+            "max_size": "",
+            "mime_types": "mp4,webm"
+        },
+        {
+            "key": "field_liftedpath_page_hero_eyebrow",
+            "label": "Eyebrow",
+            "name": "eyebrow",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Also used as the current breadcrumb.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_liftedpath_page_hero_heading",
+            "label": "Heading",
+            "name": "heading",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_liftedpath_page_hero_intro",
+            "label": "Intro",
+            "name": "intro",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "rows": 3,
+            "new_lines": "",
+            "maxlength": "",
+            "placeholder": ""
+        },
+        {
+            "key": "field_liftedpath_page_hero_breadcrumb",
+            "label": "Home label",
+            "name": "breadcrumb_label",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "The first breadcrumb. The link goes to the site root.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Home",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "liftedpath\/page-hero"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 1,
+    "display_title": "",
+    "modified": 1791399335
+}

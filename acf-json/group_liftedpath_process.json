@@ -1,0 +1,108 @@
+{
+	"key": "group_liftedpath_process",
+	"title": "Process",
+	"fields": [
+		{
+			"key": "field_liftedpath_process_eyebrow",
+			"label": "Eyebrow",
+			"name": "eyebrow",
+			"type": "text",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": false,
+			"wrapper": { "width": "", "class": "", "id": "" },
+			"default_value": "",
+			"maxlength": "",
+			"placeholder": ""
+		},
+		{
+			"key": "field_liftedpath_process_heading",
+			"label": "Heading",
+			"name": "heading",
+			"type": "text",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": false,
+			"wrapper": { "width": "", "class": "", "id": "" },
+			"default_value": "",
+			"maxlength": "",
+			"placeholder": ""
+		},
+		{
+			"key": "field_liftedpath_process_button",
+			"label": "Button",
+			"name": "button",
+			"type": "link",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": false,
+			"wrapper": { "width": "", "class": "", "id": "" },
+			"return_format": "array"
+		},
+		{
+			"key": "field_liftedpath_process_steps",
+			"label": "Steps",
+			"name": "steps",
+			"type": "repeater",
+			"instructions": "Shown in order, numbered from 01.",
+			"required": 0,
+			"conditional_logic": false,
+			"wrapper": { "width": "", "class": "", "id": "" },
+			"layout": "block",
+			"button_label": "Add step",
+			"min": 0,
+			"max": 0,
+			"rows_per_page": 20,
+			"collapsed": "",
+			"sub_fields": [
+				{
+					"key": "field_liftedpath_process_step_title",
+					"label": "Title",
+					"name": "title",
+					"type": "text",
+					"instructions": "",
+					"required": 0,
+					"conditional_logic": false,
+					"wrapper": { "width": "", "class": "", "id": "" },
+					"default_value": "",
+					"maxlength": "",
+					"placeholder": "",
+					"parent_repeater": "field_liftedpath_process_steps"
+				},
+				{
+					"key": "field_liftedpath_process_step_text",
+					"label": "Text",
+					"name": "text",
+					"type": "textarea",
+					"instructions": "",
+					"required": 0,
+					"conditional_logic": false,
+					"wrapper": { "width": "", "class": "", "id": "" },
+					"default_value": "",
+					"rows": 3,
+					"new_lines": "",
+					"parent_repeater": "field_liftedpath_process_steps"
+				}
+			]
+		}
+	],
+	"location": [
+		[
+			{
+				"param": "block",
+				"operator": "==",
+				"value": "liftedpath/process"
+			}
+		]
+	],
+	"menu_order": 0,
+	"position": "normal",
+	"style": "default",
+	"label_placement": "top",
+	"instruction_placement": "label",
+	"hide_on_screen": "",
+	"active": true,
+	"description": "",
+	"show_in_rest": 1,
+	"modified": 1791619200
+}

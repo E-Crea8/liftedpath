@@ -1,0 +1,106 @@
+{
+    "key": "group_liftedpath_page",
+    "title": "Page",
+    "fields": [
+        {
+            "key": "field_liftedpath_seo_title",
+            "label": "SEO title",
+            "name": "seo_title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Public page title. Leave blank to use the page title.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_liftedpath_seo_description",
+            "label": "SEO description",
+            "name": "seo_description",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Short description for search and sharing.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "rows": 3,
+            "new_lines": "",
+            "maxlength": "",
+            "placeholder": ""
+        },
+        {
+            "key": "field_liftedpath_hero_summary",
+            "label": "Hero summary",
+            "name": "hero_summary",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Optional short line for the page hero.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "rows": 3,
+            "new_lines": "",
+            "maxlength": "",
+            "placeholder": ""
+        },
+        {
+            "key": "field_liftedpath_menu_subtitle",
+            "label": "Menu subtitle",
+            "name": "menu_subtitle",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Optional line under this page in the site menu.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "page"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "side",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 1,
+    "display_title": "",
+    "modified": 1791394758
+}

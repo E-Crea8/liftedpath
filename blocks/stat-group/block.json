@@ -1,0 +1,26 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "liftedpath/stat-group",
+	"title": "Stat group",
+	"category": "liftedpath",
+	"icon": "grid-view",
+	"description": "A row of Stat blocks.",
+	"keywords": ["stat", "figures"],
+	"textdomain": "liftedpath",
+	"supports": {
+		"anchor": true,
+		"align": false,
+		"html": false,
+		"jsx": true,
+		"mode": false,
+		"spacing": false,
+		"color": false,
+		"typography": false
+	},
+	"acf": {
+		"blockVersion": 3,
+		"mode": "preview",
+		"renderTemplate": "render.php"
+	}
+}

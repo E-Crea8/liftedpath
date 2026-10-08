@@ -1,0 +1,461 @@
+{
+    "key": "group_liftedpath_settings",
+    "title": "Organization",
+    "fields": [
+        {
+            "key": "field_liftedpath_tab_header",
+            "label": "Header",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_liftedpath_logo",
+            "label": "Logo",
+            "name": "logo",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "Shown in the header. Use the stacked lockup so Empowerment Foundation stays readable.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "id",
+            "library": "all",
+            "preview_size": "medium",
+            "mime_types": "jpg,jpeg,png,webp",
+            "min_width": 0,
+            "min_height": 0,
+            "min_size": 0,
+            "max_width": 0,
+            "max_height": 0,
+            "max_size": 0
+        },
+        {
+            "key": "field_liftedpath_logo_height",
+            "label": "Logo height",
+            "name": "logo_height",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "Header logo height in pixels.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": 104,
+            "min": 64,
+            "max": 160,
+            "step": 2,
+            "prepend": "",
+            "append": "px",
+            "placeholder": ""
+        },
+        {
+            "key": "field_liftedpath_tab_footer",
+            "label": "Footer",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_liftedpath_footer_logo",
+            "label": "Footer logo",
+            "name": "footer_logo",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "Optional. Leave empty to use the header logo.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "id",
+            "library": "all",
+            "preview_size": "medium",
+            "mime_types": "jpg,jpeg,png,webp",
+            "min_width": 0,
+            "min_height": 0,
+            "min_size": 0,
+            "max_width": 0,
+            "max_height": 0,
+            "max_size": 0
+        },
+        {
+            "key": "field_liftedpath_footer_logo_height",
+            "label": "Footer logo height",
+            "name": "footer_logo_height",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "Footer logo height in pixels.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": 95,
+            "min": 48,
+            "max": 200,
+            "step": 1,
+            "prepend": "",
+            "append": "px",
+            "placeholder": ""
+        },
+        {
+            "key": "field_liftedpath_footer_wordmark",
+            "label": "Large text",
+            "name": "footer_wordmark",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "The large word across the bottom of the footer.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "LiftedPath",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_liftedpath_location_heading",
+            "label": "Location heading",
+            "name": "location_heading",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Heading above the address, phone, and email.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Our Location",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_liftedpath_tagline",
+            "label": "Tagline",
+            "name": "tagline",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Lifting Potential, Inspiring Purpose and Creating Futures.",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_liftedpath_phone",
+            "label": "Phone",
+            "name": "phone",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "+234 806 812 8785",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_liftedpath_email",
+            "label": "Email",
+            "name": "email",
+            "aria-label": "",
+            "type": "email",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "liftedpathfoundation@gmail.com",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_liftedpath_postal_address",
+            "label": "Postal address",
+            "name": "postal_address",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "19, George Tienne Crescent, Hilltop Estate, Aboru, Iyana Ipaja, Lagos, Nigeria.",
+            "rows": 3,
+            "new_lines": "",
+            "maxlength": "",
+            "placeholder": ""
+        },
+        {
+            "key": "field_liftedpath_copyright_text",
+            "label": "Copyright line",
+            "name": "copyright_text",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "The footer shows Copyright © and the current year, then this text. The year moves forward on its own. Do not type the year here.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "LiftedPath Empowerment Foundation. All Rights Reserved.",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_liftedpath_registration_number",
+            "label": "Registration number",
+            "name": "registration_number",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "RC 9872033",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_liftedpath_tab_organization",
+            "label": "Organization",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_liftedpath_legal_name",
+            "label": "Legal name",
+            "name": "legal_name",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "LiftedPath Empowerment Foundation",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_liftedpath_short_name",
+            "label": "Short name",
+            "name": "short_name",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "LiftedPath",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_liftedpath_form_recipient_email",
+            "label": "Form recipient email",
+            "name": "form_recipient_email",
+            "aria-label": "",
+            "type": "email",
+            "instructions": "Contact and gift intents are emailed here.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "liftedpathfoundation@gmail.com",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_liftedpath_marquee_phrases",
+            "label": "Marquee phrases",
+            "name": "marquee_phrases",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "Shown in order, separated by a star.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "table",
+            "button_label": "Add phrase",
+            "min": 0,
+            "max": 0,
+            "rows_per_page": 20,
+            "collapsed": "",
+            "sub_fields": [
+                {
+                    "key": "field_liftedpath_marquee_phrase",
+                    "label": "Phrase",
+                    "name": "phrase",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": false,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "parent_repeater": "field_liftedpath_marquee_phrases",
+                    "prepend": "",
+                    "append": ""
+                }
+            ]
+        },
+        {
+            "key": "field_liftedpath_share_image",
+            "label": "Default share image",
+            "name": "share_image",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "Used when a page has no featured image.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "id",
+            "library": "all",
+            "preview_size": "medium",
+            "mime_types": "jpg,jpeg,png,webp",
+            "min_width": 0,
+            "min_height": 0,
+            "min_size": 0,
+            "max_width": 0,
+            "max_height": 0,
+            "max_size": 0
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "options_page",
+                "operator": "==",
+                "value": "liftedpath-settings"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 1,
+    "display_title": "",
+    "modified": 1791713000
+}

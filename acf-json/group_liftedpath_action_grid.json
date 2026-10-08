@@ -1,0 +1,157 @@
+{
+	"key": "group_liftedpath_action_grid",
+	"title": "Action grid",
+	"fields": [
+		{
+			"key": "field_liftedpath_actions_eyebrow",
+			"label": "Eyebrow",
+			"name": "eyebrow",
+			"type": "text",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": false,
+			"wrapper": { "width": "", "class": "", "id": "" },
+			"default_value": "",
+			"maxlength": "",
+			"placeholder": ""
+		},
+		{
+			"key": "field_liftedpath_actions_heading",
+			"label": "Heading",
+			"name": "heading",
+			"type": "text",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": false,
+			"wrapper": { "width": "", "class": "", "id": "" },
+			"default_value": "",
+			"maxlength": "",
+			"placeholder": ""
+		},
+		{
+			"key": "field_liftedpath_actions_intro",
+			"label": "Intro",
+			"name": "intro",
+			"type": "textarea",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": false,
+			"wrapper": { "width": "", "class": "", "id": "" },
+			"default_value": "",
+			"rows": 3,
+			"new_lines": ""
+		},
+		{
+			"key": "field_liftedpath_actions_title_weight",
+			"label": "Title weight",
+			"name": "title_weight",
+			"type": "select",
+			"instructions": "Weight of the action titles, such as Give and Partner. Bold matches the design.",
+			"required": 0,
+			"conditional_logic": false,
+			"wrapper": { "width": "", "class": "", "id": "" },
+			"choices": {
+				"400": "Regular",
+				"500": "Medium",
+				"600": "Semibold",
+				"700": "Bold"
+			},
+			"default_value": "700",
+			"allow_null": 0,
+			"multiple": 0,
+			"ui": 0,
+			"return_format": "value"
+		},
+		{
+			"key": "field_liftedpath_actions_items",
+			"label": "Actions",
+			"name": "items",
+			"type": "repeater",
+			"instructions": "The first four items use the give, partner, empower, and reachout symbols, in that order.",
+			"required": 0,
+			"conditional_logic": false,
+			"wrapper": { "width": "", "class": "", "id": "" },
+			"layout": "block",
+			"button_label": "Add action",
+			"min": 0,
+			"max": 0,
+			"rows_per_page": 20,
+			"collapsed": "",
+			"sub_fields": [
+				{
+					"key": "field_liftedpath_actions_item_title",
+					"label": "Title",
+					"name": "title",
+					"type": "text",
+					"instructions": "",
+					"required": 0,
+					"conditional_logic": false,
+					"wrapper": { "width": "", "class": "", "id": "" },
+					"default_value": "",
+					"maxlength": "",
+					"placeholder": "",
+					"parent_repeater": "field_liftedpath_actions_items"
+				},
+				{
+					"key": "field_liftedpath_actions_item_text",
+					"label": "Text",
+					"name": "text",
+					"type": "textarea",
+					"instructions": "",
+					"required": 0,
+					"conditional_logic": false,
+					"wrapper": { "width": "", "class": "", "id": "" },
+					"default_value": "",
+					"rows": 3,
+					"new_lines": "",
+					"parent_repeater": "field_liftedpath_actions_items"
+				},
+				{
+					"key": "field_liftedpath_actions_item_link",
+					"label": "Link",
+					"name": "link",
+					"type": "link",
+					"instructions": "",
+					"required": 0,
+					"conditional_logic": false,
+					"wrapper": { "width": "", "class": "", "id": "" },
+					"return_format": "array",
+					"parent_repeater": "field_liftedpath_actions_items"
+				},
+				{
+					"key": "field_liftedpath_actions_item_hover",
+					"label": "Hover color",
+					"name": "hover_color",
+					"type": "color_picker",
+					"instructions": "The wash that covers this card while a pointer is over it. Leave blank to keep the Design 01 tint for this position.",
+					"required": 0,
+					"conditional_logic": false,
+					"wrapper": { "width": "", "class": "", "id": "" },
+					"default_value": "",
+					"enable_opacity": 0,
+					"return_format": "string",
+					"parent_repeater": "field_liftedpath_actions_items"
+				}
+			]
+		}
+	],
+	"location": [
+		[
+			{
+				"param": "block",
+				"operator": "==",
+				"value": "liftedpath/action-grid"
+			}
+		]
+	],
+	"menu_order": 0,
+	"position": "normal",
+	"style": "default",
+	"label_placement": "top",
+	"instruction_placement": "label",
+	"hide_on_screen": "",
+	"active": true,
+	"description": "",
+	"show_in_rest": 1,
+	"modified": 1791712000
+}

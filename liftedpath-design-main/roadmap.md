@@ -1,0 +1,28 @@
+- [x] Build two selectable LiftedPath designs with shared page content.
+- [x] Add responsive GSAP navigation, dropdowns, and section motion.
+- [x] Add Learning submenu and four education pathways.
+- [x] Match the first design's typography, branding, hero, and home section composition to lifted-path.lovable.app.
+- [x] Test desktop and mobile layouts and interactions.
+- [x] Apply the supplied brand palette consistently across both visual directions and check their desktop and mobile presentation.
+- [x] Add calm GSAP scroll reveals across Design 01 pages and animated color/icon hover states for its four action columns; verify desktop, mobile, and reduced motion.
+- [x] Make Design 01 scroll motion clearly visible across all pages; move the four action icons to the upper-right with larger, faded, continuous GSAP motion and verify live.
+- [x] Refine donation choices with spaced heading, clean amount pills, immediate impact details, and NGN/USD/GBP indicative conversion.
+- [x] Replace Programs and Learning in both main menus with nested What We Do → LiftedPath Learning → four education pathways, preserving pathway descriptions.
+- [x] Add Path Guide and Community Initiatives branches and destinations to both designs; smooth and verify desktop/mobile submenu motion.
+- [x] Rename the home "See Our Programs" link to "Impact Report" and point it at the Impact page.
+- [x] Rename Connect to Partner, route action cards to Donate, What We Do and Impact, and align the What We Do overview with every menu branch in both designs.
+
+- [x] Renamed /programs to /what-we-do (both designs, incl. slug pages); updated all links
+- [x] Stewardship heading now "Thoughtful Actions with Measurable Impact"; Our Commitment section hidden
+- [x] Give "How we work" a warm sand ground in both designs so no two adjacent sections share a background; verified flat-band adjacency across all 14 pages.
+- [x] Updated the home page "Our Mission" wording to the full empowerment statement in both designs.
+- [x] Home "Our programs" label renamed to "What We Do" and photo pill chips removed on program cards in both designs.
+- [x] Scholarship card tagline: "Access today. Greater tomorrow." -> "Opportunity Today = Possibility Tomorrow" (both designs, verified 1280 + 390).
+- [x] On both home designs, remove Our Goals and the dark-green Focused Actions section, bring Mission/Vision/Commitment tabs into About our foundation, and give Our Process a distinct background; reviewed desktop and mobile scrolling.
+- [x] Our Process band changed to soft gold #EEE6D9; number-stats band made paper white #FCFDFD with soft teal cards; stats now 15 Families reached and 6 School partnerships (home + Impact, both designs).
+- [x] Our Process band recoloured from soft gold to a cool teal-grey #D3DBDC (shared --site-cool token), with a soft shadow on the Design 01 cards so they lift off the band; verified no adjacent sections share a background, desktop + mobile.
+
+- [x] Update How We Work and Our Process copy; count stat numbers up on scroll on home and Impact, respecting reduced motion.
+- [x] Update the first About page Future Goal wording, add contact banner spacing, and verify About page scroll animations on both designs and screen sizes.
+- [x] Update Future Goals 02–06 and pin the About heading on desktop through the first four goals, then let the last two scroll out; verified both designs and mobile.
+- [x] Delete Design 02 pages and the design selector while verifying the Original pages remain unchanged.

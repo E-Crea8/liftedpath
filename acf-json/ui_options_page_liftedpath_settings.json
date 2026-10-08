@@ -1,0 +1,26 @@
+{
+	"key": "ui_options_page_liftedpath_settings",
+	"title": "LiftedPath settings",
+	"active": true,
+	"menu_order": 0,
+	"page_title": "LiftedPath settings",
+	"menu_slug": "liftedpath-settings",
+	"parent_slug": "none",
+	"advanced_configuration": true,
+	"icon_url": "dashicons-heart",
+	"menu_title": "LiftedPath",
+	"position": 30,
+	"redirect": false,
+	"description": "Organization facts and shared fragments used across the public site.",
+	"menu_icon": {
+		"type": "dashicons",
+		"value": "dashicons-heart"
+	},
+	"update_button": "Update",
+	"updated_message": "Settings updated.",
+	"capability": "manage_options",
+	"data_storage": "options",
+	"post_id": "",
+	"autoload": true,
+	"modified": 1791360000
+}

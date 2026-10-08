@@ -1,0 +1,62 @@
+{
+	"key": "group_liftedpath_sponsor_callout",
+	"title": "Sponsor callout",
+	"fields": [
+		{
+			"key": "field_liftedpath_sponsor_figure",
+			"label": "Amount",
+			"name": "figure",
+			"type": "text",
+			"instructions": "The amount shown in the pill, such as ₦50,000.",
+			"required": 0,
+			"conditional_logic": false,
+			"wrapper": { "width": "", "class": "", "id": "" },
+			"default_value": "",
+			"maxlength": "",
+			"placeholder": ""
+		},
+		{
+			"key": "field_liftedpath_sponsor_text",
+			"label": "Text",
+			"name": "text",
+			"type": "text",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": false,
+			"wrapper": { "width": "", "class": "", "id": "" },
+			"default_value": "",
+			"maxlength": "",
+			"placeholder": ""
+		},
+		{
+			"key": "field_liftedpath_sponsor_link",
+			"label": "Link",
+			"name": "link",
+			"type": "link",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": false,
+			"wrapper": { "width": "", "class": "", "id": "" },
+			"return_format": "array"
+		}
+	],
+	"location": [
+		[
+			{
+				"param": "block",
+				"operator": "==",
+				"value": "liftedpath/sponsor-callout"
+			}
+		]
+	],
+	"menu_order": 0,
+	"position": "normal",
+	"style": "default",
+	"label_placement": "top",
+	"instruction_placement": "label",
+	"hide_on_screen": "",
+	"active": true,
+	"description": "",
+	"show_in_rest": 1,
+	"modified": 1791619200
+}

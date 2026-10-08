@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<ruleset name="LiftedPath">
+	<description>WordPress coding standards for the LiftedPath theme.</description>
+
+	<arg value="ps"/>
+	<arg name="basepath" value="./"/>
+	<arg name="parallel" value="8"/>
+	<arg name="extensions" value="php"/>
+
+	<file>.</file>
+
+	<exclude-pattern>/vendor/*</exclude-pattern>
+	<exclude-pattern>/node_modules/*</exclude-pattern>
+
+	<rule ref="WordPress">
+		<exclude name="WordPress.NamingConventions.PrefixAllGlobals.ShortPrefixPassed"/>
+	</rule>
+
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array" value="liftedpath"/>
+		</properties>
+	</rule>
+
+	<rule ref="WordPress.Files.FileName">
+		<properties>
+			<property name="is_theme" value="true"/>
+		</properties>
+	</rule>
+
+	<config name="minimum_supported_wp_version" value="6.7"/>
+
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<properties>
+			<property name="prefixes" type="array" value="liftedpath,LIFTEDPATH"/>
+		</properties>
+	</rule>
+
+	<config name="testVersion" value="8.2-"/>
+	<rule ref="PHPCompatibilityWP"/>
+</ruleset>

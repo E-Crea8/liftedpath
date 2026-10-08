@@ -1,0 +1,110 @@
+{
+	"key": "group_liftedpath_goals",
+	"title": "Goals",
+	"fields": [
+		{
+			"key": "field_liftedpath_goals_eyebrow",
+			"label": "Eyebrow",
+			"name": "eyebrow",
+			"type": "text",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": false,
+			"wrapper": { "width": "", "class": "", "id": "" },
+			"default_value": "",
+			"maxlength": "",
+			"placeholder": ""
+		},
+		{
+			"key": "field_liftedpath_goals_heading",
+			"label": "Heading",
+			"name": "heading",
+			"type": "text",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": false,
+			"wrapper": { "width": "", "class": "", "id": "" },
+			"default_value": "",
+			"maxlength": "",
+			"placeholder": ""
+		},
+		{
+			"key": "field_liftedpath_goals_intro",
+			"label": "Introduction",
+			"name": "intro",
+			"type": "textarea",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": false,
+			"wrapper": { "width": "", "class": "", "id": "" },
+			"default_value": "",
+			"rows": 3,
+			"new_lines": ""
+		},
+		{
+			"key": "field_liftedpath_goals_goals",
+			"label": "Goals",
+			"name": "goals",
+			"type": "repeater",
+			"instructions": "Shown in order, numbered from 01.",
+			"required": 0,
+			"conditional_logic": false,
+			"wrapper": { "width": "", "class": "", "id": "" },
+			"layout": "block",
+			"button_label": "Add goal",
+			"min": 0,
+			"max": 0,
+			"rows_per_page": 20,
+			"collapsed": "",
+			"sub_fields": [
+				{
+					"key": "field_liftedpath_goals_goal_title",
+					"label": "Title",
+					"name": "title",
+					"type": "text",
+					"instructions": "",
+					"required": 0,
+					"conditional_logic": false,
+					"wrapper": { "width": "", "class": "", "id": "" },
+					"default_value": "",
+					"maxlength": "",
+					"placeholder": "",
+					"parent_repeater": "field_liftedpath_goals_goals"
+				},
+				{
+					"key": "field_liftedpath_goals_goal_text",
+					"label": "Text",
+					"name": "text",
+					"type": "textarea",
+					"instructions": "",
+					"required": 0,
+					"conditional_logic": false,
+					"wrapper": { "width": "", "class": "", "id": "" },
+					"default_value": "",
+					"rows": 3,
+					"new_lines": "",
+					"parent_repeater": "field_liftedpath_goals_goals"
+				}
+			]
+		}
+	],
+	"location": [
+		[
+			{
+				"param": "block",
+				"operator": "==",
+				"value": "liftedpath/goals"
+			}
+		]
+	],
+	"menu_order": 0,
+	"position": "normal",
+	"style": "default",
+	"label_placement": "top",
+	"instruction_placement": "label",
+	"hide_on_screen": "",
+	"active": true,
+	"description": "",
+	"show_in_rest": 1,
+	"modified": 1791705600
+}

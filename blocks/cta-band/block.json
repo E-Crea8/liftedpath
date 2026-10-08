@@ -1,0 +1,32 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "liftedpath/cta-band",
+	"title": "CTA band",
+	"category": "liftedpath",
+	"icon": "megaphone",
+	"description": "A closing band with a heading and one action.",
+	"keywords": ["cta", "join"],
+	"textdomain": "liftedpath",
+	"attributes": {
+		"align": {
+			"type": "string",
+			"default": "full"
+		}
+	},
+	"supports": {
+		"anchor": true,
+		"align": ["full"],
+		"html": false,
+		"jsx": false,
+		"mode": false,
+		"spacing": false,
+		"color": false,
+		"typography": false
+	},
+	"acf": {
+		"blockVersion": 3,
+		"mode": "preview",
+		"renderTemplate": "render.php"
+	}
+}

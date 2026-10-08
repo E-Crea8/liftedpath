@@ -1,0 +1,26 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "liftedpath/stat",
+	"title": "Stat",
+	"category": "liftedpath",
+	"icon": "chart-bar",
+	"description": "One figure with a label and a short line.",
+	"keywords": ["stat", "figure"],
+	"textdomain": "liftedpath",
+	"supports": {
+		"anchor": true,
+		"align": false,
+		"html": false,
+		"jsx": false,
+		"mode": false,
+		"spacing": false,
+		"color": false,
+		"typography": false
+	},
+	"acf": {
+		"blockVersion": 3,
+		"mode": "preview",
+		"renderTemplate": "render.php"
+	}
+}

@@ -1,0 +1,340 @@
+{
+    "key": "group_liftedpath_hero",
+    "title": "Hero",
+    "fields": [
+        {
+            "key": "field_liftedpath_hero_image",
+            "label": "Photograph",
+            "name": "image",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "Still image behind the headline. It also shows before a background video and for visitors who prefer less motion. Set the alt text on the media item.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array",
+            "library": "all",
+            "preview_size": "medium",
+            "mime_types": "jpg,jpeg,png,webp",
+            "min_width": 0,
+            "min_height": 0,
+            "min_size": 0,
+            "max_width": 0,
+            "max_height": 0,
+            "max_size": 0
+        },
+        {
+            "key": "field_liftedpath_hero_video_url",
+            "label": "Video link",
+            "name": "video_url",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Cloudinary or other MP4\/WebM address. This is used before an uploaded file. The photograph stays visible if the video cannot play.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "https:\/\/",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_liftedpath_hero_video_muted",
+            "label": "Mute audio",
+            "name": "video_muted",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Browsers start a background video on their own only when the audio is muted.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "33",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 1,
+            "allow_in_bindings": 0,
+            "ui": 1,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_liftedpath_hero_video_loop",
+            "label": "Auto replay",
+            "name": "video_loop",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Play the video again when it ends.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "33",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 1,
+            "allow_in_bindings": 0,
+            "ui": 1,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_liftedpath_hero_video_autoplay",
+            "label": "Autoplay",
+            "name": "video_autoplay",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Start playing as soon as the page loads.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "33",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 1,
+            "allow_in_bindings": 0,
+            "ui": 1,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_liftedpath_hero_video",
+            "label": "Uploaded video",
+            "name": "video",
+            "aria-label": "",
+            "type": "file",
+            "instructions": "Optional file. A video link is used instead when both are set.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "id",
+            "library": "all",
+            "min_size": "",
+            "max_size": "",
+            "mime_types": "mp4,webm"
+        },
+        {
+            "key": "field_liftedpath_hero_portraits",
+            "label": "Portraits",
+            "name": "portraits",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "Small circular photos in the eyebrow. They are decorative.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "block",
+            "button_label": "Add portrait",
+            "min": 0,
+            "max": 0,
+            "rows_per_page": 20,
+            "collapsed": "",
+            "sub_fields": [
+                {
+                    "key": "field_liftedpath_hero_portrait",
+                    "label": "Portrait",
+                    "name": "image",
+                    "aria-label": "",
+                    "type": "image",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": false,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "array",
+                    "library": "all",
+                    "preview_size": "thumbnail",
+                    "mime_types": "jpg,jpeg,png,webp",
+                    "parent_repeater": "field_liftedpath_hero_portraits",
+                    "min_width": 0,
+                    "min_height": 0,
+                    "min_size": 0,
+                    "max_width": 0,
+                    "max_height": 0,
+                    "max_size": 0
+                }
+            ]
+        },
+        {
+            "key": "field_liftedpath_hero_eyebrow",
+            "label": "Eyebrow",
+            "name": "eyebrow",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_liftedpath_hero_heading",
+            "label": "Heading",
+            "name": "heading",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_liftedpath_hero_intro",
+            "label": "Intro",
+            "name": "intro",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "rows": 4,
+            "new_lines": "",
+            "maxlength": "",
+            "placeholder": ""
+        },
+        {
+            "key": "field_liftedpath_hero_button",
+            "label": "Button",
+            "name": "button",
+            "aria-label": "",
+            "type": "link",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array"
+        },
+        {
+            "key": "field_liftedpath_hero_figure",
+            "label": "Corner figure",
+            "name": "figure",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Optional figure on the photograph, such as 25+.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "33",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_liftedpath_hero_label",
+            "label": "Corner label",
+            "name": "label",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "33",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_liftedpath_hero_detail",
+            "label": "Corner detail",
+            "name": "detail",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "34",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "rows": 3,
+            "new_lines": "",
+            "maxlength": "",
+            "placeholder": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "liftedpath\/hero"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 1,
+    "display_title": "",
+    "modified": 1791399335
+}
