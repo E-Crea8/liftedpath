@@ -119,26 +119,106 @@ function liftedpath_seed_menu_subtitles(): void {
 add_action( 'acf/init', 'liftedpath_seed_menu_subtitles', 30 );
 
 /**
- * Load the settings field group when a new Footer field is not in the database yet.
+ * Footer social fields, added when the saved field group does not have them yet.
+ *
+ * @param array<int, array<string, mixed>> $fields Fields already loaded.
+ * @param array<string, mixed>             $parent Field group.
+ * @return array<int, array<string, mixed>>
  */
-function liftedpath_import_settings_fields(): void {
-	if ( ! function_exists( 'acf_import_field_group' ) || ! function_exists( 'acf_get_field' ) ) {
-		return;
+function liftedpath_social_fields( array $fields, array $parent ): array {
+	if ( ! isset( $parent['key'] ) || 'group_liftedpath_settings' !== $parent['key'] || ! function_exists( 'acf_validate_field' ) ) {
+		return $fields;
 	}
 
-	if ( acf_get_field( 'field_liftedpath_facebook_show' ) ) {
-		return;
+	foreach ( $fields as $field ) {
+		if ( isset( $field['key'] ) && 'field_liftedpath_facebook_show' === $field['key'] ) {
+			return $fields;
+		}
 	}
 
-	$path = get_template_directory() . '/acf-json/group_liftedpath_settings.json';
-	$raw  = is_readable( $path ) ? file_get_contents( $path ) : false;
-	$json = is_string( $raw ) ? json_decode( $raw, true ) : null;
+	$social  = liftedpath_social_field_definitions();
+	$updated = array();
+	$added   = false;
 
-	if ( ! is_array( $json ) || ! isset( $json['key'] ) ) {
-		return;
+	foreach ( $fields as $field ) {
+		if ( ! $added && isset( $field['key'] ) && 'field_liftedpath_copyright_text' === $field['key'] ) {
+			foreach ( $social as $item ) {
+				$item['parent'] = $parent['key'];
+				$updated[]      = acf_validate_field( $item );
+			}
+			$added = true;
+		}
+
+		$updated[] = $field;
 	}
 
-	acf_import_field_group( $json );
+	if ( ! $added ) {
+		foreach ( $social as $item ) {
+			$item['parent'] = $parent['key'];
+			$updated[]      = acf_validate_field( $item );
+		}
+	}
+
+	return $updated;
+}
+add_filter( 'acf/load_fields', 'liftedpath_social_fields', 15, 2 );
+
+/**
+ * Show/hide and address for each footer icon.
+ *
+ * @return array<int, array<string, mixed>>
+ */
+function liftedpath_social_field_definitions(): array {
+	$networks = array(
+		'facebook'  => 'Facebook',
+		'instagram' => 'Instagram',
+		'linkedin'  => 'LinkedIn',
+		'youtube'   => 'YouTube',
+		'tiktok'    => 'TikTok',
+	);
+	$fields   = array(
+		array(
+			'key'       => 'field_liftedpath_social_intro',
+			'label'     => 'Social media',
+			'name'      => '',
+			'type'      => 'message',
+			'message'   => 'These icons sit with the phone and email buttons. Choose Show and paste an https address. Hide, or an empty address, keeps that icon off the footer. Each link opens in a new tab.',
+			'new_lines' => 'wpautop',
+			'esc_html'  => 0,
+		),
+	);
+
+	foreach ( $networks as $name => $label ) {
+		$fields[] = array(
+			'key'           => 'field_liftedpath_' . $name . '_show',
+			'label'         => $label,
+			'name'          => $name . '_show',
+			'type'          => 'true_false',
+			'wrapper'       => array(
+				'width' => '30',
+				'class' => '',
+				'id'    => '',
+			),
+			'default_value' => 0,
+			'ui'            => 1,
+			'ui_on_text'    => 'Show',
+			'ui_off_text'   => 'Hide',
+		);
+		$fields[] = array(
+			'key'         => 'field_liftedpath_' . $name . '_url',
+			'label'       => $label . ' address',
+			'name'        => $name . '_url',
+			'type'        => 'url',
+			'wrapper'     => array(
+				'width' => '70',
+				'class' => '',
+				'id'    => '',
+			),
+			'placeholder' => 'https://',
+		);
+	}
+
+	return $fields;
 }
 
 /**
@@ -162,8 +242,6 @@ function liftedpath_seed_logo(): void {
 	if ( ! is_numeric( $height ) || (int) $height <= 0 ) {
 		update_field( 'logo_height', 104, 'option' );
 	}
-
-	liftedpath_import_settings_fields();
 
 	if ( ! acf_get_field( 'field_liftedpath_footer_wordmark' ) ) {
 		return;

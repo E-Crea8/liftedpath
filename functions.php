@@ -8,7 +8,7 @@
  */
 
 if ( ! defined( 'LIFTEDPATH_VERSION' ) ) {
-	define( 'LIFTEDPATH_VERSION', '0.19.0' );
+	define( 'LIFTEDPATH_VERSION', '0.19.1' );
 }
 
 /**
