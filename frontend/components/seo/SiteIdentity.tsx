@@ -85,8 +85,14 @@ function organizationGraph(settings: SiteSettings, discovery: Discovery) {
 			value: settings.registrationNumber,
 		};
 	}
-	if (discovery.sameAs.length > 0) {
-		organization.sameAs = discovery.sameAs;
+	const sameAs = [...discovery.sameAs];
+	for (const link of settings.social) {
+		if (!sameAs.includes(link.url)) {
+			sameAs.push(link.url);
+		}
+	}
+	if (sameAs.length > 0) {
+		organization.sameAs = sameAs;
 	}
 	if (settings.logo) {
 		organization.logo = settings.logo.url;

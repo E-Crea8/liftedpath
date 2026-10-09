@@ -115,6 +115,12 @@ export interface Discovery {
 	pages: DiscoveryPage[];
 }
 
+export interface SocialLink {
+	network: "facebook" | "instagram" | "linkedin" | "youtube" | "tiktok";
+	label: string;
+	url: string;
+}
+
 export interface SiteSettings {
 	legalName: string;
 	shortName: string;
@@ -131,6 +137,7 @@ export interface SiteSettings {
 	footerWordmark: string;
 	locationHeading: string;
 	marqueePhrases: string[];
+	social: SocialLink[];
 }
 
 export class WordpressError extends Error {

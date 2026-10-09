@@ -119,6 +119,29 @@ function liftedpath_seed_menu_subtitles(): void {
 add_action( 'acf/init', 'liftedpath_seed_menu_subtitles', 30 );
 
 /**
+ * Load the settings field group when a new Footer field is not in the database yet.
+ */
+function liftedpath_import_settings_fields(): void {
+	if ( ! function_exists( 'acf_import_field_group' ) || ! function_exists( 'acf_get_field' ) ) {
+		return;
+	}
+
+	if ( acf_get_field( 'field_liftedpath_facebook_show' ) ) {
+		return;
+	}
+
+	$path = get_template_directory() . '/acf-json/group_liftedpath_settings.json';
+	$raw  = is_readable( $path ) ? file_get_contents( $path ) : false;
+	$json = is_string( $raw ) ? json_decode( $raw, true ) : null;
+
+	if ( ! is_array( $json ) || ! isset( $json['key'] ) ) {
+		return;
+	}
+
+	acf_import_field_group( $json );
+}
+
+/**
  * Point the settings logo at the current custom logo until an editor chooses one.
  */
 function liftedpath_seed_logo(): void {
@@ -139,6 +162,8 @@ function liftedpath_seed_logo(): void {
 	if ( ! is_numeric( $height ) || (int) $height <= 0 ) {
 		update_field( 'logo_height', 104, 'option' );
 	}
+
+	liftedpath_import_settings_fields();
 
 	if ( ! acf_get_field( 'field_liftedpath_footer_wordmark' ) ) {
 		return;

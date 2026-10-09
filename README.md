@@ -18,6 +18,8 @@ Connect the GitHub repository [E-Crea8/liftedpath](https://github.com/E-Crea8/li
 3. The next visit reads that content from WordPress. Published pages are not stored as a build snapshot.
 4. On save, WordPress also calls `frontend` at `/api/revalidate` so any route cache is dropped.
 
+The exact request path, and the rule to leave it unchanged, is `LIVE-WORDPRESS-UPDATES.md`.
+
 Draft preview uses `/api/preview` and a WordPress application password. Contact and donate forms post to Next.js, which calls WordPress. Card details stay on the payment provider’s hosted page.
 
 ## WordPress theme

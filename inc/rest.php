@@ -621,6 +621,85 @@ function liftedpath_rest_navigation(): WP_REST_Response {
 }
 
 /**
+ * Footer social icons that are switched on and have an https address.
+ *
+ * @return array<int, array{network: string, label: string, url: string}>
+ */
+function liftedpath_rest_social_links(): array {
+	$networks = array(
+		'facebook'  => 'Facebook',
+		'instagram' => 'Instagram',
+		'linkedin'  => 'LinkedIn',
+		'youtube'   => 'YouTube',
+		'tiktok'    => 'TikTok',
+	);
+	$links    = array();
+
+	foreach ( $networks as $network => $label ) {
+		if ( ! liftedpath_rest_setting_enabled( $network . '_show' ) ) {
+			continue;
+		}
+
+		$url = liftedpath_rest_https_url( $network . '_url' );
+
+		if ( '' === $url ) {
+			continue;
+		}
+
+		$links[] = array(
+			'network' => $network,
+			'label'   => $label,
+			'url'     => $url,
+		);
+	}
+
+	return $links;
+}
+
+/**
+ * A Footer show/hide switch. Missing and off both stay hidden.
+ */
+function liftedpath_rest_setting_enabled( string $name ): bool {
+	if ( ! function_exists( 'get_field' ) ) {
+		return false;
+	}
+
+	$value = get_field( $name, 'option' );
+
+	return true === $value || 1 === $value || '1' === $value;
+}
+
+/**
+ * A settings address that is https and has a real host.
+ */
+function liftedpath_rest_https_url( string $name ): string {
+	$url = esc_url_raw( liftedpath_rest_setting_text( $name ) );
+
+	if ( '' === $url ) {
+		return '';
+	}
+
+	$parts = wp_parse_url( $url );
+
+	if ( ! is_array( $parts ) ) {
+		return '';
+	}
+
+	$scheme = isset( $parts['scheme'] ) ? $parts['scheme'] : '';
+	$host   = isset( $parts['host'] ) ? $parts['host'] : '';
+
+	if ( 'https' !== $scheme || ! is_string( $host ) || ! str_contains( $host, '.' ) ) {
+		return '';
+	}
+
+	if ( str_contains( $host, '%' ) || str_contains( $host, ' ' ) || ! empty( $parts['user'] ) ) {
+		return '';
+	}
+
+	return $url;
+}
+
+/**
  * Public organization facts and the marquee phrases. The form recipient stays off this route.
  */
 function liftedpath_rest_settings(): WP_REST_Response {
@@ -643,6 +722,7 @@ function liftedpath_rest_settings(): WP_REST_Response {
 			'footer_wordmark'     => liftedpath_rest_footer_wordmark(),
 			'location_heading'    => liftedpath_rest_location_heading(),
 			'marquee_phrases'     => liftedpath_rest_marquee_phrases(),
+			'social'              => liftedpath_rest_social_links(),
 		)
 	);
 }

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { BrandLogo } from "@/components/layout/BrandLogo";
 import { CopyrightLine } from "@/components/layout/CopyrightLine";
 import { FooterWordmark } from "@/components/layout/FooterWordmark";
+import { SocialIcon } from "@/components/layout/SocialIcon";
 import type { NavItem, SiteSettings } from "@/lib/wp/types";
 
 interface FooterProps {
@@ -16,7 +17,7 @@ export function Footer({ items, settings }: FooterProps) {
 	const logo = settings.footerLogo ?? settings.logo;
 	const wordmark = settings.footerWordmark || settings.shortName;
 	const hasLocation = settings.postalAddress !== "" || settings.phone !== "" || settings.email !== "";
-	const hasSocial = phoneHref !== "" || settings.email !== "";
+	const hasSocial = phoneHref !== "" || settings.email !== "" || settings.social.length > 0;
 
 	return (
 		<footer className="site-footer">
@@ -36,6 +37,17 @@ export function Footer({ items, settings }: FooterProps) {
 									<Mail aria-hidden="true" size={18} strokeWidth={2} />
 								</a>
 							) : null}
+							{settings.social.map((link) => (
+								<a
+									aria-label={`${name} on ${link.label}`}
+									href={link.url}
+									key={link.network}
+									rel="noreferrer"
+									target="_blank"
+								>
+									<SocialIcon network={link.network} />
+								</a>
+							))}
 						</div>
 					) : null}
 				</div>

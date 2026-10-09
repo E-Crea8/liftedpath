@@ -16,6 +16,7 @@ import type {
 	RedirectRule,
 	SiteLogo,
 	SiteSettings,
+	SocialLink,
 } from "@/lib/wp/types";
 import { WordpressError } from "@/lib/wp/types";
 
@@ -133,7 +134,58 @@ export function mapSettings(value: unknown): SiteSettings {
 		footerWordmark: optionalString(record.footer_wordmark),
 		locationHeading: optionalString(record.location_heading),
 		marqueePhrases: stringList(record.marquee_phrases),
+		social: mapSocial(record.social),
 	};
+}
+
+const SOCIAL_NETWORKS = new Set<SocialLink["network"]>([
+	"facebook",
+	"instagram",
+	"linkedin",
+	"youtube",
+	"tiktok",
+]);
+
+function mapSocial(value: unknown): SocialLink[] {
+	if (value === undefined || value === null) {
+		return [];
+	}
+
+	if (!Array.isArray(value)) {
+		throw new WordpressError("invalid_response", "The social list is not an array.", 502);
+	}
+
+	const links: SocialLink[] = [];
+
+	for (const item of value) {
+		if (!isRecord(item)) {
+			continue;
+		}
+
+		const network = item.network;
+		const label = item.label;
+		const url = item.url;
+
+		if (typeof network !== "string" || !isSocialNetwork(network)) {
+			continue;
+		}
+
+		if (typeof label !== "string" || label.trim() === "") {
+			continue;
+		}
+
+		if (typeof url !== "string" || !isHttpsUrl(url)) {
+			continue;
+		}
+
+		links.push({ network, label, url });
+	}
+
+	return links;
+}
+
+function isSocialNetwork(value: string): value is SocialLink["network"] {
+	return SOCIAL_NETWORKS.has(value as SocialLink["network"]);
 }
 
 export function mapMedia(value: unknown): FeaturedImage[] {
