@@ -145,7 +145,7 @@ function BlockView({
 			view = <Goals block={block} />;
 			break;
 		case "liftedpath/team":
-			view = <Team block={block} images={images} siteHost={host} />;
+			view = <Team block={block} images={images} />;
 			break;
 		case "liftedpath/faq":
 			view = <Faq block={block} radioKey={radioKey} />;

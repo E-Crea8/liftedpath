@@ -2099,17 +2099,10 @@
 }
 
 .liftedpath-team__role {
-	margin: 0 0 18px;
+	margin: 0;
 	color: var(--team-role, color-mix(in oklch, var(--color-paper) 82%, transparent));
 	font-size: 1rem;
 	line-height: 1.45;
-}
-
-.liftedpath-team__info .liftedpath-text-link {
-	margin-top: auto;
-	padding-top: 18px;
-	border-top: 1px solid color-mix(in oklch, var(--team-link, var(--color-paper)) 28%, transparent);
-	color: var(--team-link, var(--color-paper));
 }
 
 @media (max-width: 900px) {

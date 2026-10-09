@@ -8,7 +8,7 @@
  */
 
 if ( ! defined( 'LIFTEDPATH_VERSION' ) ) {
-	define( 'LIFTEDPATH_VERSION', '0.19.6' );
+	define( 'LIFTEDPATH_VERSION', '0.19.7' );
 }
 
 $liftedpath_boot_error = get_template_directory() . '/boot-error.css';

@@ -796,7 +796,7 @@ function liftedpath_register_block_type_args( array $args, string $name ): array
 add_filter( 'register_block_type_args', 'liftedpath_register_block_type_args', 10, 2 );
 
 /**
- * Team card colors and the person link, even before a field-group sync.
+ * Team card colors, even before a field-group sync. Link fields stay out of the editor.
  *
  * @param array<int, array<string, mixed>> $fields Fields already loaded.
  * @param array<string, mixed>             $parent Field group or repeater.
@@ -815,34 +815,33 @@ function liftedpath_team_fields( $fields, $parent ) {
 		return $fields;
 	}
 
+	$drop = array(
+		'field_liftedpath_team_link_color'   => true,
+		'field_liftedpath_team_link_label'   => true,
+		'field_liftedpath_team_member_link'  => true,
+	);
+
 	$adding  = true;
 	$updated = array();
 	$seen    = array();
 
 	foreach ( $fields as $field ) {
-		if ( is_array( $field ) && isset( $field['key'] ) ) {
-			$seen[ $field['key'] ] = true;
+		if ( ! is_array( $field ) ) {
+			$updated[] = $field;
+			continue;
 		}
+
+		$key = $field['key'] ?? '';
+
+		if ( isset( $drop[ $key ] ) || in_array( $field['name'] ?? '', array( 'link_color', 'link_label', 'link' ), true ) ) {
+			continue;
+		}
+
+		$seen[ $key ] = true;
+		$updated[]    = $field;
 	}
 
 	if ( 'field_liftedpath_team_members' === $parent_key ) {
-		foreach ( $fields as $field ) {
-			$updated[] = $field;
-		}
-
-		if ( ! isset( $seen['field_liftedpath_team_member_link'] ) ) {
-			$link           = array(
-				'key'           => 'field_liftedpath_team_member_link',
-				'label'         => 'Link',
-				'name'          => 'link',
-				'type'          => 'link',
-				'instructions'  => 'Optional. The card opens this address and shows the link label.',
-				'return_format' => 'array',
-				'parent'        => $parent_key,
-			);
-			$updated[]      = function_exists( 'acf_validate_field' ) ? acf_validate_field( $link ) : $link;
-		}
-
 		$adding = false;
 		return $updated;
 	}
@@ -854,7 +853,7 @@ function liftedpath_team_fields( $fields, $parent ) {
 			'name'           => 'overlay_color',
 			'type'           => 'color_picker',
 			'instructions'   => 'The color that fades up over the photograph. Leave blank for the deep teal.',
-			'wrapper'        => array( 'width' => '25' ),
+			'wrapper'        => array( 'width' => '33' ),
 			'enable_opacity' => 0,
 			'return_format'  => 'string',
 		),
@@ -864,7 +863,7 @@ function liftedpath_team_fields( $fields, $parent ) {
 			'name'           => 'name_color',
 			'type'           => 'color_picker',
 			'instructions'   => 'Leave blank for white.',
-			'wrapper'        => array( 'width' => '25' ),
+			'wrapper'        => array( 'width' => '33' ),
 			'enable_opacity' => 0,
 			'return_format'  => 'string',
 		),
@@ -874,32 +873,15 @@ function liftedpath_team_fields( $fields, $parent ) {
 			'name'           => 'position_color',
 			'type'           => 'color_picker',
 			'instructions'   => 'Leave blank for soft white.',
-			'wrapper'        => array( 'width' => '25' ),
+			'wrapper'        => array( 'width' => '33' ),
 			'enable_opacity' => 0,
 			'return_format'  => 'string',
-		),
-		array(
-			'key'            => 'field_liftedpath_team_link_color',
-			'label'          => 'Link color',
-			'name'           => 'link_color',
-			'type'           => 'color_picker',
-			'instructions'   => 'Leave blank for white.',
-			'wrapper'        => array( 'width' => '25' ),
-			'enable_opacity' => 0,
-			'return_format'  => 'string',
-		),
-		array(
-			'key'           => 'field_liftedpath_team_link_label',
-			'label'         => 'Link label',
-			'name'          => 'link_label',
-			'type'          => 'text',
-			'instructions'  => 'Used when a person has a link and that link has no label of its own.',
-			'default_value' => 'Read more',
-			'placeholder'   => 'Read more',
 		),
 	);
 
-	foreach ( $fields as $field ) {
+	$with_colors = array();
+
+	foreach ( $updated as $field ) {
 		if ( is_array( $field ) && ( $field['key'] ?? '' ) === 'field_liftedpath_team_members' ) {
 			foreach ( $extras as $extra ) {
 				if ( isset( $seen[ $extra['key'] ] ) ) {
@@ -907,16 +889,16 @@ function liftedpath_team_fields( $fields, $parent ) {
 				}
 
 				$extra['parent'] = $parent_key;
-				$updated[]       = function_exists( 'acf_validate_field' ) ? acf_validate_field( $extra ) : $extra;
+				$with_colors[]   = function_exists( 'acf_validate_field' ) ? acf_validate_field( $extra ) : $extra;
 			}
 		}
 
-		$updated[] = $field;
+		$with_colors[] = $field;
 	}
 
 	$adding = false;
 
-	return $updated;
+	return $with_colors;
 }
 add_filter( 'acf/load_fields', 'liftedpath_team_fields', 15, 2 );
 

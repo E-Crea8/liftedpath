@@ -36,7 +36,7 @@
 			"instructions": "The color that fades up over the photograph. Leave blank for the deep teal.",
 			"required": 0,
 			"conditional_logic": false,
-			"wrapper": { "width": "25", "class": "", "id": "" },
+			"wrapper": { "width": "33", "class": "", "id": "" },
 			"default_value": "",
 			"enable_opacity": 0,
 			"return_format": "string"
@@ -49,7 +49,7 @@
 			"instructions": "Leave blank for white.",
 			"required": 0,
 			"conditional_logic": false,
-			"wrapper": { "width": "25", "class": "", "id": "" },
+			"wrapper": { "width": "33", "class": "", "id": "" },
 			"default_value": "",
 			"enable_opacity": 0,
 			"return_format": "string"
@@ -62,36 +62,10 @@
 			"instructions": "Leave blank for soft white.",
 			"required": 0,
 			"conditional_logic": false,
-			"wrapper": { "width": "25", "class": "", "id": "" },
+			"wrapper": { "width": "33", "class": "", "id": "" },
 			"default_value": "",
 			"enable_opacity": 0,
 			"return_format": "string"
-		},
-		{
-			"key": "field_liftedpath_team_link_color",
-			"label": "Link color",
-			"name": "link_color",
-			"type": "color_picker",
-			"instructions": "Leave blank for white.",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "25", "class": "", "id": "" },
-			"default_value": "",
-			"enable_opacity": 0,
-			"return_format": "string"
-		},
-		{
-			"key": "field_liftedpath_team_link_label",
-			"label": "Link label",
-			"name": "link_label",
-			"type": "text",
-			"instructions": "Used when a person has a link and that link has no label of its own.",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "", "class": "", "id": "" },
-			"default_value": "Read more",
-			"maxlength": "",
-			"placeholder": "Read more"
 		},
 		{
 			"key": "field_liftedpath_team_members",
@@ -152,17 +126,6 @@
 					"default_value": "",
 					"maxlength": "",
 					"placeholder": ""
-				},
-				{
-					"key": "field_liftedpath_team_member_link",
-					"label": "Link",
-					"name": "link",
-					"type": "link",
-					"instructions": "Optional. The card opens this address and shows the link label.",
-					"required": 0,
-					"conditional_logic": false,
-					"wrapper": { "width": "", "class": "", "id": "" },
-					"return_format": "array"
 				}
 			]
 		}
@@ -186,5 +149,5 @@
 	"description": "",
 	"show_in_rest": 1,
 	"display_title": "",
-	"modified": 1791942400
+	"modified": 1791943200
 }
