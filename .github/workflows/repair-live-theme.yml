@@ -1,0 +1,84 @@
+# One upload of the whole theme to the live CMS. Removed after this run.
+# It does not run on later pushes, and it never uploads frontend/.
+
+name: Repair live theme
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/repair-live-theme.yml
+
+permissions:
+  contents: read
+
+jobs:
+  repair:
+    name: Upload the whole theme
+    runs-on: ubuntu-latest
+    env:
+      SSH_HOST: ${{ secrets.SITEGROUND_LIVE_HOST }}
+      SSH_PORT: ${{ secrets.SITEGROUND_LIVE_PORT }}
+      SSH_USER: ${{ secrets.SITEGROUND_LIVE_USER }}
+      THEME_PATH: ${{ secrets.SITEGROUND_LIVE_PATH }}
+      WP_PATH: ${{ secrets.SITEGROUND_LIVE_WP_PATH }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup SSH key
+        env:
+          SSH_KEY: ${{ secrets.SITEGROUND_LIVE_SSH_KEY }}
+        run: |
+          set -euo pipefail
+          if [ -z "$SSH_KEY" ] || [ -z "$SSH_HOST" ] || [ -z "$SSH_USER" ] || [ -z "$THEME_PATH" ]; then
+            echo "Live theme upload needs SITEGROUND_LIVE_SSH_KEY, SITEGROUND_LIVE_HOST, SITEGROUND_LIVE_USER, and SITEGROUND_LIVE_PATH."
+            exit 1
+          fi
+          if [ -z "$SSH_PORT" ]; then
+            echo "SSH_PORT=18765" >> "$GITHUB_ENV"
+          else
+            echo "SSH_PORT=$SSH_PORT" >> "$GITHUB_ENV"
+          fi
+          mkdir -p ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/siteground_live_key
+          chmod 600 ~/.ssh/siteground_live_key
+          ssh-keyscan -p "${SSH_PORT:-18765}" "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null || true
+
+      - name: Upload theme
+        run: |
+          set -euo pipefail
+          REMOTE="${SSH_USER}@${SSH_HOST}:${THEME_PATH}"
+          SSH_CMD="ssh -i ~/.ssh/siteground_live_key -p ${SSH_PORT} -o StrictHostKeyChecking=accept-new"
+          ssh -i ~/.ssh/siteground_live_key -p "$SSH_PORT" -o StrictHostKeyChecking=accept-new \
+            "${SSH_USER}@${SSH_HOST}" "mkdir -p $(printf '%q' "$THEME_PATH")"
+          rsync -avz \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='frontend' \
+            --exclude='node_modules' \
+            --exclude='.DS_Store' \
+            --exclude='.env' \
+            --exclude='.env.*' \
+            --exclude='*.log' \
+            --exclude='README.md' \
+            --exclude='AGENTS.md' \
+            --exclude='CLAUDE.md' \
+            --exclude='context' \
+            --exclude='logos' \
+            --exclude='liftedpath-design-main' \
+            --exclude='Six-File+Context+Methodology' \
+            -e "$SSH_CMD" \
+            ./ "$REMOTE"
+
+      - name: Clear WordPress cache
+        run: |
+          set -euo pipefail
+          if [ -z "$WP_PATH" ]; then
+            echo "SITEGROUND_LIVE_WP_PATH is empty. Cache flush skipped."
+            exit 0
+          fi
+          ssh -i ~/.ssh/siteground_live_key -p "$SSH_PORT" -o StrictHostKeyChecking=accept-new \
+            "${SSH_USER}@${SSH_HOST}" \
+            "cd $(printf '%q' "$WP_PATH") && wp cache flush" || echo "Cache flush skipped."
