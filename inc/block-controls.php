@@ -223,6 +223,173 @@ function liftedpath_register_block_layout_fields(): void {
 add_action( 'acf/init', 'liftedpath_register_block_layout_fields', 20 );
 
 /**
+ * Color, photograph, or video behind every LiftedPath block.
+ */
+function liftedpath_register_block_background_fields(): void {
+	if ( ! function_exists( 'acf_add_local_field_group' ) || ! function_exists( 'liftedpath_block_slugs' ) ) {
+		return;
+	}
+
+	$kind = 'field_liftedpath_block_background_kind';
+
+	acf_add_local_field_group(
+		array(
+			'key'                   => 'group_liftedpath_block_background',
+			'title'                 => 'Background',
+			'fields'                => array(
+				array(
+					'key'           => $kind,
+					'label'         => 'Background',
+					'name'          => 'background_kind',
+					'type'          => 'button_group',
+					'instructions'  => 'Design keeps the background this block already uses. Color, Image, and Video replace it.',
+					'choices'       => array(
+						'design' => 'Design',
+						'color'  => 'Color',
+						'image'  => 'Image',
+						'video'  => 'Video',
+					),
+					'default_value' => 'design',
+					'layout'        => 'horizontal',
+					'return_format' => 'value',
+				),
+				array(
+					'key'               => 'field_liftedpath_block_background_variant',
+					'label'             => 'Color variant',
+					'name'              => 'background_variant',
+					'type'              => 'select',
+					'instructions'      => 'A design color, or Custom for a color of your own. On a photograph or video this color tints the media.',
+					'choices'           => array(
+						'paper'   => 'Paper',
+						'surface' => 'Surface',
+						'teal'    => 'Teal',
+						'deep'    => 'Deep',
+						'gold'    => 'Gold',
+						'bronze'  => 'Bronze',
+						'sand'    => 'Sand',
+						'custom'  => 'Custom',
+					),
+					'default_value'     => 'paper',
+					'return_format'     => 'value',
+					'conditional_logic' => array(
+						array(
+							array(
+								'field'    => $kind,
+								'operator' => '!=',
+								'value'    => 'design',
+							),
+						),
+					),
+				),
+				array(
+					'key'               => 'field_liftedpath_block_background_color',
+					'label'             => 'Custom color',
+					'name'              => 'background_color',
+					'type'              => 'color_picker',
+					'default_value'     => '#043C42',
+					'conditional_logic' => array(
+						array(
+							array(
+								'field'    => $kind,
+								'operator' => '!=',
+								'value'    => 'design',
+							),
+							array(
+								'field'    => 'field_liftedpath_block_background_variant',
+								'operator' => '==',
+								'value'    => 'custom',
+							),
+						),
+					),
+				),
+				array(
+					'key'               => 'field_liftedpath_block_background_opacity',
+					'label'             => 'Opacity',
+					'name'              => 'background_opacity',
+					'type'              => 'range',
+					'instructions'      => '100 is solid. On a photograph or video, lower this so the media stays visible.',
+					'default_value'     => 100,
+					'min'               => 0,
+					'max'               => 100,
+					'step'              => 1,
+					'append'            => '%',
+					'conditional_logic' => array(
+						array(
+							array(
+								'field'    => $kind,
+								'operator' => '!=',
+								'value'    => 'design',
+							),
+						),
+					),
+				),
+				array(
+					'key'               => 'field_liftedpath_block_background_image',
+					'label'             => 'Background image',
+					'name'              => 'background_image',
+					'type'              => 'image',
+					'return_format'     => 'id',
+					'preview_size'      => 'medium',
+					'library'           => 'all',
+					'conditional_logic' => array(
+						array(
+							array(
+								'field'    => $kind,
+								'operator' => '==',
+								'value'    => 'image',
+							),
+						),
+					),
+				),
+				array(
+					'key'               => 'field_liftedpath_block_background_video_url',
+					'label'             => 'Video address',
+					'name'              => 'background_video_url',
+					'type'              => 'text',
+					'instructions'      => 'An https address of an MP4 or WebM. This is used before an uploaded file.',
+					'conditional_logic' => array(
+						array(
+							array(
+								'field'    => $kind,
+								'operator' => '==',
+								'value'    => 'video',
+							),
+						),
+					),
+				),
+				array(
+					'key'               => 'field_liftedpath_block_background_video',
+					'label'             => 'Video file',
+					'name'              => 'background_video',
+					'type'              => 'file',
+					'return_format'     => 'id',
+					'library'           => 'all',
+					'mime_types'        => 'mp4,webm',
+					'conditional_logic' => array(
+						array(
+							array(
+								'field'    => $kind,
+								'operator' => '==',
+								'value'    => 'video',
+							),
+						),
+					),
+				),
+			),
+			'location'              => liftedpath_block_field_locations(),
+			'menu_order'            => 30,
+			'position'              => 'normal',
+			'style'                 => 'default',
+			'label_placement'       => 'top',
+			'instruction_placement' => 'label',
+			'active'                => true,
+			'show_in_rest'          => 1,
+		)
+	);
+}
+add_action( 'acf/init', 'liftedpath_register_block_background_fields', 20 );
+
+/**
  * Keep the breadcrumb field on the page hero even before a field-group sync.
  *
  * @param array<int, array<string, mixed>> $fields Fields already loaded.

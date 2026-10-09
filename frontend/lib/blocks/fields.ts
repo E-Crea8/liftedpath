@@ -1,4 +1,4 @@
-import type { Block, BlockAttributes, JsonValue } from "@/lib/wp/types";
+import type { Block, BlockAttributes, FeaturedImage, JsonValue } from "@/lib/wp/types";
 
 export interface FieldLink {
 	title: string;
@@ -7,7 +7,17 @@ export interface FieldLink {
 	blank: boolean;
 }
 
-const IMAGE_KEY = /(?:^|_)image$/;
+const MEDIA_KEY = /(?:^|_)(?:image|video)$/;
+
+const BACKGROUND_COLORS: Record<string, string> = {
+	paper: "#fcfdfd",
+	surface: "#e7ecec",
+	teal: "#043c42",
+	deep: "#02272b",
+	gold: "#b78d4b",
+	bronze: "#a57d3c",
+	sand: "#d6b886",
+};
 
 export function siteHost(): string {
 	const raw = process.env.WORDPRESS_API_URL;
@@ -93,7 +103,7 @@ export function imageIds(blocks: Block[]): number[] {
 			if (key === "innerBlocks" || (typeof value !== "number" && typeof value !== "string")) {
 				continue;
 			}
-			if (!IMAGE_KEY.test(key) && key !== "video" && !(block.name === "core/image" && key === "id")) {
+			if (!MEDIA_KEY.test(key) && !(block.name === "core/image" && key === "id")) {
 				continue;
 			}
 			const id = imageId(value);
@@ -186,4 +196,91 @@ export function layoutClass(block: Block): string {
 	}
 
 	return classes.length > 1 ? classes.join(" ") : "";
+}
+
+export interface BlockSurface {
+	kind: "color" | "image" | "video";
+	className: string;
+	style: Record<string, string>;
+	shade: string;
+	videoUrl: string;
+}
+
+function hexColor(value: JsonValue | Block[] | undefined): string {
+	const color = text(value);
+	return /^#(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(color) ? color : "";
+}
+
+function rgba(hex: string, opacity: number): string {
+	let raw = hex.replace("#", "");
+	if (raw.length === 3) {
+		raw = raw
+			.split("")
+			.map((part) => part + part)
+			.join("");
+	}
+	const red = Number.parseInt(raw.slice(0, 2), 16);
+	const green = Number.parseInt(raw.slice(2, 4), 16);
+	const blue = Number.parseInt(raw.slice(4, 6), 16);
+	return `rgba(${red}, ${green}, ${blue}, ${Math.round(opacity) / 100})`;
+}
+
+function backgroundOpacity(value: JsonValue | Block[] | undefined): number {
+	if (value === undefined || value === null || value === "") {
+		return 100;
+	}
+
+	return Math.max(0, Math.min(100, Math.round(numeric(value))));
+}
+
+export function blockSurface(block: Block, images: ReadonlyMap<number, FeaturedImage>): BlockSurface | null {
+	if (!block.name.startsWith("liftedpath/")) {
+		return null;
+	}
+
+	const kind = text(block.attributes.background_kind);
+	if (kind !== "color" && kind !== "image" && kind !== "video") {
+		return null;
+	}
+
+	const variant = text(block.attributes.background_variant) || "paper";
+	const chosen = variant === "custom" ? hexColor(block.attributes.background_color) : (BACKGROUND_COLORS[variant] ?? "");
+	const color = chosen || BACKGROUND_COLORS.paper;
+	const opacity = backgroundOpacity(block.attributes.background_opacity);
+	const shade = rgba(color, opacity);
+	const className = `has-block-background has-block-background-${kind}`;
+
+	if (kind === "color") {
+		return {
+			kind,
+			className,
+			style: { backgroundColor: shade, backgroundImage: "none" },
+			shade,
+			videoUrl: "",
+		};
+	}
+
+	if (kind === "image") {
+		const id = imageId(block.attributes.background_image);
+		const image = id !== null ? images.get(id) : undefined;
+		const style: Record<string, string> = { backgroundColor: "transparent" };
+		if (image?.url && !image.url.includes('"')) {
+			style.backgroundImage = `url("${image.url}")`;
+			style.backgroundSize = "cover";
+			style.backgroundPosition = "center";
+		}
+		return { kind, className, style, shade, videoUrl: "" };
+	}
+
+	const videoId = imageId(block.attributes.background_video);
+	const uploaded = videoId !== null ? images.get(videoId) : undefined;
+	const videoUrl = videoLink(block.attributes.background_video_url) || (uploaded?.mime?.startsWith("video/") ? uploaded.url : "");
+
+	return {
+		kind,
+		className,
+		style: { backgroundColor: "transparent" },
+		shade,
+		videoUrl,
+	};
 }

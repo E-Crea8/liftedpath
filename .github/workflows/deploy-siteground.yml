@@ -20,7 +20,7 @@ on:
         required: true
         type: string
       deploy_mode:
-        description: 'Deployment mode. With no commit range, changed_files uploads the whole theme.'
+        description: 'Deployment mode. changed_files with an empty range uploads the last commit, plus PHP files that commit needs. full uploads the whole theme.'
         required: true
         default: 'changed_files'
         type: choice
@@ -133,60 +133,7 @@ jobs:
 
       - name: Choose theme files
         id: files
-        run: |
-          set -euo pipefail
-          : > /tmp/deploy_files.txt
-
-          theme_paths() {
-            grep -E '\.(php|css|js|html|json|svg|woff2|txt|png)$' \
-              | grep -v -E '^(frontend/|\.github/)' \
-              | grep -v -E '^(README\.md|AGENTS\.md|CLAUDE\.md)$' \
-              || true
-          }
-
-          if [ "$DEPLOY_MODE" = "changed_files" ]; then
-            if [ -n "$COMMIT_RANGE" ]; then
-              echo "Detecting theme files in range: $COMMIT_RANGE"
-              git diff --name-only --diff-filter=ACMR "$COMMIT_RANGE" | theme_paths > /tmp/deploy_files.txt
-            else
-              echo "No commit range was given, so the whole theme is deployed."
-              echo "Uploading only the last commit can omit a file the theme already loads and take WordPress down."
-              echo "mode=full" >> "$GITHUB_OUTPUT"
-              exit 0
-            fi
-            if [ ! -s /tmp/deploy_files.txt ]; then
-              echo "mode=skip" >> "$GITHUB_OUTPUT"
-              echo "No theme files in that range. frontend/ is left for Vercel."
-              exit 0
-            fi
-            echo "mode=selective" >> "$GITHUB_OUTPUT"
-          elif [ "$DEPLOY_MODE" = "specific_files" ]; then
-            printf '%s\n' "$SPECIFIC_FILES" | tr ',' '\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | sed '/^$/d' > /tmp/deploy_files.txt
-            if [ ! -s /tmp/deploy_files.txt ]; then
-              echo "specific_files mode needs at least one theme path."
-              exit 1
-            fi
-            echo "mode=selective" >> "$GITHUB_OUTPUT"
-          else
-            echo "mode=full" >> "$GITHUB_OUTPUT"
-          fi
-
-          if [ -s /tmp/deploy_files.txt ]; then
-            echo "Files selected:"
-            cat /tmp/deploy_files.txt
-            while IFS= read -r path; do
-              case "$path" in
-                frontend/*|.github/*)
-                  echo "Refusing to deploy ${path} to SiteGround."
-                  exit 1
-                  ;;
-              esac
-              if [ ! -e "$path" ]; then
-                echo "Missing path: ${path}"
-                exit 1
-              fi
-            done < /tmp/deploy_files.txt
-          fi
+        run: bash .github/scripts/select-theme-files.sh
 
       - name: Deploy theme to staging
         run: |
@@ -295,60 +242,7 @@ jobs:
 
       - name: Choose theme files
         id: files
-        run: |
-          set -euo pipefail
-          : > /tmp/deploy_files.txt
-
-          theme_paths() {
-            grep -E '\.(php|css|js|html|json|svg|woff2|txt|png)$' \
-              | grep -v -E '^(frontend/|\.github/)' \
-              | grep -v -E '^(README\.md|AGENTS\.md|CLAUDE\.md)$' \
-              || true
-          }
-
-          if [ "$DEPLOY_MODE" = "changed_files" ]; then
-            if [ -n "$COMMIT_RANGE" ]; then
-              echo "Detecting theme files in range: $COMMIT_RANGE"
-              git diff --name-only --diff-filter=ACMR "$COMMIT_RANGE" | theme_paths > /tmp/deploy_files.txt
-            else
-              echo "No commit range was given, so the whole theme is deployed."
-              echo "Uploading only the last commit can omit a file the theme already loads and take WordPress down."
-              echo "mode=full" >> "$GITHUB_OUTPUT"
-              exit 0
-            fi
-            if [ ! -s /tmp/deploy_files.txt ]; then
-              echo "mode=skip" >> "$GITHUB_OUTPUT"
-              echo "No theme files in that range. frontend/ is left for Vercel."
-              exit 0
-            fi
-            echo "mode=selective" >> "$GITHUB_OUTPUT"
-          elif [ "$DEPLOY_MODE" = "specific_files" ]; then
-            printf '%s\n' "$SPECIFIC_FILES" | tr ',' '\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | sed '/^$/d' > /tmp/deploy_files.txt
-            if [ ! -s /tmp/deploy_files.txt ]; then
-              echo "specific_files mode needs at least one theme path."
-              exit 1
-            fi
-            echo "mode=selective" >> "$GITHUB_OUTPUT"
-          else
-            echo "mode=full" >> "$GITHUB_OUTPUT"
-          fi
-
-          if [ -s /tmp/deploy_files.txt ]; then
-            echo "Files selected:"
-            cat /tmp/deploy_files.txt
-            while IFS= read -r path; do
-              case "$path" in
-                frontend/*|.github/*)
-                  echo "Refusing to deploy ${path} to SiteGround."
-                  exit 1
-                  ;;
-              esac
-              if [ ! -e "$path" ]; then
-                echo "Missing path: ${path}"
-                exit 1
-              fi
-            done < /tmp/deploy_files.txt
-          fi
+        run: bash .github/scripts/select-theme-files.sh
 
       - name: Deploy theme to live
         run: |

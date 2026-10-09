@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { useSearchParams } from "next/navigation";
+import { FormNotice, readFormResult, type NoticeLevel } from "@/components/blocks/FormNotice";
 import { ArrowIcon, BlockIcon } from "@/components/blocks/icons";
 import { BlockPhoto } from "@/components/blocks/parts";
 import { imageId, numeric, rows, text } from "@/lib/blocks/fields";
@@ -60,9 +61,10 @@ export function DonatePanel({
 	const [currency, setCurrency] = useState<Currency>("NGN");
 	const [amountIndex, setAmountIndex] = useState(0);
 	const [custom, setCustom] = useState("");
-	const [status, setStatus] = useState<"idle" | "sending" | "error">("idle");
-	const [message, setMessage] = useState("");
+	const [sending, setSending] = useState(false);
+	const [notice, setNotice] = useState<{ level: NoticeLevel; message: string } | null>(null);
 	const cancelled = params.get("cancelled") === "1";
+	const [showCancelled, setShowCancelled] = useState(cancelled);
 
 	if (!heading && !eyebrow && !intro && !asideHeading && photo === null) {
 		return null;
@@ -81,8 +83,8 @@ export function DonatePanel({
 		const form = new FormData(event.currentTarget);
 		const designation = String(form.get("designation") ?? "");
 		const designationLabel = gifts.find((item) => item.value === designation)?.label ?? designation;
-		setStatus("sending");
-		setMessage("");
+		setSending(true);
+		setNotice(null);
 
 		try {
 			const response = await fetch("/api/donate", {
@@ -99,20 +101,19 @@ export function DonatePanel({
 					website: String(form.get("website") ?? ""),
 				}),
 			});
-			const payload = (await response.json()) as { checkoutUrl?: string; message?: string };
-			if (!response.ok) {
-				setStatus("error");
-				setMessage(payload.message || "The gift could not be started.");
+			const result = await readFormResult(response);
+			if (!result.ok) {
+				setNotice({ level: result.level, message: result.message || "The gift could not be started." });
 				return;
 			}
-			if (payload.checkoutUrl) {
-				window.location.assign(payload.checkoutUrl);
+			if (result.checkoutUrl) {
+				window.location.assign(result.checkoutUrl);
 				return;
 			}
-			setStatus("idle");
 		} catch {
-			setStatus("error");
-			setMessage("The gift could not be started.");
+			setNotice({ level: "error", message: "The gift could not be started. Please try again." });
+		} finally {
+			setSending(false);
 		}
 	}
 
@@ -210,8 +211,8 @@ export function DonatePanel({
 						Website
 						<input aria-hidden="true" autoComplete="off" name="website" tabIndex={-1} type="text" />
 					</label>
-					<button className="liftedpath-button" disabled={status === "sending"} type="submit">
-						{status === "sending" ? "Opening payment" : buttonLabel}
+					<button className="liftedpath-button" disabled={sending} type="submit">
+						{sending ? "Opening payment" : buttonLabel}
 						<ArrowIcon />
 					</button>
 					{note ? <p className="liftedpath-form-note">{note}</p> : null}
@@ -220,16 +221,14 @@ export function DonatePanel({
 							? `You finish this gift on ${providerLabel}. Card details stay with ${providerLabel}.`
 							: "Payments are not connected yet. An administrator can choose Stripe, Paystack, or Flutterwave in Form settings."}
 					</p>
-					{cancelled ? (
-						<p className="liftedpath-form-status" role="status">
-							The payment page was closed before the gift was confirmed.
-						</p>
+					{showCancelled ? (
+						<FormNotice
+							level="warning"
+							message="The payment page was closed before the gift was confirmed."
+							onClose={() => setShowCancelled(false)}
+						/>
 					) : null}
-					{message ? (
-						<p className="liftedpath-form-status liftedpath-form-status--error" role="alert">
-							{message}
-						</p>
-					) : null}
+					{notice ? <FormNotice level={notice.level} message={notice.message} onClose={() => setNotice(null)} /> : null}
 				</form>
 				{photo !== null || asideHeading || asideText ? (
 					<aside className="liftedpath-donate__aside">

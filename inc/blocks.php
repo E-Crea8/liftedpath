@@ -85,6 +85,125 @@ function liftedpath_block_styles(): void {
 add_action( 'wp_enqueue_scripts', 'liftedpath_block_styles' );
 
 /**
+ * Hex color at an opacity WordPress will keep in a style attribute.
+ *
+ * @param string $hex     #rgb or #rrggbb.
+ * @param int    $opacity 0 to 100.
+ */
+function liftedpath_block_rgba( string $hex, int $opacity ): string {
+	$hex = ltrim( $hex, '#' );
+
+	if ( 3 === strlen( $hex ) ) {
+		$hex = $hex[0] . $hex[0] . $hex[1] . $hex[1] . $hex[2] . $hex[2];
+	}
+
+	$red   = hexdec( substr( $hex, 0, 2 ) );
+	$green = hexdec( substr( $hex, 2, 2 ) );
+	$blue  = hexdec( substr( $hex, 4, 2 ) );
+	$alpha = number_format( max( 0, min( 100, $opacity ) ) / 100, 2, '.', '' );
+
+	return 'rgba(' . $red . ', ' . $green . ', ' . $blue . ', ' . $alpha . ')';
+}
+
+/**
+ * Design 01 colors an editor can paint behind any LiftedPath block.
+ *
+ * @return array<string, string>
+ */
+function liftedpath_block_background_palette(): array {
+	return array(
+		'paper'   => '#fcfdfd',
+		'surface' => '#e7ecec',
+		'teal'    => '#043c42',
+		'deep'    => '#02272b',
+		'gold'    => '#b78d4b',
+		'bronze'  => '#a57d3c',
+		'sand'    => '#d6b886',
+	);
+}
+
+/**
+ * Background chosen on the block, or empty values when the block keeps its design.
+ *
+ * @return array{class: string, style: string, media: string}
+ */
+function liftedpath_block_background(): array {
+	$empty = array(
+		'class' => '',
+		'style' => '',
+		'media' => '',
+	);
+
+	if ( ! function_exists( 'get_field' ) ) {
+		return $empty;
+	}
+
+	$kind = get_field( 'background_kind' );
+
+	if ( ! is_string( $kind ) || ! in_array( $kind, array( 'color', 'image', 'video' ), true ) ) {
+		return $empty;
+	}
+
+	$palette = liftedpath_block_background_palette();
+	$variant = get_field( 'background_variant' );
+	$variant = is_string( $variant ) ? $variant : 'paper';
+	$hex     = 'custom' === $variant ? liftedpath_block_color( get_field( 'background_color' ) ) : ( $palette[ $variant ] ?? '' );
+
+	if ( '' === $hex ) {
+		$hex = $palette['paper'];
+	}
+
+	$opacity = get_field( 'background_opacity' );
+
+	if ( null === $opacity || false === $opacity || '' === $opacity ) {
+		$opacity = 100;
+	}
+
+	$opacity = max( 0, min( 100, (int) $opacity ) );
+	$mix     = liftedpath_block_rgba( $hex, $opacity );
+	$class   = 'has-block-background has-block-background-' . $kind;
+	$style   = '';
+	$media   = '';
+
+	if ( 'color' === $kind ) {
+		$alpha = number_format( $opacity / 100, 2, '.', '' );
+		$style = '--block-bg:' . $hex . ';--block-opacity:' . $alpha . ';background-image:none;';
+	}
+
+	if ( 'image' === $kind ) {
+		$image_id  = liftedpath_attachment_id( get_field( 'background_image' ) );
+		$image_url = $image_id > 0 ? wp_get_attachment_image_url( $image_id, 'full' ) : '';
+		$image_url = is_string( $image_url ) ? esc_url_raw( $image_url ) : '';
+
+		if ( '' !== $image_url ) {
+			$style = "background-image:url('" . $image_url . "');background-size:cover;background-position:center;background-color:transparent;";
+		}
+
+		$media = '<span class="liftedpath-block-bg-shade" style="background-color:' . esc_attr( $mix ) . '" aria-hidden="true"></span>';
+	}
+
+	if ( 'video' === $kind ) {
+		$link  = get_field( 'background_video_url' );
+		$media = liftedpath_block_video(
+			get_field( 'background_video' ),
+			'liftedpath-block-bg-video',
+			'',
+			is_string( $link ) ? $link : '',
+			true,
+			true,
+			true
+		);
+		$media .= '<span class="liftedpath-block-bg-shade" style="background-color:' . esc_attr( $mix ) . '" aria-hidden="true"></span>';
+	}
+
+	return array(
+		'class' => $class,
+		'style' => $style,
+		'media' => $media,
+	);
+}
+
+/**
  * Open a block wrapper. Classes include the generated block class and alignment.
  *
  * @param string $tag   Element name.
@@ -99,6 +218,16 @@ function liftedpath_block_wrapper_open( string $tag, string $class, string $styl
 		}
 	}
 
+	$background = liftedpath_block_background();
+
+	if ( '' !== $background['class'] ) {
+		$class = trim( $class . ' ' . $background['class'] );
+	}
+
+	if ( '' !== $background['style'] ) {
+		$style = $background['style'] . $style;
+	}
+
 	$attributes = array( 'class' => $class );
 
 	if ( '' !== $style ) {
@@ -106,6 +235,10 @@ function liftedpath_block_wrapper_open( string $tag, string $class, string $styl
 	}
 
 	echo '<' . tag_escape( $tag ) . ' ' . get_block_wrapper_attributes( $attributes ) . '>';
+
+	if ( '' !== $background['media'] ) {
+		echo $background['media']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- helper escapes the video and shade.
+	}
 }
 
 /**

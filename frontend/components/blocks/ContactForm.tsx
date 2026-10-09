@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { FormNotice, readFormResult, type NoticeLevel } from "@/components/blocks/FormNotice";
 import { ArrowIcon, BlockIcon } from "@/components/blocks/icons";
 import { rows, telHref, text } from "@/lib/blocks/fields";
 import type { Block } from "@/lib/wp/types";
@@ -35,8 +36,8 @@ export function ContactForm({
 		.map((row) => ({ value: text(row.reason), label: text(row.label) }))
 		.filter((reason) => REASONS.some((item) => item.value === reason.value) && reason.label);
 	const choices = reasons.length > 0 ? reasons : REASONS.map((item) => ({ ...item }));
-	const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
-	const [message, setMessage] = useState("");
+	const [sending, setSending] = useState(false);
+	const [notice, setNotice] = useState<{ level: NoticeLevel; message: string } | null>(null);
 
 	if (!heading && !eyebrow && !intro && !formHeading && !formEyebrow) {
 		return null;
@@ -48,8 +49,8 @@ export function ContactForm({
 		const form = new FormData(formEl);
 		const reason = String(form.get("reason") ?? "");
 		const reasonLabel = choices.find((item) => item.value === reason)?.label ?? reason;
-		setStatus("sending");
-		setMessage("");
+		setSending(true);
+		setNotice(null);
 
 		try {
 			const response = await fetch("/api/contact", {
@@ -64,18 +65,17 @@ export function ContactForm({
 					website: String(form.get("website") ?? ""),
 				}),
 			});
-			const payload = (await response.json()) as { message?: string };
-			if (!response.ok) {
-				setStatus("error");
-				setMessage(payload.message || "The message could not be sent.");
+			const result = await readFormResult(response);
+			if (!result.ok) {
+				setNotice({ level: result.level, message: result.message });
 				return;
 			}
-			setStatus("sent");
-			setMessage("Thank you. Your message is with the foundation.");
+			setNotice({ level: "success", message: "Thank you. Your message is with the foundation." });
 			formEl.reset();
 		} catch {
-			setStatus("error");
-			setMessage("The message could not be sent.");
+			setNotice({ level: "error", message: "The message could not be sent. Please try again." });
+		} finally {
+			setSending(false);
 		}
 	}
 
@@ -143,16 +143,12 @@ export function ContactForm({
 						Website
 						<input aria-hidden="true" autoComplete="off" name="website" tabIndex={-1} type="text" />
 					</label>
-					<button className="liftedpath-button" disabled={status === "sending"} type="submit">
-						{status === "sending" ? "Sending" : buttonLabel}
+					<button className="liftedpath-button" disabled={sending} type="submit">
+						{sending ? "Sending" : buttonLabel}
 						<ArrowIcon />
 					</button>
 					{note ? <p className="liftedpath-form-note">{note}</p> : null}
-					{message ? (
-						<p className={status === "error" ? "liftedpath-form-status liftedpath-form-status--error" : "liftedpath-form-status"} role={status === "error" ? "alert" : "status"}>
-							{message}
-						</p>
-					) : null}
+					{notice ? <FormNotice level={notice.level} message={notice.message} onClose={() => setNotice(null)} /> : null}
 				</form>
 			</div>
 		</section>

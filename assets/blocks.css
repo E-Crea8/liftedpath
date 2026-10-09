@@ -2378,3 +2378,40 @@
 		justify-content: stretch;
 	}
 }
+
+.has-block-background {
+	position: relative;
+	isolation: isolate;
+}
+
+section.has-block-background-color,
+div.has-block-background.has-block-background-color {
+	background-color: color-mix(in srgb, var(--block-bg) calc(var(--block-opacity) * 100%), transparent);
+	background-image: none;
+}
+
+.has-block-background > .liftedpath-block-bg-video,
+.has-block-background > .liftedpath-block-bg-shade {
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	pointer-events: none;
+}
+
+.has-block-background > .liftedpath-block-bg-shade {
+	z-index: 1;
+}
+
+.has-block-background > :not(.liftedpath-block-bg-video):not(.liftedpath-block-bg-shade) {
+	position: relative;
+	z-index: 2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.liftedpath-block-bg-video {
+		display: none;
+	}
+}

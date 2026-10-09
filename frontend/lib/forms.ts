@@ -70,7 +70,8 @@ export function visitorAddress(request: Request) {
 export function formFailure(error: unknown, fallback: string) {
 	const status = typeof error === "object" && error !== null && "status" in error && typeof error.status === "number" ? error.status : 500;
 	const message = error instanceof Error && error.message ? error.message : fallback;
-	return Response.json({ message }, { status });
+	const level = status === 400 || status === 409 || status === 429 ? "warning" : "error";
+	return Response.json({ message, level }, { status });
 }
 
 async function readJson(path: string, init: RequestInit, secret: boolean): Promise<unknown> {
@@ -91,7 +92,17 @@ async function readJson(path: string, init: RequestInit, secret: boolean): Promi
 		cache: "no-store",
 	});
 	const text = await response.text();
-	const payload = text ? (JSON.parse(text) as unknown) : {};
+	let payload: unknown = {};
+	const body = text.trim();
+	if (body) {
+		try {
+			payload = JSON.parse(body) as unknown;
+		} catch {
+			const error = new Error("The form could not be completed. Please try again.") as Error & { status: number };
+			error.status = response.ok ? 502 : response.status;
+			throw error;
+		}
+	}
 	if (!response.ok) {
 		const message = isRecord(payload) && typeof payload.message === "string" ? payload.message : "WordPress could not complete the form.";
 		const error = new Error(message) as Error & { status: number };

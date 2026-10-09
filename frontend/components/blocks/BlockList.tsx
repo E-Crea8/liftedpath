@@ -1,5 +1,6 @@
 import { Suspense, type ReactNode } from "react";
 import { AboutStory } from "@/components/blocks/AboutStory";
+import { BlockBackgroundVideo } from "@/components/blocks/BlockBackground";
 import { AboutTabs } from "@/components/blocks/AboutTabs";
 import { Beliefs } from "@/components/blocks/Beliefs";
 import { ActionGrid } from "@/components/blocks/ActionGrid";
@@ -21,7 +22,7 @@ import { StatGroup } from "@/components/blocks/StatGroup";
 import { Stewardship } from "@/components/blocks/Stewardship";
 import { Team } from "@/components/blocks/Team";
 import { PageMotion } from "@/components/motion/PageMotion";
-import { blockHidden, layoutClass, siteHost } from "@/lib/blocks/fields";
+import { blockHidden, blockSurface, layoutClass, siteHost } from "@/lib/blocks/fields";
 import type { Block, FeaturedImage } from "@/lib/wp/types";
 
 export function BlockList({
@@ -171,9 +172,18 @@ function BlockView({
 	}
 
 	const layout = layoutClass(block);
-	if (!layout) {
+	const surface = blockSurface(block, images);
+	if (!layout && !surface) {
 		return view;
 	}
 
-	return <div className={layout}>{view}</div>;
+	return (
+		<div className={[layout, surface?.className].filter(Boolean).join(" ")} style={surface?.style}>
+			{surface?.videoUrl ? <BlockBackgroundVideo src={surface.videoUrl} /> : null}
+			{surface && surface.kind !== "color" ? (
+				<span aria-hidden="true" className="liftedpath-block-bg-shade" style={{ backgroundColor: surface.shade }} />
+			) : null}
+			{view}
+		</div>
+	);
 }
