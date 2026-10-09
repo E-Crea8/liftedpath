@@ -125,13 +125,15 @@ add_action( 'acf/init', 'liftedpath_seed_menu_subtitles', 30 );
  * @param array<string, mixed>             $parent Field group.
  * @return array<int, array<string, mixed>>
  */
-function liftedpath_social_fields( array $fields, array $parent ): array {
-	if ( ! isset( $parent['key'] ) || 'group_liftedpath_settings' !== $parent['key'] || ! function_exists( 'acf_validate_field' ) ) {
-		return $fields;
+function liftedpath_social_fields( $fields, $parent ) {
+	static $adding = false;
+
+	if ( $adding || ! is_array( $fields ) || ! is_array( $parent ) || ! isset( $parent['key'] ) || 'group_liftedpath_settings' !== $parent['key'] || ! function_exists( 'acf_validate_field' ) ) {
+		return is_array( $fields ) ? $fields : array();
 	}
 
 	foreach ( $fields as $field ) {
-		if ( isset( $field['key'] ) && 'field_liftedpath_facebook_show' === $field['key'] ) {
+		if ( is_array( $field ) && isset( $field['key'] ) && 'field_liftedpath_facebook_show' === $field['key'] ) {
 			return $fields;
 		}
 	}
@@ -139,9 +141,10 @@ function liftedpath_social_fields( array $fields, array $parent ): array {
 	$social  = liftedpath_social_field_definitions();
 	$updated = array();
 	$added   = false;
+	$adding  = true;
 
 	foreach ( $fields as $field ) {
-		if ( ! $added && isset( $field['key'] ) && 'field_liftedpath_copyright_text' === $field['key'] ) {
+		if ( ! $added && is_array( $field ) && isset( $field['key'] ) && 'field_liftedpath_copyright_text' === $field['key'] ) {
 			foreach ( $social as $item ) {
 				$item['parent'] = $parent['key'];
 				$updated[]      = acf_validate_field( $item );
@@ -158,6 +161,8 @@ function liftedpath_social_fields( array $fields, array $parent ): array {
 			$updated[]      = acf_validate_field( $item );
 		}
 	}
+
+	$adding = false;
 
 	return $updated;
 }

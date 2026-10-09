@@ -8,8 +8,58 @@
  */
 
 if ( ! defined( 'LIFTEDPATH_VERSION' ) ) {
-	define( 'LIFTEDPATH_VERSION', '0.19.1' );
+	define( 'LIFTEDPATH_VERSION', '0.19.2' );
 }
+
+/**
+ * Keep the hidden startup error where a later request can read it.
+ *
+ * WordPress replaces the real PHP message with a generic page. This runs
+ * inside that page, writes the message beside style.css, and removes the
+ * file again when the next request boots cleanly.
+ *
+ * @param string               $message Public error HTML.
+ * @param array<string, mixed> $error   error_get_last() payload.
+ */
+function liftedpath_record_boot_error( $message, $error ) {
+	if ( ! is_array( $error ) ) {
+		return $message;
+	}
+
+	$detail = sprintf(
+		'%s in %s on line %s',
+		isset( $error['message'] ) ? (string) $error['message'] : '',
+		isset( $error['file'] ) ? (string) $error['file'] : '',
+		isset( $error['line'] ) ? (string) $error['line'] : ''
+	);
+	$dir    = get_template_directory();
+
+	if ( is_string( $dir ) && '' !== $dir ) {
+		file_put_contents( $dir . '/boot-error.css', '/* ' . str_replace( '*/', '', $detail ) . " */\n", LOCK_EX );
+	}
+
+	return $message;
+}
+add_filter( 'wp_php_error_message', 'liftedpath_record_boot_error', 1, 2 );
+
+/**
+ * Remove the startup note after a clean boot.
+ */
+function liftedpath_clear_boot_error() {
+	$error = error_get_last();
+	$fatal = array( E_ERROR, E_PARSE, E_USER_ERROR, E_COMPILE_ERROR, E_RECOVERABLE_ERROR );
+
+	if ( is_array( $error ) && isset( $error['type'] ) && in_array( $error['type'], $fatal, true ) ) {
+		return;
+	}
+
+	$path = get_template_directory() . '/boot-error.css';
+
+	if ( is_file( $path ) ) {
+		unlink( $path );
+	}
+}
+register_shutdown_function( 'liftedpath_clear_boot_error' );
 
 /**
  * Sets up theme defaults and registers support for various WordPress features.
