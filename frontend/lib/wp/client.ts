@@ -1,15 +1,16 @@
-import { io } from "next/cache";
 import { draftMode } from "next/headers";
+import { unstable_rethrow } from "next/navigation";
+import { connection } from "next/server";
 import { assertPublicPath, mapDesign, mapDiscovery, mapMedia, mapNavigation, mapPage, mapPaths, mapSettings } from "@/lib/wp/map";
 import type { Design, Discovery, FeaturedImage, Navigation, Page, PathIndex, SiteSettings } from "@/lib/wp/types";
 import { WordpressError } from "@/lib/wp/types";
 
 /**
- * Cache Components still inlines a finished fetch into the prerender when the
- * segment is allowed to block. io() keeps this read on the visitor's request.
+ * A finished fetch is still stored in the prerender when the segment is allowed
+ * to block. connection() waits for a visitor, so the build cannot keep the page.
  */
 async function readOnRequest(): Promise<void> {
-	await io();
+	await connection();
 }
 
 export async function getPage(path: string): Promise<Page> {
@@ -52,9 +53,8 @@ export async function exchangePreviewToken(token: string): Promise<string> {
 }
 
 export async function getPaths(): Promise<PathIndex> {
-	await readOnRequest();
 	const url = new URL(`${apiUrl()}/liftedpath/v1/paths`);
-	return mapPaths(await readJson(url));
+	return mapPaths(await readJson(url, undefined, false));
 }
 
 export async function getNavigation(): Promise<Navigation> {
@@ -124,9 +124,13 @@ function previewHeaders(): Record<string, string> {
 	};
 }
 
-async function readJson(url: URL, init?: RequestInit): Promise<unknown> {
+async function readJson(url: URL, init?: RequestInit, bust = true): Promise<unknown> {
 	const headers = new Headers(init?.headers);
 	headers.set("Accept", "application/json");
+	if (bust) {
+		headers.set("Cache-Control", "no-cache");
+		url.searchParams.set("lp_fresh", String(Date.now()));
+	}
 
 	let response: Response;
 	try {
@@ -135,7 +139,8 @@ async function readJson(url: URL, init?: RequestInit): Promise<unknown> {
 			headers,
 			cache: "no-store",
 		});
-	} catch {
+	} catch (error) {
+		unstable_rethrow(error);
 		throw new WordpressError("unavailable", "WordPress did not respond.", 503);
 	}
 

@@ -12,17 +12,29 @@ export async function proxy(request: NextRequest) {
 	const match = (await loadRedirects()).find((item) => item.from === path);
 
 	if (!match || match.to === path) {
-		return NextResponse.next();
+		return freshResponse();
 	}
 
 	if (match.to.startsWith("/")) {
 		const url = request.nextUrl.clone();
 		url.pathname = match.to;
 		url.search = "";
-		return NextResponse.redirect(url, match.status);
+		return markFresh(NextResponse.redirect(url, match.status));
 	}
 
-	return NextResponse.redirect(match.to, match.status);
+	return markFresh(NextResponse.redirect(match.to, match.status));
+}
+
+function freshResponse(): NextResponse {
+	return markFresh(NextResponse.next());
+}
+
+function markFresh(response: NextResponse): NextResponse {
+	response.headers.set("Cache-Control", "private, no-store, max-age=0, must-revalidate");
+	response.headers.set("CDN-Cache-Control", "no-store");
+	response.headers.set("Vercel-CDN-Cache-Control", "no-store");
+	response.headers.set("x-liftedpath-read", "request");
+	return response;
 }
 
 function normalizePath(pathname: string): string {
