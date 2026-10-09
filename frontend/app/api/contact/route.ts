@@ -1,4 +1,4 @@
-import { formFailure, forwardForm, visitorAddress } from "@/lib/forms";
+import { formFailure, forwardForm, visitorAddress, visitorLocation } from "@/lib/forms";
 
 export async function POST(request: Request) {
 	let body: unknown;
@@ -9,7 +9,7 @@ export async function POST(request: Request) {
 	}
 
 	try {
-		const payload = await forwardForm("contact", body, visitorAddress(request));
+		const payload = await forwardForm("contact", body, visitorAddress(request), visitorLocation(request));
 		return Response.json(payload);
 	} catch (error) {
 		return formFailure(error, "The message could not be sent.");

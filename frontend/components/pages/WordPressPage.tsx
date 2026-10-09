@@ -76,6 +76,8 @@ export async function WordPressPage({ form, path }: { form?: FormConfig; path: s
 			<BlockList
 				address={settings.postalAddress}
 				blocks={page.blocks}
+				contactNotices={form?.contact}
+				donateNotices={form?.donate}
 				email={settings.email}
 				images={images}
 				paymentsConfigured={form?.paymentsConfigured ?? false}

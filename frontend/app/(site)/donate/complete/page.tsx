@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { confirmPayment, paymentStatus } from "@/lib/forms";
+import { confirmPayment, getFormConfig, paymentStatus, type DonateNotices } from "@/lib/forms";
 
 export const instant = false;
 
@@ -17,14 +17,15 @@ export default async function DonateCompletePage({
 	const params = await searchParams;
 	const reference = first(params.reference) || first(params.tx_ref) || first(params.trxref);
 	const sessionId = first(params.session_id);
-	const status = await readStatus(reference, sessionId);
+	const [outcome, form] = await Promise.all([readStatus(reference, sessionId), getFormConfig()]);
+	const copy = lines(outcome.status, form.donate);
 
 	return (
 		<section className="liftedpath-section liftedpath-return">
 			<div className="liftedpath-section__inner">
 				<p className="liftedpath-eyebrow">Your gift</p>
-				<h1>{heading(status)}</h1>
-				<p className="liftedpath-lead">{detail(status)}</p>
+				<h1>{outcome.heading || copy.heading}</h1>
+				<p className="liftedpath-lead">{outcome.detail || copy.detail}</p>
 				<p>
 					<Link className="liftedpath-button" href="/donate">
 						Back to giving
@@ -37,7 +38,7 @@ export default async function DonateCompletePage({
 
 async function readStatus(reference: string, sessionId: string) {
 	if (!REFERENCE.test(reference)) {
-		return "unknown";
+		return { status: "unknown", heading: "", detail: "" };
 	}
 
 	try {
@@ -49,7 +50,7 @@ async function readStatus(reference: string, sessionId: string) {
 	try {
 		return await paymentStatus(reference);
 	} catch {
-		return "unknown";
+		return { status: "unknown", heading: "", detail: "" };
 	}
 }
 
@@ -58,28 +59,15 @@ function first(value: string | string[] | undefined) {
 	return typeof item === "string" ? item : "";
 }
 
-function heading(status: string) {
+function lines(status: string, notices: DonateNotices) {
 	if (status === "paid") {
-		return "Thank you. This gift is confirmed.";
+		return { heading: notices.paidHeading, detail: notices.paidDetail };
 	}
 	if (status === "pending") {
-		return "This gift is still being confirmed.";
+		return { heading: notices.pendingHeading, detail: notices.pendingDetail };
 	}
 	if (status === "failed") {
-		return "This gift was not completed.";
+		return { heading: notices.failedHeading, detail: notices.failedDetail };
 	}
-	return "This return link does not match a gift.";
-}
-
-function detail(status: string) {
-	if (status === "paid") {
-		return "The foundation has the confirmation from the payment provider.";
-	}
-	if (status === "pending") {
-		return "The payment provider has not confirmed it yet. You can leave this page.";
-	}
-	if (status === "failed") {
-		return "No gift was recorded as paid.";
-	}
-	return "Start again from the giving page if you still want to give.";
+	return { heading: notices.unknownHeading, detail: notices.unknownDetail };
 }

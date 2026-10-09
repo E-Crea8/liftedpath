@@ -1,13 +1,57 @@
+export interface ContactNotices {
+	success: string;
+	error: string;
+}
+
+export interface DonateNotices {
+	cancelled: string;
+	error: string;
+	unconfigured: string;
+	checkoutNote: string;
+	paidHeading: string;
+	paidDetail: string;
+	pendingHeading: string;
+	pendingDetail: string;
+	failedHeading: string;
+	failedDetail: string;
+	unknownHeading: string;
+	unknownDetail: string;
+}
+
 export interface FormConfig {
 	provider: "" | "stripe" | "paystack" | "flutterwave";
 	providerLabel: string;
 	paymentsConfigured: boolean;
+	contact: ContactNotices;
+	donate: DonateNotices;
 }
+
+const CONTACT_NOTICES: ContactNotices = {
+	success: "Thank you. Your message is with the foundation.",
+	error: "The message could not be sent. Please try again.",
+};
+
+const DONATE_NOTICES: DonateNotices = {
+	cancelled: "The payment page was closed before the gift was confirmed.",
+	error: "The gift could not be started. Please try again.",
+	unconfigured: "Payments are not connected yet. An administrator can choose Stripe, Paystack, or Flutterwave in Form settings.",
+	checkoutNote: "",
+	paidHeading: "Thank you. This gift is confirmed.",
+	paidDetail: "The foundation has the confirmation from the payment provider.",
+	pendingHeading: "This gift is still being confirmed.",
+	pendingDetail: "The payment provider has not confirmed it yet. You can leave this page.",
+	failedHeading: "This gift was not completed.",
+	failedDetail: "No gift was recorded as paid.",
+	unknownHeading: "This return link does not match a gift.",
+	unknownDetail: "Start again from the giving page if you still want to give.",
+};
 
 const EMPTY_CONFIG: FormConfig = {
 	provider: "",
 	providerLabel: "",
 	paymentsConfigured: false,
+	contact: CONTACT_NOTICES,
+	donate: DONATE_NOTICES,
 };
 
 export async function getFormConfig(): Promise<FormConfig> {
@@ -18,23 +62,49 @@ export async function getFormConfig(): Promise<FormConfig> {
 		}
 		const provider = payload.provider;
 		const providerLabel = payload.providerLabel;
+		const notices = isRecord(payload.notices) ? payload.notices : {};
+		const contact = isRecord(notices.contact) ? notices.contact : {};
+		const donate = isRecord(notices.donate) ? notices.donate : {};
 		return {
 			provider: provider === "stripe" || provider === "paystack" || provider === "flutterwave" ? provider : "",
 			providerLabel: typeof providerLabel === "string" ? providerLabel : "",
 			paymentsConfigured: payload.paymentsConfigured === true,
+			contact: {
+				success: noticeText(contact.success, CONTACT_NOTICES.success),
+				error: noticeText(contact.error, CONTACT_NOTICES.error),
+			},
+			donate: {
+				cancelled: noticeText(donate.cancelled, DONATE_NOTICES.cancelled),
+				error: noticeText(donate.error, DONATE_NOTICES.error),
+				unconfigured: noticeText(donate.unconfigured, DONATE_NOTICES.unconfigured),
+				checkoutNote: noticeText(donate.checkoutNote, DONATE_NOTICES.checkoutNote),
+				paidHeading: noticeText(donate.paidHeading, DONATE_NOTICES.paidHeading),
+				paidDetail: noticeText(donate.paidDetail, DONATE_NOTICES.paidDetail),
+				pendingHeading: noticeText(donate.pendingHeading, DONATE_NOTICES.pendingHeading),
+				pendingDetail: noticeText(donate.pendingDetail, DONATE_NOTICES.pendingDetail),
+				failedHeading: noticeText(donate.failedHeading, DONATE_NOTICES.failedHeading),
+				failedDetail: noticeText(donate.failedDetail, DONATE_NOTICES.failedDetail),
+				unknownHeading: noticeText(donate.unknownHeading, DONATE_NOTICES.unknownHeading),
+				unknownDetail: noticeText(donate.unknownDetail, DONATE_NOTICES.unknownDetail),
+			},
 		};
 	} catch {
 		return EMPTY_CONFIG;
 	}
 }
 
-export async function forwardForm(path: string, body: unknown, visitor: string) {
+export async function forwardForm(path: string, body: unknown, visitor: string, location = "") {
+	const headers: Record<string, string> = {
+		"Content-Type": "application/json",
+		"X-LiftedPath-Visitor": visitor.slice(0, 200),
+	};
+	if (location.trim()) {
+		headers["X-LiftedPath-Location"] = location.trim().slice(0, 180);
+	}
+
 	const payload = await readJson(path, {
 		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-			"X-LiftedPath-Visitor": visitor.slice(0, 200),
-		},
+		headers,
 		body: JSON.stringify(body),
 	}, true);
 
@@ -53,18 +123,43 @@ export async function confirmPayment(reference: string, sessionId: string) {
 	);
 }
 
-export async function paymentStatus(reference: string) {
+export async function paymentStatus(reference: string): Promise<{ status: string; heading: string; detail: string }> {
 	const payload = await readJson(`payments/status?reference=${encodeURIComponent(reference)}`, { method: "GET" }, false);
-	if (isRecord(payload) && (payload.status === "paid" || payload.status === "pending" || payload.status === "failed")) {
-		return payload.status;
-	}
-	return "unknown";
+	const status = isRecord(payload) && (payload.status === "paid" || payload.status === "pending" || payload.status === "failed") ? payload.status : "unknown";
+	return {
+		status,
+		heading: isRecord(payload) && typeof payload.heading === "string" ? payload.heading : "",
+		detail: isRecord(payload) && typeof payload.detail === "string" ? payload.detail : "",
+	};
+}
+
+function noticeText(value: unknown, fallback: string) {
+	return typeof value === "string" && value.trim() ? value : fallback;
 }
 
 export function visitorAddress(request: Request) {
 	const forwarded = request.headers.get("x-forwarded-for") ?? "";
 	const hop = forwarded.split(",")[0]?.trim() ?? "";
-	return hop || "local";
+	return hop || request.headers.get("x-real-ip")?.trim() || "local";
+}
+
+export function visitorLocation(request: Request) {
+	const parts = ["x-vercel-ip-city", "x-vercel-ip-country-region", "x-vercel-ip-country"]
+		.map((name) => headerText(request, name))
+		.filter((part, index, all) => part !== "" && all.indexOf(part) === index);
+	return parts.join(", ").slice(0, 180);
+}
+
+function headerText(request: Request, name: string) {
+	const value = request.headers.get(name)?.trim() ?? "";
+	if (!value) {
+		return "";
+	}
+	try {
+		return decodeURIComponent(value);
+	} catch {
+		return value;
+	}
 }
 
 export function formFailure(error: unknown, fallback: string) {

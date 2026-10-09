@@ -4,6 +4,7 @@ import { useState, type FormEvent } from "react";
 import { FormNotice, readFormResult, type NoticeLevel } from "@/components/blocks/FormNotice";
 import { ArrowIcon, BlockIcon } from "@/components/blocks/icons";
 import { rows, telHref, text } from "@/lib/blocks/fields";
+import type { ContactNotices } from "@/lib/forms";
 import type { Block } from "@/lib/wp/types";
 
 const REASONS = [
@@ -19,11 +20,13 @@ export function ContactForm({
 	phone,
 	email,
 	address,
+	notices,
 }: {
 	block: Block;
 	phone: string;
 	email: string;
 	address: string;
+	notices?: ContactNotices;
 }) {
 	const eyebrow = text(block.attributes.eyebrow);
 	const heading = text(block.attributes.heading);
@@ -70,10 +73,16 @@ export function ContactForm({
 				setNotice({ level: result.level, message: result.message });
 				return;
 			}
-			setNotice({ level: "success", message: "Thank you. Your message is with the foundation." });
+			setNotice({
+				level: "success",
+				message: result.message || notices?.success || "Thank you. Your message is with the foundation.",
+			});
 			formEl.reset();
 		} catch {
-			setNotice({ level: "error", message: "The message could not be sent. Please try again." });
+			setNotice({
+				level: "error",
+				message: notices?.error || "The message could not be sent. Please try again.",
+			});
 		} finally {
 			setSending(false);
 		}

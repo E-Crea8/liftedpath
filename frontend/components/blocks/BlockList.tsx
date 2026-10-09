@@ -23,11 +23,14 @@ import { Stewardship } from "@/components/blocks/Stewardship";
 import { Team } from "@/components/blocks/Team";
 import { PageMotion } from "@/components/motion/PageMotion";
 import { blockHidden, blockSurface, layoutClass, siteHost } from "@/lib/blocks/fields";
+import type { ContactNotices, DonateNotices } from "@/lib/forms";
 import type { Block, FeaturedImage } from "@/lib/wp/types";
 
 export function BlockList({
 	address,
 	blocks,
+	contactNotices,
+	donateNotices,
 	email,
 	images,
 	paymentsConfigured = false,
@@ -37,6 +40,8 @@ export function BlockList({
 }: {
 	address: string;
 	blocks: Block[];
+	contactNotices?: ContactNotices;
+	donateNotices?: DonateNotices;
 	email: string;
 	images: ReadonlyMap<number, FeaturedImage>;
 	paymentsConfigured?: boolean;
@@ -52,6 +57,8 @@ export function BlockList({
 				<BlockView
 					address={address}
 					block={block}
+					contactNotices={contactNotices}
+					donateNotices={donateNotices}
 					email={email}
 					images={images}
 					key={`${block.name}-${index}`}
@@ -70,6 +77,8 @@ export function BlockList({
 function BlockView({
 	address,
 	block,
+	contactNotices,
+	donateNotices,
 	email,
 	images,
 	paymentsConfigured,
@@ -81,6 +90,8 @@ function BlockView({
 }: {
 	address: string;
 	block: Block;
+	contactNotices?: ContactNotices;
+	donateNotices?: DonateNotices;
 	email: string;
 	images: ReadonlyMap<number, FeaturedImage>;
 	paymentsConfigured: boolean;
@@ -152,12 +163,12 @@ function BlockView({
 			view = <Faq block={block} radioKey={radioKey} />;
 			break;
 		case "liftedpath/contact-form":
-			view = <ContactForm address={address} block={block} email={email} phone={phone} />;
+			view = <ContactForm address={address} block={block} email={email} notices={contactNotices} phone={phone} />;
 			break;
 		case "liftedpath/donate-panel":
 			view = (
 				<Suspense fallback={null}>
-					<DonatePanel block={block} images={images} paymentsConfigured={paymentsConfigured} providerLabel={providerLabel} />
+					<DonatePanel block={block} images={images} notices={donateNotices} paymentsConfigured={paymentsConfigured} providerLabel={providerLabel} />
 				</Suspense>
 			);
 			break;

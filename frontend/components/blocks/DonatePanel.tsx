@@ -6,6 +6,7 @@ import { FormNotice, readFormResult, type NoticeLevel } from "@/components/block
 import { ArrowIcon, BlockIcon } from "@/components/blocks/icons";
 import { BlockPhoto } from "@/components/blocks/parts";
 import { imageId, numeric, rows, text } from "@/lib/blocks/fields";
+import type { DonateNotices } from "@/lib/forms";
 import type { Block, FeaturedImage } from "@/lib/wp/types";
 
 const DESIGNATIONS = [
@@ -29,11 +30,13 @@ type Currency = "NGN" | "USD" | "GBP";
 export function DonatePanel({
 	block,
 	images,
+	notices,
 	paymentsConfigured,
 	providerLabel,
 }: {
 	block: Block;
 	images: ReadonlyMap<number, FeaturedImage>;
+	notices?: DonateNotices;
 	paymentsConfigured: boolean;
 	providerLabel: string;
 }) {
@@ -103,7 +106,7 @@ export function DonatePanel({
 			});
 			const result = await readFormResult(response);
 			if (!result.ok) {
-				setNotice({ level: result.level, message: result.message || "The gift could not be started." });
+				setNotice({ level: result.level, message: result.message || notices?.error || "The gift could not be started." });
 				return;
 			}
 			if (result.checkoutUrl) {
@@ -111,7 +114,7 @@ export function DonatePanel({
 				return;
 			}
 		} catch {
-			setNotice({ level: "error", message: "The gift could not be started. Please try again." });
+			setNotice({ level: "error", message: notices?.error || "The gift could not be started. Please try again." });
 		} finally {
 			setSending(false);
 		}
@@ -218,13 +221,13 @@ export function DonatePanel({
 					{note ? <p className="liftedpath-form-note">{note}</p> : null}
 					<p className="liftedpath-form-note">
 						{paymentsConfigured
-							? `You finish this gift on ${providerLabel}. Card details stay with ${providerLabel}.`
-							: "Payments are not connected yet. An administrator can choose Stripe, Paystack, or Flutterwave in Form settings."}
+							? notices?.checkoutNote || `You finish this gift on ${providerLabel}. Card details stay with ${providerLabel}.`
+							: notices?.unconfigured || "Payments are not connected yet. An administrator can choose Stripe, Paystack, or Flutterwave in Form settings."}
 					</p>
 					{showCancelled ? (
 						<FormNotice
 							level="warning"
-							message="The payment page was closed before the gift was confirmed."
+							message={notices?.cancelled || "The payment page was closed before the gift was confirmed."}
 							onClose={() => setShowCancelled(false)}
 						/>
 					) : null}
