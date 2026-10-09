@@ -92,6 +92,10 @@ add_filter( 'render_block', 'liftedpath_hide_block_output', 8, 2 );
  * @return array<int, array<int, array<string, string>>>
  */
 function liftedpath_block_field_locations(): array {
+	if ( ! function_exists( 'liftedpath_block_slugs' ) ) {
+		return array();
+	}
+
 	$locations = array();
 
 	foreach ( liftedpath_block_slugs() as $slug ) {
@@ -111,7 +115,7 @@ function liftedpath_block_field_locations(): array {
  * Show or hide, on every LiftedPath block.
  */
 function liftedpath_register_block_visibility_fields(): void {
-	if ( ! function_exists( 'acf_add_local_field_group' ) ) {
+	if ( ! function_exists( 'acf_add_local_field_group' ) || ! function_exists( 'liftedpath_block_slugs' ) ) {
 		return;
 	}
 
@@ -149,7 +153,7 @@ add_action( 'acf/init', 'liftedpath_register_block_visibility_fields', 20 );
  * Heading position and column direction. An empty or Design value keeps the current layout.
  */
 function liftedpath_register_block_layout_fields(): void {
-	if ( ! function_exists( 'acf_add_local_field_group' ) ) {
+	if ( ! function_exists( 'acf_add_local_field_group' ) || ! function_exists( 'liftedpath_block_slugs' ) ) {
 		return;
 	}
 
@@ -334,6 +338,18 @@ function liftedpath_migrate_breadcrumb_current(): void {
 	if ( get_option( 'liftedpath_breadcrumb_current_migrated' ) ) {
 		return;
 	}
+
+	try {
+		liftedpath_migrate_breadcrumb_current_run();
+	} catch ( Throwable $exception ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
+		unset( $exception );
+	}
+}
+
+/**
+ * Rewrite stored page heroes once. Failures stay off the public request.
+ */
+function liftedpath_migrate_breadcrumb_current_run(): void {
 
 	global $wpdb;
 

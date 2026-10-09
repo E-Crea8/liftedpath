@@ -3,6 +3,7 @@
  * Numbered pillar cards.
  *
  * @package LiftedPath
+ * @since 0.19.8
  */
 
 $eyebrow    = liftedpath_block_string( function_exists( 'get_field' ) ? get_field( 'eyebrow' ) : '' );

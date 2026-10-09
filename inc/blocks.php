@@ -28,7 +28,7 @@ function liftedpath_block_categories( array $categories ): array {
 add_filter( 'block_categories_all', 'liftedpath_block_categories' );
 
 /**
- * Block folder names. Visibility and layout fields use this same list.
+ * Block folder names. The editor visibility and layout fields use this same list.
  *
  * @return string[]
  */

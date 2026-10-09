@@ -1,3 +1,4 @@
+/* LiftedPath block visibility in the editor. */
 (function (wp) {
 	if (!wp || !wp.hooks || !wp.element || !wp.blockEditor || !wp.components || !wp.compose) {
 		return;

@@ -6,7 +6,7 @@
 	"category": "liftedpath",
 	"icon": "groups",
 	"description": "Team profiles in two, three, or four columns.",
-	"keywords": ["team", "people", "staff"],
+	"keywords": ["team", "people", "staff", "foundation"],
 	"textdomain": "liftedpath",
 	"attributes": {
 		"align": { "type": "string", "default": "full" }

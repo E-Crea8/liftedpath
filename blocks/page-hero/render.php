@@ -3,6 +3,7 @@
  * Inner page hero.
  *
  * @package LiftedPath
+ * @since 0.19.8
  */
 
 $image   = function_exists( 'get_field' ) ? get_field( 'image' ) : null;

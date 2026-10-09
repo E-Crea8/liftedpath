@@ -6,7 +6,7 @@
 	"category": "liftedpath",
 	"icon": "columns",
 	"description": "Mission and vision columns for the About page.",
-	"keywords": ["about", "mission", "vision"],
+	"keywords": ["about", "mission", "vision", "foundation"],
 	"textdomain": "liftedpath",
 	"attributes": {
 		"align": { "type": "string", "default": "full" }

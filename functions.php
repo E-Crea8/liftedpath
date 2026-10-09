@@ -8,14 +8,27 @@
  */
 
 if ( ! defined( 'LIFTEDPATH_VERSION' ) ) {
-	define( 'LIFTEDPATH_VERSION', '0.19.7' );
+	define( 'LIFTEDPATH_VERSION', '0.19.8' );
 }
 
-$liftedpath_boot_error = get_template_directory() . '/boot-error.css';
+$liftedpath_boot_log = get_template_directory() . '/boot-error.txt';
 
-if ( is_file( $liftedpath_boot_error ) ) {
-	unlink( $liftedpath_boot_error );
-}
+register_shutdown_function(
+	static function () use ( $liftedpath_boot_log ) {
+		$error = error_get_last();
+		$fatal = array( E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR, E_USER_ERROR );
+
+		if ( is_array( $error ) && in_array( $error['type'] ?? 0, $fatal, true ) ) {
+			$line = (string) ( $error['message'] ?? '' ) . ' in ' . (string) ( $error['file'] ?? '' ) . ':' . (string) ( $error['line'] ?? '' );
+			file_put_contents( $liftedpath_boot_log, $line );
+			return;
+		}
+
+		if ( is_file( $liftedpath_boot_log ) ) {
+			unlink( $liftedpath_boot_log );
+		}
+	}
+);
 
 /**
  * Sets up theme defaults and registers support for various WordPress features.
