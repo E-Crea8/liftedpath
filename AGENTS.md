@@ -21,3 +21,5 @@ Update `context/progress-tracker.md` after each meaningful implementation change
 If implementation changes the architecture, scope, or standards documented in the context files, update the relevant file before continuing.
 
 Published WordPress edits reach the public site through `LIVE-WORDPRESS-UPDATES.md`. Do not change that flow unless the user asks.
+
+Never push to `main`, and never deploy, until the user explicitly says to in that request. A commit or a live error is not permission.

@@ -19,6 +19,7 @@ export function PageHero({ block, images }: { block: Block; images: ReadonlyMap<
 	const heading = text(block.attributes.heading);
 	const intro = text(block.attributes.intro);
 	const crumb = text(block.attributes.breadcrumb_label) || "Home";
+	const current = text(block.attributes.breadcrumb_current);
 	const hasPhoto = photo !== null && images.has(photo);
 
 	if (!heading && !eyebrow && !intro && !hasPhoto && !hasVideo) {
@@ -48,8 +49,12 @@ export function PageHero({ block, images }: { block: Block; images: ReadonlyMap<
 				{intro ? <p className="liftedpath-page-hero__intro">{intro}</p> : null}
 				<p className="liftedpath-page-hero__crumbs">
 					<Link href="/">{crumb}</Link>
-					<ChevronIcon />
-					{eyebrow ? <span>{eyebrow}</span> : null}
+					{current ? (
+						<>
+							<ChevronIcon />
+							<span>{current}</span>
+						</>
+					) : null}
 				</p>
 			</div>
 		</section>

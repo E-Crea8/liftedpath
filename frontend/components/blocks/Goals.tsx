@@ -1,3 +1,4 @@
+import { GoalsPin } from "@/components/motion/GoalsPin";
 import { rows, stepNumber, text } from "@/lib/blocks/fields";
 import type { Block } from "@/lib/wp/types";
 
@@ -14,9 +15,9 @@ export function Goals({ block }: { block: Block }) {
 	}
 
 	return (
-		<section className="liftedpath-section liftedpath-goals">
+		<GoalsPin>
 			<div className="liftedpath-section__inner liftedpath-goals__layout">
-				<div>
+				<div className="liftedpath-goals__intro">
 					{eyebrow ? <p className="liftedpath-eyebrow">{eyebrow}</p> : null}
 					{heading ? <h2>{heading}</h2> : null}
 					{intro ? <p className="liftedpath-lead">{intro}</p> : null}
@@ -33,6 +34,6 @@ export function Goals({ block }: { block: Block }) {
 					</ol>
 				) : null}
 			</div>
-		</section>
+		</GoalsPin>
 	);
 }

@@ -43,7 +43,7 @@ if ( $empty ) {
 ?>
 <?php liftedpath_block_wrapper_open( 'section', 'liftedpath-section liftedpath-goals' ); ?>
 	<div class="liftedpath-section__inner liftedpath-goals__layout">
-		<div>
+		<div class="liftedpath-goals__intro">
 			<?php if ( '' !== $eyebrow ) : ?>
 				<p class="liftedpath-eyebrow"><?php echo esc_html( $eyebrow ); ?></p>
 			<?php endif; ?>

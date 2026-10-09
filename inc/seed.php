@@ -378,20 +378,15 @@ function liftedpath_seed_home_page( array $images ): array {
 function liftedpath_seed_about_page( array $images, string $join ): array {
 	$mission = 'To empower supported individuals by providing access to education, vocational training, and essential support systems, while fostering hope, dignity, and long-term self-reliance through community driven initiatives.';
 	$vision  = 'To create a world where every young person, especially those facing financial and social barriers, has access to the education, skills, and opportunities needed to discover their purpose, reach their potential, and contribute meaningfully to society.';
-	$commit  = 'We manage every contribution with integrity, accountability, and purpose, directing resources toward meaningful opportunities for the communities we serve.';
 	$story   = 'What began as a small initiative two years ago has grown into a structured mission to restore hope and create sustainable pathways for individuals who have the passion to succeed but lack the resources to pursue their dreams.';
 	$intro   = 'LiftedPath Empowerment Foundation is a purpose driven non-governmental organization founded on a deep commitment to breaking barriers to education and opportunity for children, teenagers, and young adults.';
 
 	$content  = liftedpath_seed_page_hero( $images['classroom'] ?? 0, 'About us', 'Restoring hope, creating sustainable pathways.', 'Lifting Potential, Inspiring Purpose and Creating Futures.', 'Home' );
-	$content .= liftedpath_seed_heading( 'A purpose-driven foundation breaking barriers to education' );
-	$content .= liftedpath_seed_paragraph( $intro );
-	$content .= liftedpath_seed_paragraph( $story );
-	$content .= liftedpath_seed_image( $images['classroom'] ?? 0, 'Young people learning in a classroom' );
-	$content .= liftedpath_seed_columns(
+	$content .= liftedpath_seed_about_story( $images['classroom'] ?? 0, 'Lifting potential, inspiring purpose', 'A purpose-driven foundation breaking barriers to education', $intro . "\n\n" . $story, 'Young people learning in a classroom' );
+	$content .= liftedpath_seed_beliefs(
 		array(
-			array( 'Empower individuals to thrive.', $mission ),
-			array( 'Opportunity for every young person.', $vision ),
-			array( 'Integrity in every contribution.', $commit ),
+			array( '01 / Our mission', 'Empower individuals to thrive.', $mission ),
+			array( '02 / Our vision', 'Opportunity for every young person.', $vision ),
 		)
 	);
 	$content .= liftedpath_seed_pillars();
@@ -832,6 +827,7 @@ function liftedpath_seed_page_hero( int $image, string $eyebrow, string $heading
 			array(
 				array( 'name' => 'image', 'key' => 'field_liftedpath_page_hero_image', 'value' => $image ),
 				array( 'name' => 'eyebrow', 'key' => 'field_liftedpath_page_hero_eyebrow', 'value' => $eyebrow ),
+				array( 'name' => 'breadcrumb_current', 'key' => 'field_liftedpath_page_hero_breadcrumb_current', 'value' => $eyebrow ),
 				array( 'name' => 'heading', 'key' => 'field_liftedpath_page_hero_heading', 'value' => $heading ),
 				array( 'name' => 'intro', 'key' => 'field_liftedpath_page_hero_intro', 'value' => $intro ),
 				array( 'name' => 'breadcrumb_label', 'key' => 'field_liftedpath_page_hero_breadcrumb', 'value' => $breadcrumb ),
@@ -1038,6 +1034,58 @@ function liftedpath_seed_page_record( string $slug, string $title, string $paren
 		'seo_title'       => $seo_title,
 		'seo_description' => $seo_description,
 		'hero_summary'    => $hero_summary,
+	);
+}
+
+/**
+ * About story beside one photograph.
+ */
+function liftedpath_seed_about_story( int $image, string $eyebrow, string $heading, string $body, string $alt ): string {
+	return liftedpath_seed_block(
+		'about-story',
+		liftedpath_seed_data(
+			array(
+				array( 'name' => 'eyebrow', 'key' => 'field_liftedpath_about_story_eyebrow', 'value' => $eyebrow ),
+				array( 'name' => 'heading', 'key' => 'field_liftedpath_about_story_heading', 'value' => $heading ),
+				array( 'name' => 'body', 'key' => 'field_liftedpath_about_story_body', 'value' => $body ),
+				array( 'name' => 'image', 'key' => 'field_liftedpath_about_story_image', 'value' => $image ),
+				array( 'name' => 'image_alt', 'key' => 'field_liftedpath_about_story_image_alt', 'value' => $alt ),
+			)
+		)
+	);
+}
+
+/**
+ * Mission and vision columns.
+ *
+ * @param array<int, array{0: string, 1: string, 2: string}> $items Eyebrow, heading, and text.
+ */
+function liftedpath_seed_beliefs( array $items ): string {
+	return liftedpath_seed_block(
+		'beliefs',
+		liftedpath_seed_data(
+			array(
+				array(
+					'name' => 'items',
+					'key'  => 'field_liftedpath_beliefs_items',
+					'rows' => array_map(
+						static function ( array $item ): array {
+							return array(
+								'eyebrow' => $item[0],
+								'heading' => $item[1],
+								'text'    => $item[2],
+							);
+						},
+						$items
+					),
+					'subs' => array(
+						'eyebrow' => 'field_liftedpath_beliefs_item_eyebrow',
+						'heading' => 'field_liftedpath_beliefs_item_heading',
+						'text'    => 'field_liftedpath_beliefs_item_text',
+					),
+				),
+			)
+		)
 	);
 }
 

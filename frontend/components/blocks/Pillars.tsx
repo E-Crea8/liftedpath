@@ -15,8 +15,12 @@ export function Pillars({ block }: { block: Block }) {
 	return (
 		<section className="liftedpath-section liftedpath-pillars">
 			<div className="liftedpath-section__inner">
-				{eyebrow ? <p className="liftedpath-eyebrow">{eyebrow}</p> : null}
-				{heading ? <h2>{heading}</h2> : null}
+				{eyebrow || heading ? (
+					<div className="liftedpath-pillars__heading">
+						{eyebrow ? <p className="liftedpath-eyebrow">{eyebrow}</p> : null}
+						{heading ? <h2>{heading}</h2> : null}
+					</div>
+				) : null}
 				{items.length > 0 ? (
 					<ol className="liftedpath-pillars__grid">
 						{items.map((item, index) => (

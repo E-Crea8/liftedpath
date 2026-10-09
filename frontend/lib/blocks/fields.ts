@@ -155,3 +155,35 @@ export function telHref(phone: string): string {
 export function stepNumber(index: number): string {
 	return String(index + 1).padStart(2, "0");
 }
+
+export function blockHidden(block: Block): boolean {
+	const visibility = block.attributes.liftedpathShow;
+	if (visibility === false || visibility === 0 || visibility === "0") {
+		return true;
+	}
+
+	return block.name.startsWith("liftedpath/") && !flag(block.attributes.show, true);
+}
+
+export function layoutClass(block: Block): string {
+	if (!block.name.startsWith("liftedpath/")) {
+		return "";
+	}
+
+	const align = text(block.attributes.heading_align);
+	const place = text(block.attributes.heading_place);
+	const order = text(block.attributes.column_order);
+	const classes = ["liftedpath-layout"];
+
+	if (align === "left" || align === "center" || align === "right") {
+		classes.push(`is-heading-${align}`);
+	}
+	if (place === "below") {
+		classes.push("is-heading-below");
+	}
+	if (order === "reverse") {
+		classes.push("is-reversed");
+	}
+
+	return classes.length > 1 ? classes.join(" ") : "";
+}

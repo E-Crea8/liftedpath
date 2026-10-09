@@ -12,6 +12,11 @@ const SECTION = ".liftedpath-section, .liftedpath-stat-group, .liftedpath-cta, .
 const REVEAL = [
 	".liftedpath-about__photos",
 	".liftedpath-about__copy",
+	".liftedpath-story__copy",
+	".liftedpath-story__photo",
+	".liftedpath-pillars__heading",
+	".liftedpath-team__heading",
+	".liftedpath-team__card",
 	".liftedpath-programs__heading",
 	".liftedpath-programs__card",
 	".liftedpath-programs__callout",
@@ -28,7 +33,7 @@ const REVEAL = [
 	".liftedpath-contact__layout > *",
 	".liftedpath-donate__form",
 	".liftedpath-donate__aside",
-	".liftedpath-cta__content > *",
+	".liftedpath-cta__content",
 	".liftedpath-sponsor__row",
 	".liftedpath-copy > *",
 	".liftedpath-eyebrow",
@@ -36,8 +41,84 @@ const REVEAL = [
 	".liftedpath-lead",
 ].join(", ");
 
+function animateColumns(section: HTMLElement, headingSelector: string, cardSelector: string, bitSelector: string) {
+	const heading = section.querySelector<HTMLElement>(headingSelector);
+	const cards = Array.from(section.querySelectorAll<HTMLElement>(cardSelector));
+	const trigger = cards[0]?.parentElement ?? heading ?? section;
+	const timeline = gsap.timeline({
+		scrollTrigger: {
+			trigger,
+			start: "top 82%",
+			once: true,
+		},
+	});
+
+	if (heading) {
+		timeline.fromTo(
+			heading,
+			{ y: 46, autoAlpha: 0 },
+			{ y: 0, autoAlpha: 1, duration: 0.85, ease: "power3.out", clearProps: "transform,opacity,visibility" },
+			0,
+		);
+	}
+
+	if (cards.length === 0) {
+		return;
+	}
+
+	timeline.fromTo(
+		cards,
+		{ y: 72, autoAlpha: 0 },
+		{
+			y: 0,
+			autoAlpha: 1,
+			duration: 0.95,
+			stagger: 0.13,
+			ease: "power3.out",
+			clearProps: "transform,opacity,visibility",
+		},
+		0.12,
+	);
+
+	cards.forEach((card, index) => {
+		const bits = card.querySelectorAll<HTMLElement>(bitSelector);
+		const photo = card.querySelector<HTMLElement>(".liftedpath-team__photo, .liftedpath-team__fallback");
+		const at = 0.28 + index * 0.13;
+
+		if (photo) {
+			timeline.fromTo(photo, { scale: 1.12 }, { scale: 1, duration: 1.15, ease: "power2.out", clearProps: "transform" }, at);
+		}
+
+		if (bits.length > 0) {
+			timeline.fromTo(
+				bits,
+				{ y: 22, autoAlpha: 0 },
+				{
+					y: 0,
+					autoAlpha: 1,
+					duration: 0.55,
+					stagger: 0.07,
+					ease: "power2.out",
+					clearProps: "transform,opacity,visibility",
+				},
+				at,
+			);
+		}
+	});
+}
+
 function revealTargets(section: HTMLElement): HTMLElement[] {
-	const matches = Array.from(section.querySelectorAll<HTMLElement>(REVEAL));
+	if (section.classList.contains("liftedpath-beliefs")) {
+		return [section];
+	}
+
+	if (section.classList.contains("liftedpath-pillars") || section.classList.contains("liftedpath-team")) {
+		return [];
+	}
+
+	const matches = Array.from(section.querySelectorAll<HTMLElement>(REVEAL)).filter(
+		(node) => node.closest(".liftedpath-goals__intro") === null,
+	);
 	const outermost = matches.filter((node) => !matches.some((other) => other !== node && other.contains(node)));
 	return outermost.length > 0 ? outermost : [section];
 }
@@ -91,6 +172,14 @@ export function PageMotion({ children }: { children: ReactNode }) {
 						return;
 					}
 					section.dataset.motion = "armed";
+					if (section.classList.contains("liftedpath-pillars")) {
+						animateColumns(section, ".liftedpath-pillars__heading", ".liftedpath-pillars__grid > li", ".liftedpath-pillars__index, h3, p");
+						return;
+					}
+					if (section.classList.contains("liftedpath-team")) {
+						animateColumns(section, ".liftedpath-team__heading", ".liftedpath-team__card", ".liftedpath-team__info > *");
+						return;
+					}
 					revealTargets(section).forEach((target, index) => {
 						gsap.fromTo(
 							target,

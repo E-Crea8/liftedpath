@@ -28,14 +28,12 @@ function liftedpath_block_categories( array $categories ): array {
 add_filter( 'block_categories_all', 'liftedpath_block_categories' );
 
 /**
- * Register the editor blocks.
+ * Block folder names. Visibility and layout fields use this same list.
+ *
+ * @return string[]
  */
-function liftedpath_register_blocks(): void {
-	if ( ! function_exists( 'acf_register_block_type' ) ) {
-		return;
-	}
-
-	$blocks = array(
+function liftedpath_block_slugs(): array {
+	return array(
 		'hero',
 		'page-hero',
 		'stat',
@@ -43,6 +41,8 @@ function liftedpath_register_blocks(): void {
 		'marquee',
 		'cta-band',
 		'about-tabs',
+		'about-story',
+		'beliefs',
 		'program-cards',
 		'action-grid',
 		'sponsor-callout',
@@ -53,9 +53,19 @@ function liftedpath_register_blocks(): void {
 		'faq',
 		'contact-form',
 		'donate-panel',
+		'team',
 	);
+}
 
-	foreach ( $blocks as $block ) {
+/**
+ * Register the editor blocks.
+ */
+function liftedpath_register_blocks(): void {
+	if ( ! function_exists( 'acf_register_block_type' ) ) {
+		return;
+	}
+
+	foreach ( liftedpath_block_slugs() as $block ) {
 		register_block_type( get_template_directory() . '/blocks/' . $block );
 	}
 }
@@ -80,8 +90,22 @@ add_action( 'wp_enqueue_scripts', 'liftedpath_block_styles' );
  * @param string $tag   Element name.
  * @param string $class Block class.
  */
-function liftedpath_block_wrapper_open( string $tag, string $class ): void {
-	echo '<' . tag_escape( $tag ) . ' ' . get_block_wrapper_attributes( array( 'class' => $class ) ) . '>';
+function liftedpath_block_wrapper_open( string $tag, string $class, string $style = '' ): void {
+	if ( function_exists( 'liftedpath_block_state_classes' ) ) {
+		$state = liftedpath_block_state_classes();
+
+		if ( '' !== $state ) {
+			$class = trim( $class . ' ' . $state );
+		}
+	}
+
+	$attributes = array( 'class' => $class );
+
+	if ( '' !== $style ) {
+		$attributes['style'] = $style;
+	}
+
+	echo '<' . tag_escape( $tag ) . ' ' . get_block_wrapper_attributes( $attributes ) . '>';
 }
 
 /**
@@ -338,6 +362,31 @@ function liftedpath_block_text_link( $link ): string {
  */
 function liftedpath_block_string( $value ): string {
 	return is_string( $value ) ? $value : '';
+}
+
+/**
+ * Paragraphs from a textarea. A blank line or a new line starts the next paragraph.
+ *
+ * @return array<int, string>
+ */
+function liftedpath_block_paragraphs( string $body ): array {
+	$parts = preg_split( '/\n+/', $body );
+
+	if ( ! is_array( $parts ) ) {
+		return array();
+	}
+
+	$paragraphs = array();
+
+	foreach ( $parts as $part ) {
+		$part = trim( $part );
+
+		if ( '' !== $part ) {
+			$paragraphs[] = $part;
+		}
+	}
+
+	return $paragraphs;
 }
 
 /**

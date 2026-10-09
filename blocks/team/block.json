@@ -1,0 +1,29 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "liftedpath/team",
+	"title": "Team",
+	"category": "liftedpath",
+	"icon": "groups",
+	"description": "Team profiles in two, three, or four columns.",
+	"keywords": ["team", "people", "staff"],
+	"textdomain": "liftedpath",
+	"attributes": {
+		"align": { "type": "string", "default": "full" }
+	},
+	"supports": {
+		"anchor": true,
+		"align": ["full"],
+		"html": false,
+		"jsx": false,
+		"mode": false,
+		"spacing": false,
+		"color": false,
+		"typography": false
+	},
+	"acf": {
+		"blockVersion": 3,
+		"mode": "preview",
+		"renderTemplate": "render.php"
+	}
+}

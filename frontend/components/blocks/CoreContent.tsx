@@ -1,7 +1,7 @@
 import type { JSX } from "react";
 import { BlockPhoto } from "@/components/blocks/parts";
 import { headingLevel, imageAlt, richText } from "@/lib/blocks/html";
-import { imageId } from "@/lib/blocks/fields";
+import { blockHidden, imageId } from "@/lib/blocks/fields";
 import type { Block, FeaturedImage } from "@/lib/wp/types";
 
 const HEADINGS: Record<1 | 2 | 3 | 4 | 5 | 6, keyof JSX.IntrinsicElements> = {
@@ -22,6 +22,10 @@ export function CoreContent({
 	images: ReadonlyMap<number, FeaturedImage>;
 	nested?: boolean;
 }) {
+	if (blockHidden(block)) {
+		return null;
+	}
+
 	if (block.name === "core/columns") {
 		const columns = block.attributes.innerBlocks ?? [];
 		if (columns.length === 0) {

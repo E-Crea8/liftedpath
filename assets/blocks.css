@@ -103,6 +103,11 @@
 	object-position: center center;
 }
 
+.liftedpath-page-hero__photo,
+.liftedpath-page-hero__video {
+	object-position: center 39%;
+}
+
 .liftedpath-hero__shade,
 .liftedpath-page-hero__shade {
 	position: absolute;
@@ -236,9 +241,13 @@
 
 .liftedpath-page-hero__eyebrow,
 .liftedpath-cta__eyebrow {
-	margin-bottom: 20px;
-	font-size: var(--wp--preset--font-size--eyebrow);
-	font-weight: 600;
+	display: inline-flex;
+	margin-bottom: 24px;
+	color: var(--wp--preset--color--gold);
+	font-size: 0.74rem;
+	font-weight: 800;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
 }
 
 .liftedpath-page-hero__intro {
@@ -250,12 +259,14 @@
 .liftedpath-page-hero__crumbs {
 	display: inline-flex;
 	align-items: center;
-	gap: 8px;
+	gap: 10px;
 	margin: 0;
+	font-size: 0.8rem;
+	font-weight: 700;
 }
 
 .liftedpath-page-hero__crumbs a {
-	color: inherit;
+	color: var(--wp--preset--color--gold);
 	text-decoration: none;
 }
 
@@ -368,8 +379,8 @@
 .liftedpath-cta h2 {
 	max-width: 600px;
 	margin-bottom: 28px;
-	font-size: var(--wp--preset--font-size--heading);
-	font-weight: 500;
+	font-size: clamp(2.15rem, 4.1vw, 4rem);
+	font-weight: 600;
 }
 
 .liftedpath-cta p {
@@ -1860,5 +1871,517 @@
 @media (prefers-reduced-motion: reduce) {
 	.liftedpath-faq__chevron {
 		transition: none;
+	}
+}
+
+.liftedpath-story__layout {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	align-items: center;
+	gap: clamp(50px, 8vw, 115px);
+}
+
+.liftedpath-story__copy h2 {
+	margin-bottom: 28px;
+}
+
+.liftedpath-story__copy p:not(.liftedpath-eyebrow) {
+	margin: 0;
+	color: var(--wp--preset--color--muted);
+	font-size: 1.03rem;
+	line-height: 1.58;
+}
+
+.liftedpath-story__photo {
+	position: relative;
+	height: 570px;
+}
+
+.liftedpath-story__image {
+	width: 88%;
+	height: 90%;
+	object-fit: cover;
+	border-radius: 18px;
+}
+
+.liftedpath-beliefs {
+	background: var(--wp--preset--color--teal);
+	color: var(--wp--preset--color--paper);
+}
+
+.liftedpath-beliefs h2 {
+	margin-bottom: 0;
+	color: var(--wp--preset--color--paper);
+}
+
+.liftedpath-beliefs__grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 90px;
+}
+
+.liftedpath-beliefs p:not(.liftedpath-eyebrow) {
+	margin: 0;
+	color: var(--wp--preset--color--paper);
+	font-size: 1rem;
+	line-height: 1.58;
+	opacity: 0.78;
+}
+
+.liftedpath-pillars__heading {
+	max-width: 690px;
+	margin-bottom: 45px;
+}
+
+.liftedpath-pillars__heading h2 {
+	margin-bottom: 0;
+}
+
+.liftedpath-pillars__grid {
+	gap: 16px;
+}
+
+.liftedpath-pillars__grid li {
+	min-height: 490px;
+}
+
+.liftedpath-pillars__index {
+	margin-bottom: 70px;
+	font-size: 0.83rem;
+	font-weight: 800;
+}
+
+.liftedpath-pillars__grid h3 {
+	margin-bottom: 14px;
+	font-weight: 600;
+}
+
+.liftedpath-pillars__grid p {
+	flex: 1;
+	margin-bottom: 25px;
+	font-size: 0.83rem;
+	line-height: 1.65;
+}
+
+.liftedpath-goals__layout {
+	grid-template-columns: 1fr 1fr;
+	gap: 30px 65px;
+}
+
+.liftedpath-goals__intro h2 {
+	margin-bottom: 0;
+}
+
+.liftedpath-goals__intro .liftedpath-lead {
+	max-width: none;
+	margin: 0;
+	opacity: 0.78;
+}
+
+.liftedpath-goals__list li {
+	gap: 16px;
+	min-height: 0;
+}
+
+.liftedpath-goals__index {
+	display: grid;
+	place-items: center;
+	width: 42px;
+	height: 42px;
+	margin: 0;
+	border-radius: 50%;
+	background: var(--wp--preset--color--gold);
+	color: var(--wp--preset--color--teal);
+	font-family: inherit;
+	font-size: 0.8rem;
+	font-weight: 400;
+}
+
+.liftedpath-goals__list h3 {
+	margin: 0;
+	font-size: 1.12rem;
+	font-weight: 700;
+	line-height: 1.35;
+}
+
+.liftedpath-goals__list p {
+	max-width: 46ch;
+	font-size: 0.88rem;
+	line-height: 1.58;
+	opacity: 0.78;
+}
+
+@media (max-width: 760px) {
+	.liftedpath-page-hero {
+		min-height: 440px;
+	}
+
+	.liftedpath-page-hero__content {
+		padding-top: calc(var(--wp--custom--header-height, 89px) + 90px);
+	}
+
+	.liftedpath-page-hero h1 {
+		font-size: clamp(2.25rem, 8vw, 3.6rem);
+	}
+
+	.liftedpath-page-hero__intro {
+		font-size: 0.85rem;
+	}
+
+	.liftedpath-story__layout,
+	.liftedpath-beliefs__grid,
+	.liftedpath-goals__layout,
+	.liftedpath-goals__list {
+		grid-template-columns: 1fr;
+	}
+
+	.liftedpath-story__layout,
+	.liftedpath-beliefs__grid {
+		gap: 40px;
+	}
+
+	.liftedpath-goals__layout {
+		gap: 38px;
+	}
+
+	.liftedpath-story__photo {
+		height: 420px;
+	}
+
+	.liftedpath-pillars__grid li {
+		min-height: 360px;
+	}
+
+	.liftedpath-goals__list li {
+		padding: 24px;
+	}
+}
+
+@media (max-width: 520px) {
+	.liftedpath-pillars__grid {
+		grid-template-columns: 1fr;
+	}
+
+	.liftedpath-pillars__grid li {
+		min-height: 320px;
+	}
+
+	.liftedpath-page-hero h1 {
+		font-size: clamp(2.45rem, 11vw, 3.3rem);
+	}
+}
+
+.liftedpath-is-hidden {
+	position: relative;
+	opacity: 0.55;
+	outline: 1px dashed var(--wp--preset--color--gold);
+	outline-offset: 4px;
+}
+
+.liftedpath-is-hidden::before {
+	content: "Hidden on the site";
+	position: absolute;
+	z-index: 6;
+	top: 12px;
+	left: 12px;
+	padding: 4px 10px;
+	border-radius: 999px;
+	background: var(--wp--preset--color--gold);
+	color: var(--wp--preset--color--teal);
+	font-size: 12px;
+	font-weight: 800;
+	line-height: 1.4;
+}
+
+.is-heading-left :is(
+	.liftedpath-hero__content,
+	.liftedpath-page-hero__content,
+	.liftedpath-cta__content,
+	.liftedpath-pillars__heading,
+	.liftedpath-team__heading,
+	.liftedpath-programs__heading,
+	.liftedpath-process__heading,
+	.liftedpath-actions__heading,
+	.liftedpath-goals__intro,
+	.liftedpath-story__copy,
+	.liftedpath-about__copy,
+	.liftedpath-stewardship__copy,
+	.liftedpath-beliefs__grid,
+	.liftedpath-section__inner > .liftedpath-eyebrow,
+	.liftedpath-section__inner > h2,
+	.liftedpath-section__inner > .liftedpath-lead
+) {
+	text-align: left;
+}
+
+.is-heading-center :is(
+	.liftedpath-hero__content,
+	.liftedpath-page-hero__content,
+	.liftedpath-cta__content,
+	.liftedpath-pillars__heading,
+	.liftedpath-team__heading,
+	.liftedpath-programs__heading,
+	.liftedpath-process__heading,
+	.liftedpath-actions__heading,
+	.liftedpath-goals__intro,
+	.liftedpath-story__copy,
+	.liftedpath-about__copy,
+	.liftedpath-stewardship__copy,
+	.liftedpath-beliefs__grid,
+	.liftedpath-section__inner > .liftedpath-eyebrow,
+	.liftedpath-section__inner > h2,
+	.liftedpath-section__inner > .liftedpath-lead
+) {
+	text-align: center;
+}
+
+.is-heading-right :is(
+	.liftedpath-hero__content,
+	.liftedpath-page-hero__content,
+	.liftedpath-cta__content,
+	.liftedpath-pillars__heading,
+	.liftedpath-team__heading,
+	.liftedpath-programs__heading,
+	.liftedpath-process__heading,
+	.liftedpath-actions__heading,
+	.liftedpath-goals__intro,
+	.liftedpath-story__copy,
+	.liftedpath-about__copy,
+	.liftedpath-stewardship__copy,
+	.liftedpath-beliefs__grid,
+	.liftedpath-section__inner > .liftedpath-eyebrow,
+	.liftedpath-section__inner > h2,
+	.liftedpath-section__inner > .liftedpath-lead
+) {
+	text-align: right;
+}
+
+.is-heading-center .liftedpath-hero__content,
+.is-heading-center .liftedpath-cta__content {
+	align-items: center;
+}
+
+.is-heading-right .liftedpath-hero__content,
+.is-heading-right .liftedpath-cta__content {
+	align-items: flex-end;
+}
+
+.is-heading-left .liftedpath-page-hero :is(h1, .liftedpath-page-hero__intro, .liftedpath-page-hero__eyebrow) {
+	margin-right: auto;
+	margin-left: 0;
+}
+
+.is-heading-right .liftedpath-page-hero :is(h1, .liftedpath-page-hero__intro, .liftedpath-page-hero__eyebrow) {
+	margin-right: 0;
+	margin-left: auto;
+}
+
+.is-heading-center :is(
+	.liftedpath-pillars__heading,
+	.liftedpath-team__heading,
+	.liftedpath-programs__heading,
+	.liftedpath-actions__heading
+) {
+	margin-inline: auto;
+}
+
+.is-heading-right :is(
+	.liftedpath-pillars__heading,
+	.liftedpath-team__heading,
+	.liftedpath-programs__heading,
+	.liftedpath-actions__heading
+) {
+	margin-right: 0;
+	margin-left: auto;
+}
+
+.is-heading-below .liftedpath-section__inner:not(
+	.liftedpath-story__layout,
+	.liftedpath-beliefs__grid,
+	.liftedpath-about__layout,
+	.liftedpath-stewardship__layout,
+	.liftedpath-contact__layout,
+	.liftedpath-donate__layout,
+	.liftedpath-goals__layout
+) {
+	display: flex;
+	flex-direction: column;
+}
+
+.is-heading-below :is(
+	.liftedpath-pillars__heading,
+	.liftedpath-team__heading,
+	.liftedpath-programs__heading,
+	.liftedpath-process__heading,
+	.liftedpath-actions__heading,
+	.liftedpath-section__inner > .liftedpath-eyebrow,
+	.liftedpath-section__inner > h2,
+	.liftedpath-section__inner > .liftedpath-lead
+) {
+	order: 2;
+}
+
+.is-reversed :is(
+	.liftedpath-story__layout,
+	.liftedpath-beliefs__grid,
+	.liftedpath-about__layout,
+	.liftedpath-stewardship__layout,
+	.liftedpath-contact__layout,
+	.liftedpath-donate__layout,
+	.liftedpath-goals__layout,
+	.liftedpath-team__grid
+) {
+	direction: rtl;
+}
+
+.is-reversed :is(
+	.liftedpath-story__layout,
+	.liftedpath-beliefs__grid,
+	.liftedpath-about__layout,
+	.liftedpath-stewardship__layout,
+	.liftedpath-contact__layout,
+	.liftedpath-donate__layout,
+	.liftedpath-goals__layout,
+	.liftedpath-team__grid
+) > * {
+	direction: ltr;
+}
+
+.liftedpath-pillars__grid li {
+	border: 1px solid var(--wp--preset--color--line);
+	background: var(--wp--preset--color--paper);
+	box-shadow: 0 14px 34px color-mix(in oklch, var(--wp--preset--color--deep) 8%, transparent);
+}
+
+.liftedpath-team {
+	background: var(--wp--preset--color--surface);
+}
+
+.liftedpath-team .liftedpath-eyebrow {
+	background: var(--wp--preset--color--paper);
+}
+
+.liftedpath-team__heading {
+	max-width: 690px;
+	margin-bottom: 45px;
+}
+
+.liftedpath-team__heading h2 {
+	margin-bottom: 0;
+}
+
+.liftedpath-team__grid {
+	display: grid;
+	gap: 24px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.liftedpath-team__grid[data-columns="1"] {
+	grid-template-columns: minmax(0, 420px);
+	justify-content: center;
+}
+
+.liftedpath-team__grid[data-columns="2"] {
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.liftedpath-team__grid[data-columns="3"] {
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.liftedpath-team__card {
+	position: relative;
+	display: block;
+	height: 480px;
+	overflow: hidden;
+	border-radius: 18px;
+	background: var(--team-overlay, var(--wp--preset--color--deep));
+	color: var(--team-name, var(--wp--preset--color--paper));
+	text-decoration: none;
+}
+
+.liftedpath-team__media {
+	position: absolute;
+	inset: 0;
+}
+
+.liftedpath-team__media::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(0deg, var(--team-overlay, var(--wp--preset--color--deep)) 0%, transparent 68%);
+}
+
+.liftedpath-team__photo,
+.liftedpath-team__fallback {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.liftedpath-team__fallback {
+	display: grid;
+	place-items: center;
+	background: var(--team-overlay, var(--wp--preset--color--deep));
+	color: var(--team-name, var(--wp--preset--color--paper));
+	font-size: 4rem;
+	font-weight: 500;
+}
+
+.liftedpath-team__info {
+	position: absolute;
+	z-index: 1;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	display: flex;
+	flex-direction: column;
+	padding: 28px;
+}
+
+.liftedpath-team__info h3 {
+	margin: 0 0 8px;
+	color: var(--team-name, var(--wp--preset--color--paper));
+	font-size: 1.4rem;
+	font-weight: 500;
+	line-height: 1.25;
+}
+
+.liftedpath-team__role {
+	margin: 0 0 18px;
+	color: var(--team-role, color-mix(in oklch, var(--wp--preset--color--paper) 82%, transparent));
+	font-size: 1rem;
+	line-height: 1.45;
+}
+
+.liftedpath-team__info .liftedpath-text-link {
+	margin-top: auto;
+	padding-top: 18px;
+	border-top: 1px solid color-mix(in oklch, var(--team-link, var(--wp--preset--color--paper)) 28%, transparent);
+	color: var(--team-link, var(--wp--preset--color--paper));
+}
+
+@media (max-width: 900px) {
+	.liftedpath-team__grid[data-columns="3"],
+	.liftedpath-team__grid[data-columns="4"] {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (max-width: 520px) {
+	.liftedpath-team__card {
+		height: 420px;
+	}
+
+	.liftedpath-team__grid,
+	.liftedpath-team__grid[data-columns="1"],
+	.liftedpath-team__grid[data-columns="2"],
+	.liftedpath-team__grid[data-columns="3"],
+	.liftedpath-team__grid[data-columns="4"] {
+		grid-template-columns: 1fr;
+		justify-content: stretch;
 	}
 }

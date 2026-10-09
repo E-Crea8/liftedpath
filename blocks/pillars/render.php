@@ -42,11 +42,15 @@ if ( $empty ) {
 ?>
 <?php liftedpath_block_wrapper_open( 'section', 'liftedpath-section liftedpath-pillars' ); ?>
 	<div class="liftedpath-section__inner">
-		<?php if ( '' !== $eyebrow ) : ?>
-			<p class="liftedpath-eyebrow"><?php echo esc_html( $eyebrow ); ?></p>
-		<?php endif; ?>
-		<?php if ( '' !== $heading ) : ?>
-			<h2><?php echo esc_html( $heading ); ?></h2>
+		<?php if ( '' !== $eyebrow || '' !== $heading ) : ?>
+			<div class="liftedpath-pillars__heading">
+				<?php if ( '' !== $eyebrow ) : ?>
+					<p class="liftedpath-eyebrow"><?php echo esc_html( $eyebrow ); ?></p>
+				<?php endif; ?>
+				<?php if ( '' !== $heading ) : ?>
+					<h2><?php echo esc_html( $heading ); ?></h2>
+				<?php endif; ?>
+			</div>
 		<?php endif; ?>
 		<?php if ( array() !== $items ) : ?>
 			<ol class="liftedpath-pillars__grid">

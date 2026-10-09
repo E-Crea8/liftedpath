@@ -137,7 +137,27 @@
             "name": "eyebrow",
             "aria-label": "",
             "type": "text",
-            "instructions": "Also used as the current breadcrumb.",
+            "instructions": "The small line above the heading.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_liftedpath_page_hero_breadcrumb_current",
+            "label": "Breadcrumb",
+            "name": "breadcrumb_current",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "The current page in the trail. Clearing the eyebrow leaves this in place.",
             "required": 0,
             "conditional_logic": false,
             "wrapper": {
@@ -231,5 +251,5 @@
     "description": "",
     "show_in_rest": 1,
     "display_title": "",
-    "modified": 1791399335
+    "modified": 1791936000
 }

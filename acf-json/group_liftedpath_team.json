@@ -1,0 +1,190 @@
+{
+	"key": "group_liftedpath_team",
+	"title": "Team",
+	"fields": [
+		{
+			"key": "field_liftedpath_team_eyebrow",
+			"label": "Eyebrow",
+			"name": "eyebrow",
+			"type": "text",
+			"instructions": "",
+			"required": 0,
+			"conditional_logic": false,
+			"wrapper": { "width": "", "class": "", "id": "" },
+			"default_value": "",
+			"maxlength": "",
+			"placeholder": ""
+		},
+		{
+			"key": "field_liftedpath_team_heading",
+			"label": "Heading",
+			"name": "heading",
+			"type": "text",
+			"instructions": "The title above the team.",
+			"required": 0,
+			"conditional_logic": false,
+			"wrapper": { "width": "", "class": "", "id": "" },
+			"default_value": "",
+			"maxlength": "",
+			"placeholder": ""
+		},
+		{
+			"key": "field_liftedpath_team_overlay",
+			"label": "Photo overlay",
+			"name": "overlay_color",
+			"type": "color_picker",
+			"instructions": "The color that fades up over the photograph. Leave blank for the deep teal.",
+			"required": 0,
+			"conditional_logic": false,
+			"wrapper": { "width": "25", "class": "", "id": "" },
+			"default_value": "",
+			"enable_opacity": 0,
+			"return_format": "string"
+		},
+		{
+			"key": "field_liftedpath_team_name_color",
+			"label": "Name color",
+			"name": "name_color",
+			"type": "color_picker",
+			"instructions": "Leave blank for white.",
+			"required": 0,
+			"conditional_logic": false,
+			"wrapper": { "width": "25", "class": "", "id": "" },
+			"default_value": "",
+			"enable_opacity": 0,
+			"return_format": "string"
+		},
+		{
+			"key": "field_liftedpath_team_position_color",
+			"label": "Position color",
+			"name": "position_color",
+			"type": "color_picker",
+			"instructions": "Leave blank for soft white.",
+			"required": 0,
+			"conditional_logic": false,
+			"wrapper": { "width": "25", "class": "", "id": "" },
+			"default_value": "",
+			"enable_opacity": 0,
+			"return_format": "string"
+		},
+		{
+			"key": "field_liftedpath_team_link_color",
+			"label": "Link color",
+			"name": "link_color",
+			"type": "color_picker",
+			"instructions": "Leave blank for white.",
+			"required": 0,
+			"conditional_logic": false,
+			"wrapper": { "width": "25", "class": "", "id": "" },
+			"default_value": "",
+			"enable_opacity": 0,
+			"return_format": "string"
+		},
+		{
+			"key": "field_liftedpath_team_link_label",
+			"label": "Link label",
+			"name": "link_label",
+			"type": "text",
+			"instructions": "Used when a person has a link and that link has no label of its own.",
+			"required": 0,
+			"conditional_logic": false,
+			"wrapper": { "width": "", "class": "", "id": "" },
+			"default_value": "Read more",
+			"maxlength": "",
+			"placeholder": "Read more"
+		},
+		{
+			"key": "field_liftedpath_team_members",
+			"label": "Team members",
+			"name": "members",
+			"type": "repeater",
+			"instructions": "Add 2, 3, or 4 people. The grid follows how many you add. Drag a row to change the order.",
+			"required": 0,
+			"conditional_logic": false,
+			"wrapper": { "width": "", "class": "", "id": "" },
+			"layout": "block",
+			"min": 0,
+			"max": 4,
+			"button_label": "Add team member",
+			"sub_fields": [
+				{
+					"key": "field_liftedpath_team_member_image",
+					"label": "Photo",
+					"name": "image",
+					"type": "image",
+					"instructions": "",
+					"required": 0,
+					"conditional_logic": false,
+					"wrapper": { "width": "", "class": "", "id": "" },
+					"return_format": "id",
+					"library": "all",
+					"preview_size": "medium",
+					"min_width": "",
+					"min_height": "",
+					"min_size": "",
+					"max_width": "",
+					"max_height": "",
+					"max_size": "",
+					"mime_types": ""
+				},
+				{
+					"key": "field_liftedpath_team_member_name",
+					"label": "Name",
+					"name": "name",
+					"type": "text",
+					"instructions": "",
+					"required": 0,
+					"conditional_logic": false,
+					"wrapper": { "width": "50", "class": "", "id": "" },
+					"default_value": "",
+					"maxlength": "",
+					"placeholder": ""
+				},
+				{
+					"key": "field_liftedpath_team_member_position",
+					"label": "Position",
+					"name": "position",
+					"type": "text",
+					"instructions": "",
+					"required": 0,
+					"conditional_logic": false,
+					"wrapper": { "width": "50", "class": "", "id": "" },
+					"default_value": "",
+					"maxlength": "",
+					"placeholder": ""
+				},
+				{
+					"key": "field_liftedpath_team_member_link",
+					"label": "Link",
+					"name": "link",
+					"type": "link",
+					"instructions": "Optional. The card opens this address and shows the link label.",
+					"required": 0,
+					"conditional_logic": false,
+					"wrapper": { "width": "", "class": "", "id": "" },
+					"return_format": "array"
+				}
+			]
+		}
+	],
+	"location": [
+		[
+			{
+				"param": "block",
+				"operator": "==",
+				"value": "liftedpath/team"
+			}
+		]
+	],
+	"menu_order": 0,
+	"position": "normal",
+	"style": "default",
+	"label_placement": "top",
+	"instruction_placement": "label",
+	"hide_on_screen": "",
+	"active": true,
+	"description": "",
+	"show_in_rest": 1,
+	"display_title": "",
+	"modified": 1791942400
+}

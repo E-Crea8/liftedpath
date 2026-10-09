@@ -1,5 +1,7 @@
-import { Suspense } from "react";
+import { Suspense, type ReactNode } from "react";
+import { AboutStory } from "@/components/blocks/AboutStory";
 import { AboutTabs } from "@/components/blocks/AboutTabs";
+import { Beliefs } from "@/components/blocks/Beliefs";
 import { ActionGrid } from "@/components/blocks/ActionGrid";
 import { ContactForm } from "@/components/blocks/ContactForm";
 import { CoreContent } from "@/components/blocks/CoreContent";
@@ -17,8 +19,9 @@ import { SponsorCallout } from "@/components/blocks/SponsorCallout";
 import { Stat } from "@/components/blocks/Stat";
 import { StatGroup } from "@/components/blocks/StatGroup";
 import { Stewardship } from "@/components/blocks/Stewardship";
+import { Team } from "@/components/blocks/Team";
 import { PageMotion } from "@/components/motion/PageMotion";
-import { siteHost } from "@/lib/blocks/fields";
+import { blockHidden, layoutClass, siteHost } from "@/lib/blocks/fields";
 import type { Block, FeaturedImage } from "@/lib/wp/types";
 
 export function BlockList({
@@ -86,51 +89,91 @@ function BlockView({
 	radioKey: string;
 	siteHost: string;
 }) {
+	if (blockHidden(block)) {
+		return null;
+	}
+
+	let view: ReactNode = null;
+
 	switch (block.name) {
 		case "liftedpath/hero":
-			return <Hero block={block} images={images} siteHost={host} />;
+			view = <Hero block={block} images={images} siteHost={host} />;
+			break;
 		case "liftedpath/page-hero":
-			return <PageHero block={block} images={images} />;
+			view = <PageHero block={block} images={images} />;
+			break;
 		case "liftedpath/stat":
-			return <Stat block={block} />;
+			view = <Stat block={block} />;
+			break;
 		case "liftedpath/stat-group":
-			return <StatGroup block={block} />;
+			view = <StatGroup block={block} />;
+			break;
 		case "liftedpath/marquee":
-			return <Marquee block={block} phrases={phrases} />;
+			view = <Marquee block={block} phrases={phrases} />;
+			break;
 		case "liftedpath/cta-band":
-			return <CtaBand block={block} images={images} siteHost={host} />;
+			view = <CtaBand block={block} images={images} siteHost={host} />;
+			break;
 		case "liftedpath/about-tabs":
-			return <AboutTabs block={block} images={images} radioKey={radioKey} siteHost={host} />;
+			view = <AboutTabs block={block} images={images} radioKey={radioKey} siteHost={host} />;
+			break;
+		case "liftedpath/about-story":
+			view = <AboutStory block={block} images={images} />;
+			break;
+		case "liftedpath/beliefs":
+			view = <Beliefs block={block} />;
+			break;
 		case "liftedpath/program-cards":
-			return <ProgramCards block={block} images={images} siteHost={host} />;
+			view = <ProgramCards block={block} images={images} siteHost={host} />;
+			break;
 		case "liftedpath/action-grid":
-			return <ActionGrid block={block} siteHost={host} />;
+			view = <ActionGrid block={block} siteHost={host} />;
+			break;
 		case "liftedpath/sponsor-callout":
-			return <SponsorCallout block={block} siteHost={host} />;
+			view = <SponsorCallout block={block} siteHost={host} />;
+			break;
 		case "liftedpath/stewardship":
-			return <Stewardship block={block} images={images} phone={phone} siteHost={host} />;
+			view = <Stewardship block={block} images={images} phone={phone} siteHost={host} />;
+			break;
 		case "liftedpath/process":
-			return <Process block={block} siteHost={host} />;
+			view = <Process block={block} siteHost={host} />;
+			break;
 		case "liftedpath/pillars":
-			return <Pillars block={block} />;
+			view = <Pillars block={block} />;
+			break;
 		case "liftedpath/goals":
-			return <Goals block={block} />;
+			view = <Goals block={block} />;
+			break;
+		case "liftedpath/team":
+			view = <Team block={block} images={images} siteHost={host} />;
+			break;
 		case "liftedpath/faq":
-			return <Faq block={block} radioKey={radioKey} />;
+			view = <Faq block={block} radioKey={radioKey} />;
+			break;
 		case "liftedpath/contact-form":
-			return <ContactForm address={address} block={block} email={email} phone={phone} />;
+			view = <ContactForm address={address} block={block} email={email} phone={phone} />;
+			break;
 		case "liftedpath/donate-panel":
-			return (
+			view = (
 				<Suspense fallback={null}>
 					<DonatePanel block={block} images={images} paymentsConfigured={paymentsConfigured} providerLabel={providerLabel} />
 				</Suspense>
 			);
+			break;
 		case "core/heading":
 		case "core/paragraph":
 		case "core/image":
 		case "core/columns":
-			return <CoreContent block={block} images={images} />;
+			view = <CoreContent block={block} images={images} />;
+			break;
 		default:
 			return null;
 	}
+
+	const layout = layoutClass(block);
+	if (!layout) {
+		return view;
+	}
+
+	return <div className={layout}>{view}</div>;
 }
