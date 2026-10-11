@@ -27,6 +27,13 @@ function uploadRemotePatterns(): NonNullable<NextConfig["images"]>["remotePatter
 
 const nextConfig: NextConfig = {
 	cacheComponents: true,
+	cacheLife: {
+		max: {
+			stale: 0,
+			revalidate: 30,
+			expire: 120,
+		},
+	},
 	images: {
 		remotePatterns: uploadRemotePatterns(),
 	},

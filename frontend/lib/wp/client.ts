@@ -144,11 +144,20 @@ async function readJson(url: URL, init?: RequestInit, bust = true): Promise<unkn
 		throw new WordpressError("unavailable", "WordPress did not respond.", 503);
 	}
 
-	let payload: unknown;
-	try {
-		payload = JSON.parse(await response.text()) as unknown;
-	} catch {
-		throw new WordpressError("invalid_response", "WordPress returned a response that is not JSON.", 502);
+	const text = await response.text();
+	const payload = parseJsonBody(text);
+	if (payload === undefined) {
+		if (bust) {
+			url.searchParams.set("lp_fresh", String(Date.now()));
+			return readJson(url, init, false);
+		}
+
+		const type = response.headers.get("content-type") ?? "unknown";
+		throw new WordpressError(
+			"invalid_response",
+			`WordPress returned a response that is not JSON (${response.status} ${type}: ${responseSnippet(text)}).`,
+			502,
+		);
 	}
 
 	if (!response.ok) {
@@ -156,6 +165,34 @@ async function readJson(url: URL, init?: RequestInit, bust = true): Promise<unkn
 	}
 
 	return payload;
+}
+
+function parseJsonBody(text: string): unknown | undefined {
+	const cleaned = text.replace(/^\uFEFF/, "").trim();
+	if (!cleaned) {
+		return undefined;
+	}
+
+	try {
+		return JSON.parse(cleaned) as unknown;
+	} catch {
+		const start = cleaned.search(/[[{]/);
+		const prefix = start > 0 ? cleaned.slice(0, start) : "";
+		if (start <= 0 || start > 500 || !/warning|notice|deprecated|fatal|<br/i.test(prefix)) {
+			return undefined;
+		}
+
+		try {
+			return JSON.parse(cleaned.slice(start)) as unknown;
+		} catch {
+			return undefined;
+		}
+	}
+}
+
+function responseSnippet(text: string): string {
+	const plain = text.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+	return plain.slice(0, 140) || "empty";
 }
 
 function throwApiError(status: number, payload: unknown): never {
