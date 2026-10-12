@@ -1,3 +1,5 @@
+import { reportReadFailure } from "@/lib/wp/safety";
+
 export interface ContactNotices {
 	success: string;
 	error: string;
@@ -58,6 +60,7 @@ export async function getFormConfig(): Promise<FormConfig> {
 	try {
 		const payload = await readJson("forms", { method: "GET" }, false);
 		if (!isRecord(payload)) {
+			reportReadFailure(new Error("The forms payload is not an object."), "forms", false);
 			return EMPTY_CONFIG;
 		}
 		const provider = payload.provider;
@@ -88,7 +91,8 @@ export async function getFormConfig(): Promise<FormConfig> {
 				unknownDetail: noticeText(donate.unknownDetail, DONATE_NOTICES.unknownDetail),
 			},
 		};
-	} catch {
+	} catch (error) {
+		reportReadFailure(error, "forms", false);
 		return EMPTY_CONFIG;
 	}
 }

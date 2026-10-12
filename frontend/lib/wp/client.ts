@@ -2,6 +2,22 @@ import { draftMode } from "next/headers";
 import { unstable_rethrow } from "next/navigation";
 import { connection } from "next/server";
 import { assertPublicPath, mapDesign, mapDiscovery, mapMedia, mapNavigation, mapPage, mapPaths, mapSettings } from "@/lib/wp/map";
+import {
+	holdCopy,
+	isSavedDesign,
+	isSavedDiscovery,
+	isSavedMedia,
+	isSavedNavigation,
+	isSavedPage,
+	isSavedSettings,
+	mediaKey,
+	recallCopy,
+	reportReadFailure,
+	STANDBY_DESIGN,
+	STANDBY_DISCOVERY,
+	STANDBY_NAVIGATION,
+	STANDBY_SETTINGS,
+} from "@/lib/wp/safety";
 import type { Design, Discovery, FeaturedImage, Navigation, Page, PathIndex, SiteSettings } from "@/lib/wp/types";
 import { WordpressError } from "@/lib/wp/types";
 
@@ -23,10 +39,17 @@ export async function getPage(path: string): Promise<Page> {
 		return mapPage(await readJson(url, { headers: previewHeaders() }), "preview");
 	}
 
-	await readOnRequest();
-	const url = new URL(`${apiUrl()}/liftedpath/v1/page`);
-	url.searchParams.set("path", publicPath);
-	return mapPage(await readJson(url));
+	return published(
+		`page:${publicPath}`,
+		async () => {
+			const url = new URL(`${apiUrl()}/liftedpath/v1/page`);
+			url.searchParams.set("path", publicPath);
+			return mapPage(await readJson(url));
+		},
+		isSavedPage,
+		null,
+		true,
+	);
 }
 
 export async function exchangePreviewToken(token: string): Promise<string> {
@@ -58,21 +81,39 @@ export async function getPaths(): Promise<PathIndex> {
 }
 
 export async function getNavigation(): Promise<Navigation> {
-	await readOnRequest();
-	const url = new URL(`${apiUrl()}/liftedpath/v1/navigation`);
-	return mapNavigation(await readJson(url));
+	return published(
+		"navigation",
+		async () => {
+			const url = new URL(`${apiUrl()}/liftedpath/v1/navigation`);
+			return mapNavigation(await readJson(url));
+		},
+		isSavedNavigation,
+		STANDBY_NAVIGATION,
+	);
 }
 
 export async function getSettings(): Promise<SiteSettings> {
-	await readOnRequest();
-	const url = new URL(`${apiUrl()}/liftedpath/v1/settings`);
-	return mapSettings(await readJson(url));
+	return published(
+		"settings",
+		async () => {
+			const url = new URL(`${apiUrl()}/liftedpath/v1/settings`);
+			return mapSettings(await readJson(url));
+		},
+		isSavedSettings,
+		STANDBY_SETTINGS,
+	);
 }
 
 export async function getDiscovery(): Promise<Discovery> {
-	await readOnRequest();
-	const url = new URL(`${apiUrl()}/liftedpath/v1/seo`);
-	return mapDiscovery(await readJson(url));
+	return published(
+		"discovery",
+		async () => {
+			const url = new URL(`${apiUrl()}/liftedpath/v1/seo`);
+			return mapDiscovery(await readJson(url));
+		},
+		isSavedDiscovery,
+		STANDBY_DISCOVERY,
+	);
 }
 
 export async function getMedia(ids: number[]): Promise<FeaturedImage[]> {
@@ -81,23 +122,67 @@ export async function getMedia(ids: number[]): Promise<FeaturedImage[]> {
 		return [];
 	}
 
-	await readOnRequest();
-	const images: FeaturedImage[] = [];
-	for (let start = 0; start < unique.length; start += 100) {
-		const chunk = unique.slice(start, start + 100);
-		const url = new URL(`${apiUrl()}/wp/v2/media`);
-		url.searchParams.set("include", chunk.join(","));
-		url.searchParams.set("per_page", String(chunk.length));
-		url.searchParams.set("_fields", "id,source_url,alt_text,media_details,mime_type");
-		images.push(...mapMedia(await readJson(url)));
-	}
-	return images;
+	return published(
+		mediaKey(unique),
+		async () => {
+			const images: FeaturedImage[] = [];
+			for (let start = 0; start < unique.length; start += 100) {
+				const chunk = unique.slice(start, start + 100);
+				const url = new URL(`${apiUrl()}/wp/v2/media`);
+				url.searchParams.set("include", chunk.join(","));
+				url.searchParams.set("per_page", String(chunk.length));
+				url.searchParams.set("_fields", "id,source_url,alt_text,media_details,mime_type");
+				images.push(...mapMedia(await readJson(url)));
+			}
+			return images;
+		},
+		isSavedMedia,
+		[],
+	);
 }
 
 export async function getDesign(): Promise<Design> {
+	return published(
+		"design",
+		async () => {
+			const url = new URL(`${apiUrl()}/liftedpath/v1/design`);
+			return mapDesign(await readJson(url));
+		},
+		isSavedDesign,
+		STANDBY_DESIGN,
+	);
+}
+
+async function published<T>(
+	key: string,
+	read: () => Promise<T>,
+	accept: (value: unknown) => value is T,
+	fallback: T | null,
+	allowMissing = false,
+): Promise<T> {
 	await readOnRequest();
-	const url = new URL(`${apiUrl()}/liftedpath/v1/design`);
-	return mapDesign(await readJson(url));
+
+	try {
+		const value = await read();
+		holdCopy(key, value);
+		return value;
+	} catch (error) {
+		unstable_rethrow(error);
+		if (allowMissing && error instanceof WordpressError && (error.status === 404 || error.code === "page_not_found")) {
+			throw error;
+		}
+
+		const saved = await recallCopy(key, accept);
+		reportReadFailure(error, key, saved !== null);
+		if (saved !== null) {
+			return saved;
+		}
+		if (fallback !== null) {
+			return fallback;
+		}
+
+		throw new WordpressError("kept_down", "WordPress did not respond, and there is no saved copy of this page yet.", 503);
+	}
 }
 
 function apiUrl(): string {

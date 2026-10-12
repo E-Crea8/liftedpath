@@ -39,6 +39,8 @@
 	text-decoration: none;
 	white-space: nowrap;
 	flex-shrink: 0;
+	border: 0;
+	cursor: pointer;
 }
 
 .liftedpath-button:hover {

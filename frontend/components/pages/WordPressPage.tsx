@@ -1,15 +1,19 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, unstable_rethrow } from "next/navigation";
 import { BlockList } from "@/components/blocks/BlockList";
+import { SiteHold } from "@/components/layout/SiteHold";
 import { PageSchema } from "@/components/seo/PageSchema";
 import { imageIds } from "@/lib/blocks/fields";
 import type { FormConfig } from "@/lib/forms";
 import { getDiscovery, getMedia, getPage, getSettings } from "@/lib/wp/client";
-import type { FeaturedImage } from "@/lib/wp/types";
+import type { FeaturedImage, Page } from "@/lib/wp/types";
 import { WordpressError } from "@/lib/wp/types";
 
 export async function pageMetadata(path: string): Promise<Metadata> {
 	const page = await readPage(path);
+	if (page === "hold") {
+		return { title: { absolute: "LiftedPath" } };
+	}
 	const settings = await getSettings();
 	const title = page.seoTitle || page.title;
 	const description = page.seoDescription || undefined;
@@ -60,6 +64,9 @@ function openGraphImage(image: FeaturedImage | null) {
 
 export async function WordPressPage({ form, path }: { form?: FormConfig; path: string }) {
 	const page = await readPage(path);
+	if (page === "hold") {
+		return <SiteHold />;
+	}
 	const settings = await getSettings();
 	const discovery = await getDiscovery();
 	const media = await getMedia(imageIds(page.blocks));
@@ -89,14 +96,15 @@ export async function WordPressPage({ form, path }: { form?: FormConfig; path: s
 	);
 }
 
-async function readPage(path: string) {
+async function readPage(path: string): Promise<Page | "hold"> {
 	try {
 		return await getPage(path);
 	} catch (error) {
+		unstable_rethrow(error);
 		if (isMissingPage(error)) {
 			notFound();
 		}
-		throw error;
+		return "hold";
 	}
 }
 
