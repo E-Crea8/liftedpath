@@ -925,6 +925,40 @@ function liftedpath_block_example( string $name ): array {
 				)
 			)
 		),
+		'liftedpath/gallery'       => liftedpath_example_merge(
+			liftedpath_example_pair( 'eyebrow', 'field_liftedpath_gallery_eyebrow', 'The work' ),
+			liftedpath_example_pair( 'heading', 'field_liftedpath_gallery_heading', 'Scenes from the pathway.' ),
+			liftedpath_example_pair( 'layout', 'field_liftedpath_gallery_layout', 'mosaic' ),
+			liftedpath_example_pair( 'columns', 'field_liftedpath_gallery_columns', '3' ),
+			liftedpath_example_pair( 'show_captions', 'field_liftedpath_gallery_captions', 1 ),
+			liftedpath_example_pair( 'enlarge', 'field_liftedpath_gallery_enlarge', 1 ),
+			liftedpath_example_repeater(
+				'items',
+				'field_liftedpath_gallery_items',
+				array(
+					'media_kind' => 'field_liftedpath_gallery_item_kind',
+					'caption'    => 'field_liftedpath_gallery_item_caption',
+					'tile'       => 'field_liftedpath_gallery_item_tile',
+				),
+				array(
+					array(
+						'media_kind' => 'image',
+						'caption'    => 'A classroom visit',
+						'tile'       => 'wide',
+					),
+					array(
+						'media_kind' => 'video',
+						'caption'    => 'A short film',
+						'tile'       => 'standard',
+					),
+					array(
+						'media_kind' => 'image',
+						'caption'    => 'A season together',
+						'tile'       => 'tall',
+					),
+				)
+			)
+		),
 	);
 
 	$data = $samples[ $name ] ?? liftedpath_example_pair( 'heading', '', 'Section heading' );

@@ -9,6 +9,7 @@ import { CoreContent } from "@/components/blocks/CoreContent";
 import { CtaBand } from "@/components/blocks/CtaBand";
 import { DonatePanel } from "@/components/blocks/DonatePanel";
 import { Faq } from "@/components/blocks/Faq";
+import { Gallery } from "@/components/blocks/Gallery";
 import { Goals } from "@/components/blocks/Goals";
 import { Hero } from "@/components/blocks/Hero";
 import { Marquee } from "@/components/blocks/Marquee";
@@ -158,6 +159,9 @@ function BlockView({
 			break;
 		case "liftedpath/team":
 			view = <Team block={block} images={images} />;
+			break;
+		case "liftedpath/gallery":
+			view = <Gallery block={block} images={images} />;
 			break;
 		case "liftedpath/faq":
 			view = <Faq block={block} radioKey={radioKey} />;

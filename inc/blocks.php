@@ -54,6 +54,7 @@ function liftedpath_block_slugs(): array {
 		'contact-form',
 		'donate-panel',
 		'team',
+		'gallery',
 	);
 }
 
