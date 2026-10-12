@@ -57,7 +57,7 @@ export function Header({ items, settings }: HeaderProps) {
 			<nav aria-label="Main" className="desktop-nav">
 				{items.map((item, index) =>
 					item.children.length > 0 ? (
-						<DesktopBranch item={item} key={itemKey(item, index)} pathname={pathname} />
+						<DesktopBranch item={item} key={itemKey(item, index)} pathname={pathname} showArrows={settings.submenuArrows === true} />
 					) : (
 						<MenuLink item={item} key={itemKey(item, index)} pathname={pathname} />
 					),
@@ -91,7 +91,13 @@ export function Header({ items, settings }: HeaderProps) {
 				<nav>
 					{items.map((item, index) =>
 						item.children.length > 0 ? (
-							<MobileBranch item={item} key={itemKey(item, index)} onNavigate={closeMenu} pathname={pathname} />
+							<MobileBranch
+								item={item}
+								key={itemKey(item, index)}
+								onNavigate={closeMenu}
+								pathname={pathname}
+								showArrows={settings.submenuArrows === true}
+							/>
 						) : (
 							<MenuLink item={item} key={itemKey(item, index)} onNavigate={closeMenu} pathname={pathname} />
 						),
@@ -105,7 +111,7 @@ export function Header({ items, settings }: HeaderProps) {
 	);
 }
 
-function DesktopBranch({ item, pathname }: { item: NavItem; pathname: string }) {
+function DesktopBranch({ item, pathname, showArrows }: { item: NavItem; pathname: string; showArrows: boolean }) {
 	const [open, setOpen] = useState(false);
 	const [childKey, setChildKey] = useState<string | null>(null);
 	const panelId = useId();
@@ -178,6 +184,7 @@ function DesktopBranch({ item, pathname }: { item: NavItem; pathname: string }) 
 						onOpen={setChildKey}
 						open={childKey === branchKey(child)}
 						pathname={pathname}
+						showArrows={showArrows}
 					/>
 				))}
 			</div>
@@ -191,12 +198,14 @@ function DesktopChild({
 	onOpen,
 	open,
 	pathname,
+	showArrows,
 }: {
 	branchKey: string;
 	item: NavItem;
 	onOpen: (key: string | null) => void;
 	open: boolean;
 	pathname: string;
+	showArrows: boolean;
 }) {
 	const panelId = useId();
 	const panelRef = useRef<HTMLDivElement>(null);
@@ -263,7 +272,7 @@ function DesktopChild({
 					ref={panelRef}
 				>
 					{item.children.map((child, index) => (
-						<SubmenuLink item={child} key={itemKey(child, index)} pathname={pathname} />
+						<SubmenuLink item={child} key={itemKey(child, index)} pathname={pathname} showArrows={showArrows} />
 					))}
 				</div>
 			) : null}
@@ -275,10 +284,12 @@ function MobileBranch({
 	item,
 	onNavigate,
 	pathname,
+	showArrows,
 }: {
 	item: NavItem;
 	onNavigate: () => void;
 	pathname: string;
+	showArrows: boolean;
 }) {
 	const [open, setOpen] = useState(false);
 	const panelId = useId();
@@ -312,6 +323,7 @@ function MobileBranch({
 								key={itemKey(child, index)}
 								onNavigate={onNavigate}
 								pathname={pathname}
+								showArrows={showArrows}
 							/>
 						) : (
 							<SubmenuLink
@@ -319,6 +331,7 @@ function MobileBranch({
 								key={itemKey(child, index)}
 								onNavigate={onNavigate}
 								pathname={pathname}
+								showArrows={showArrows}
 							/>
 						),
 					)}
@@ -332,10 +345,12 @@ function SubmenuLink({
 	item,
 	onNavigate,
 	pathname,
+	showArrows,
 }: {
 	item: NavItem;
 	onNavigate?: () => void;
 	pathname: string;
+	showArrows: boolean;
 }) {
 	const detail = item.detail.trim();
 
@@ -350,7 +365,7 @@ function SubmenuLink({
 				<strong>{item.label}</strong>
 				{detail ? <small>{detail}</small> : null}
 			</span>
-			<ChevronRight aria-hidden="true" size={17} strokeWidth={2} />
+			{showArrows ? <ChevronRight aria-hidden="true" size={17} strokeWidth={2} /> : null}
 		</>
 	);
 

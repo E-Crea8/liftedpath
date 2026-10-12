@@ -717,6 +717,7 @@ function liftedpath_rest_settings(): WP_REST_Response {
 			'copyright_text'      => liftedpath_rest_copyright(),
 			'logo'                => liftedpath_rest_logo( $legal_name ),
 			'logo_height'         => liftedpath_rest_logo_height(),
+			'submenu_arrows'      => liftedpath_rest_setting_enabled( 'submenu_arrows' ),
 			'footer_logo'         => liftedpath_rest_footer_logo( $legal_name ),
 			'footer_logo_height'  => liftedpath_rest_bounded_number( 'footer_logo_height', 95, 48, 200 ),
 			'footer_wordmark'     => liftedpath_rest_footer_wordmark(),

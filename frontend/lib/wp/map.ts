@@ -129,6 +129,7 @@ export function mapSettings(value: unknown): SiteSettings {
 		copyrightText: optionalString(record.copyright_text),
 		logo: mapLogo(record.logo),
 		logoHeight: boundedNumber(record.logo_height, 104, 64, 160),
+		submenuArrows: record.submenu_arrows === true,
 		footerLogo: mapLogo(record.footer_logo),
 		footerLogoHeight: boundedNumber(record.footer_logo_height, 95, 48, 200),
 		footerWordmark: optionalString(record.footer_wordmark),

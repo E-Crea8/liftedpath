@@ -132,6 +132,7 @@ export interface SiteSettings {
 	copyrightText: string;
 	logo: SiteLogo | null;
 	logoHeight: number;
+	submenuArrows?: boolean;
 	footerLogo: SiteLogo | null;
 	footerLogoHeight: number;
 	footerWordmark: string;

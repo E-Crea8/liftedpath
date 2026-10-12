@@ -68,6 +68,27 @@
             "placeholder": ""
         },
         {
+            "key": "field_liftedpath_submenu_arrows",
+            "label": "Submenu arrows",
+            "name": "submenu_arrows",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Show places an arrow beside each item inside a submenu, such as the learning pathways. Hide removes those arrows. The arrows that open a menu stay.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "allow_in_bindings": 0,
+            "ui": 1,
+            "ui_on_text": "Show",
+            "ui_off_text": "Hide"
+        },
+        {
             "key": "field_liftedpath_tab_footer",
             "label": "Footer",
             "name": "",
@@ -306,7 +327,7 @@
             },
             "default_value": "",
             "allow_in_bindings": 0,
-            "placeholder": "https://"
+            "placeholder": "https:\/\/"
         },
         {
             "key": "field_liftedpath_instagram_show",
@@ -345,7 +366,7 @@
             },
             "default_value": "",
             "allow_in_bindings": 0,
-            "placeholder": "https://"
+            "placeholder": "https:\/\/"
         },
         {
             "key": "field_liftedpath_linkedin_show",
@@ -384,7 +405,7 @@
             },
             "default_value": "",
             "allow_in_bindings": 0,
-            "placeholder": "https://"
+            "placeholder": "https:\/\/"
         },
         {
             "key": "field_liftedpath_youtube_show",
@@ -423,7 +444,7 @@
             },
             "default_value": "",
             "allow_in_bindings": 0,
-            "placeholder": "https://"
+            "placeholder": "https:\/\/"
         },
         {
             "key": "field_liftedpath_tiktok_show",
@@ -462,7 +483,7 @@
             },
             "default_value": "",
             "allow_in_bindings": 0,
-            "placeholder": "https://"
+            "placeholder": "https:\/\/"
         },
         {
             "key": "field_liftedpath_copyright_text",
@@ -649,6 +670,42 @@
             "max_width": 0,
             "max_height": 0,
             "max_size": 0
+        },
+        {
+            "key": "field_liftedpath_tab_vercel",
+            "label": "Vercel Environment Variables",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0,
+            "selected": 0
+        },
+        {
+            "key": "field_liftedpath_vercel_env",
+            "label": "",
+            "name": "",
+            "aria-label": "",
+            "type": "message",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "liftedpath-vercel-env-field",
+                "id": ""
+            },
+            "message": "",
+            "new_lines": "",
+            "esc_html": 0
         }
     ],
     "location": [
@@ -670,5 +727,5 @@
     "description": "",
     "show_in_rest": 1,
     "display_title": "",
-    "modified": 1791806400
+    "modified": 1791824210
 }

@@ -100,6 +100,7 @@ export const STANDBY_SETTINGS: SiteSettings = {
 	copyrightText: "",
 	logo: null,
 	logoHeight: 104,
+	submenuArrows: false,
 	footerLogo: null,
 	footerLogoHeight: 95,
 	footerWordmark: "LiftedPath",
@@ -158,6 +159,7 @@ export function isSavedSettings(value: unknown): value is SiteSettings {
 		typeof value.email === "string" &&
 		typeof value.postalAddress === "string" &&
 		typeof value.logoHeight === "number" &&
+		(value.submenuArrows === undefined || typeof value.submenuArrows === "boolean") &&
 		typeof value.footerLogoHeight === "number" &&
 		typeof value.footerWordmark === "string" &&
 		typeof value.copyrightText === "string" &&
