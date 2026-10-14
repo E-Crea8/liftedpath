@@ -19,6 +19,7 @@ const REVEAL = [
 	".liftedpath-team__card",
 	".liftedpath-programs__heading",
 	".liftedpath-programs__card",
+	".liftedpath-pathway",
 	".liftedpath-programs__callout",
 	".liftedpath-actions__heading",
 	".liftedpath-actions__item",
