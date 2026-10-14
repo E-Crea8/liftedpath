@@ -1,188 +1,322 @@
 {
-	"key": "group_liftedpath_program_cards",
-	"title": "Program cards",
-	"fields": [
-		{
-			"key": "field_liftedpath_programs_eyebrow",
-			"label": "Eyebrow",
-			"name": "eyebrow",
-			"type": "text",
-			"instructions": "",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "", "class": "", "id": "" },
-			"default_value": "",
-			"maxlength": "",
-			"placeholder": ""
-		},
-		{
-			"key": "field_liftedpath_programs_heading",
-			"label": "Heading",
-			"name": "heading",
-			"type": "text",
-			"instructions": "",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "", "class": "", "id": "" },
-			"default_value": "",
-			"maxlength": "",
-			"placeholder": ""
-		},
-		{
-			"key": "field_liftedpath_programs_intro",
-			"label": "Intro",
-			"name": "intro",
-			"type": "textarea",
-			"instructions": "",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "", "class": "", "id": "" },
-			"default_value": "",
-			"rows": 3,
-			"new_lines": ""
-		},
-		{
-			"key": "field_liftedpath_programs_cards",
-			"label": "Cards",
-			"name": "cards",
-			"type": "repeater",
-			"instructions": "",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "", "class": "", "id": "" },
-			"layout": "block",
-			"button_label": "Add card",
-			"min": 0,
-			"max": 0,
-			"rows_per_page": 20,
-			"collapsed": "",
-			"sub_fields": [
-				{
-					"key": "field_liftedpath_programs_card_image",
-					"label": "Photograph",
-					"name": "image",
-					"type": "image",
-					"instructions": "Set the alt text on the media item.",
-					"required": 0,
-					"conditional_logic": false,
-					"wrapper": { "width": "", "class": "", "id": "" },
-					"return_format": "array",
-					"library": "all",
-					"preview_size": "medium",
-					"mime_types": "jpg,jpeg,png,webp",
-					"parent_repeater": "field_liftedpath_programs_cards"
-				},
-				{
-					"key": "field_liftedpath_programs_card_kicker",
-					"label": "Pillar label",
-					"name": "kicker",
-					"type": "text",
-					"instructions": "",
-					"required": 0,
-					"conditional_logic": false,
-					"wrapper": { "width": "40", "class": "", "id": "" },
-					"default_value": "",
-					"maxlength": "",
-					"placeholder": "",
-					"parent_repeater": "field_liftedpath_programs_cards"
-				},
-				{
-					"key": "field_liftedpath_programs_card_title",
-					"label": "Title",
-					"name": "title",
-					"type": "text",
-					"instructions": "",
-					"required": 0,
-					"conditional_logic": false,
-					"wrapper": { "width": "60", "class": "", "id": "" },
-					"default_value": "",
-					"maxlength": "",
-					"placeholder": "",
-					"parent_repeater": "field_liftedpath_programs_cards"
-				},
-				{
-					"key": "field_liftedpath_programs_card_line",
-					"label": "Short line",
-					"name": "line",
-					"type": "text",
-					"instructions": "",
-					"required": 0,
-					"conditional_logic": false,
-					"wrapper": { "width": "", "class": "", "id": "" },
-					"default_value": "",
-					"maxlength": "",
-					"placeholder": "",
-					"parent_repeater": "field_liftedpath_programs_cards"
-				},
-				{
-					"key": "field_liftedpath_programs_card_link",
-					"label": "Link",
-					"name": "link",
-					"type": "link",
-					"instructions": "",
-					"required": 0,
-					"conditional_logic": false,
-					"wrapper": { "width": "", "class": "", "id": "" },
-					"return_format": "array",
-					"parent_repeater": "field_liftedpath_programs_cards"
-				}
-			]
-		},
-		{
-			"key": "field_liftedpath_programs_callout_heading",
-			"label": "Sponsor cell heading",
-			"name": "callout_heading",
-			"type": "text",
-			"instructions": "Optional last cell in the grid. Leave the heading empty to hide it.",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "", "class": "", "id": "" },
-			"default_value": "",
-			"maxlength": "",
-			"placeholder": ""
-		},
-		{
-			"key": "field_liftedpath_programs_callout_text",
-			"label": "Sponsor cell text",
-			"name": "callout_text",
-			"type": "textarea",
-			"instructions": "",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "", "class": "", "id": "" },
-			"default_value": "",
-			"rows": 3,
-			"new_lines": ""
-		},
-		{
-			"key": "field_liftedpath_programs_callout_button",
-			"label": "Sponsor cell button",
-			"name": "callout_button",
-			"type": "link",
-			"instructions": "",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "", "class": "", "id": "" },
-			"return_format": "array"
-		}
-	],
-	"location": [
-		[
-			{
-				"param": "block",
-				"operator": "==",
-				"value": "liftedpath/program-cards"
-			}
-		]
-	],
-	"menu_order": 0,
-	"position": "normal",
-	"style": "default",
-	"label_placement": "top",
-	"instruction_placement": "label",
-	"hide_on_screen": "",
-	"active": true,
-	"description": "",
-	"show_in_rest": 1,
-	"modified": 1791619200
+    "key": "group_liftedpath_program_cards",
+    "title": "Program cards",
+    "fields": [
+        {
+            "key": "field_liftedpath_programs_eyebrow",
+            "label": "Eyebrow",
+            "name": "eyebrow",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_liftedpath_programs_heading",
+            "label": "Heading",
+            "name": "heading",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_liftedpath_programs_intro",
+            "label": "Intro",
+            "name": "intro",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "rows": 3,
+            "new_lines": "",
+            "maxlength": "",
+            "placeholder": ""
+        },
+        {
+            "key": "field_liftedpath_programs_layout",
+            "label": "Card layout",
+            "name": "card_layout",
+            "aria-label": "",
+            "type": "button_group",
+            "instructions": "Overlay is the photograph cards. Pathway is the two-column learning grid.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "overlay": "Overlay",
+                "pathway": "Pathway"
+            },
+            "default_value": "overlay",
+            "allow_null": 0,
+            "layout": "horizontal",
+            "return_format": "value"
+        },
+        {
+            "key": "field_liftedpath_programs_index_label",
+            "label": "Pathway index label",
+            "name": "index_label",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Pathway cards show this after the number, as 01 \/ this label. Leave it empty to use each card’s pillar label.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_liftedpath_programs_layout",
+                        "operator": "==",
+                        "value": "pathway"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "LiftedPath Learning",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_liftedpath_programs_cards",
+            "label": "Cards",
+            "name": "cards",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "block",
+            "button_label": "Add card",
+            "min": 0,
+            "max": 0,
+            "rows_per_page": 20,
+            "collapsed": "",
+            "sub_fields": [
+                {
+                    "key": "field_liftedpath_programs_card_image",
+                    "label": "Photograph",
+                    "name": "image",
+                    "aria-label": "",
+                    "type": "image",
+                    "instructions": "Set the alt text on the media item.",
+                    "required": 0,
+                    "conditional_logic": false,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "array",
+                    "library": "all",
+                    "preview_size": "medium",
+                    "mime_types": "jpg,jpeg,png,webp",
+                    "parent_repeater": "field_liftedpath_programs_cards",
+                    "min_width": 0,
+                    "min_height": 0,
+                    "min_size": 0,
+                    "max_width": 0,
+                    "max_height": 0,
+                    "max_size": 0
+                },
+                {
+                    "key": "field_liftedpath_programs_card_kicker",
+                    "label": "Pillar label",
+                    "name": "kicker",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "On overlay cards this sits on the photograph. Pathway cards use the pathway index label when that field is filled.",
+                    "required": 0,
+                    "conditional_logic": false,
+                    "wrapper": {
+                        "width": "40",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "parent_repeater": "field_liftedpath_programs_cards",
+                    "prepend": "",
+                    "append": ""
+                },
+                {
+                    "key": "field_liftedpath_programs_card_title",
+                    "label": "Title",
+                    "name": "title",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": false,
+                    "wrapper": {
+                        "width": "60",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "parent_repeater": "field_liftedpath_programs_cards",
+                    "prepend": "",
+                    "append": ""
+                },
+                {
+                    "key": "field_liftedpath_programs_card_line",
+                    "label": "Short line",
+                    "name": "line",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "On pathway cards this is the line under the title.",
+                    "required": 0,
+                    "conditional_logic": false,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "parent_repeater": "field_liftedpath_programs_cards",
+                    "prepend": "",
+                    "append": ""
+                },
+                {
+                    "key": "field_liftedpath_programs_card_link",
+                    "label": "Link",
+                    "name": "link",
+                    "aria-label": "",
+                    "type": "link",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": false,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "array",
+                    "parent_repeater": "field_liftedpath_programs_cards"
+                }
+            ]
+        },
+        {
+            "key": "field_liftedpath_programs_callout_heading",
+            "label": "Sponsor cell heading",
+            "name": "callout_heading",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Optional last cell in the grid. Leave the heading empty to hide it.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_liftedpath_programs_callout_text",
+            "label": "Sponsor cell text",
+            "name": "callout_text",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "rows": 3,
+            "new_lines": "",
+            "maxlength": "",
+            "placeholder": ""
+        },
+        {
+            "key": "field_liftedpath_programs_callout_button",
+            "label": "Sponsor cell button",
+            "name": "callout_button",
+            "aria-label": "",
+            "type": "link",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array"
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "liftedpath\/program-cards"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 1,
+    "display_title": "",
+    "modified": 1791994710
 }

@@ -389,10 +389,18 @@ function liftedpath_rest_image( int $attachment_id ): ?array {
 /**
  * Prepare parsed blocks, dropping the empty spacers WordPress inserts.
  *
+ * Synced patterns (`core/block` with a `ref`) expand into the blocks
+ * stored on that pattern so the Next.js app can render them.
+ *
  * @param array<int, array<string, mixed>> $parsed Parsed blocks.
+ * @param array<int, true>|null            $seen   Pattern IDs already expanding.
  * @return array<int, array<string, mixed>>
  */
-function liftedpath_rest_blocks( array $parsed ): array {
+function liftedpath_rest_blocks( array $parsed, ?array &$seen = null ): array {
+	if ( null === $seen ) {
+		$seen = array();
+	}
+
 	$blocks = array();
 
 	foreach ( $parsed as $block ) {
@@ -400,12 +408,49 @@ function liftedpath_rest_blocks( array $parsed ): array {
 			continue;
 		}
 
-		$prepared = liftedpath_rest_block( $block );
+		$name = isset( $block['blockName'] ) ? (string) $block['blockName'] : '';
+
+		if ( 'core/block' === $name ) {
+			$ref = isset( $block['attrs']['ref'] ) ? (int) $block['attrs']['ref'] : 0;
+
+			foreach ( liftedpath_rest_synced_pattern_blocks( $ref, $seen ) as $expanded ) {
+				$blocks[] = $expanded;
+			}
+
+			continue;
+		}
+
+		$prepared = liftedpath_rest_block( $block, $seen );
 
 		if ( null !== $prepared ) {
 			$blocks[] = $prepared;
 		}
 	}
+
+	return $blocks;
+}
+
+/**
+ * Blocks from one synced pattern, or an empty list when the ref is unusable.
+ *
+ * @param int              $ref  `wp_block` post ID.
+ * @param array<int, true> $seen Pattern IDs already expanding.
+ * @return array<int, array<string, mixed>>
+ */
+function liftedpath_rest_synced_pattern_blocks( int $ref, array &$seen ): array {
+	if ( $ref <= 0 || isset( $seen[ $ref ] ) ) {
+		return array();
+	}
+
+	$pattern = get_post( $ref );
+
+	if ( ! $pattern instanceof WP_Post || 'wp_block' !== $pattern->post_type || 'publish' !== $pattern->post_status ) {
+		return array();
+	}
+
+	$seen[ $ref ] = true;
+	$blocks       = liftedpath_rest_blocks( parse_blocks( (string) $pattern->post_content ), $seen );
+	unset( $seen[ $ref ] );
 
 	return $blocks;
 }
@@ -417,15 +462,20 @@ function liftedpath_rest_blocks( array $parsed ): array {
  * the three keys name, attributes, and html.
  *
  * @param array<string, mixed> $block Parsed block.
+ * @param array<int, true>|null $seen Pattern IDs already expanding.
  * @return array<string, mixed>|null
  */
-function liftedpath_rest_block( array $block ): ?array {
-	$name      = isset( $block['blockName'] ) ? $block['blockName'] : null;
-	$inner     = isset( $block['innerHTML'] ) ? trim( (string) $block['innerHTML'] ) : '';
-	$children  = array();
+function liftedpath_rest_block( array $block, ?array &$seen = null ): ?array {
+	if ( null === $seen ) {
+		$seen = array();
+	}
+
+	$name     = isset( $block['blockName'] ) ? $block['blockName'] : null;
+	$inner    = isset( $block['innerHTML'] ) ? trim( (string) $block['innerHTML'] ) : '';
+	$children = array();
 
 	if ( ! empty( $block['innerBlocks'] ) && is_array( $block['innerBlocks'] ) ) {
-		$children = liftedpath_rest_blocks( $block['innerBlocks'] );
+		$children = liftedpath_rest_blocks( $block['innerBlocks'], $seen );
 	}
 
 	if ( ( null === $name || '' === $name ) && '' === $inner && array() === $children ) {

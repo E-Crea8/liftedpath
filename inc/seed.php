@@ -440,6 +440,7 @@ function liftedpath_seed_work_page( array $images ): array {
  */
 function liftedpath_seed_learning_page( array $images ): array {
 	$intro   = 'From first steps to new skills, we help young people continue learning and create their own futures.';
+	$section = 'Four pathways that meet learners where they are and help them move forward.';
 	$content = liftedpath_seed_page_hero( $images['classroom'] ?? 0, 'LiftedPath Learning', 'A pathway for every stage of learning.', $intro, 'Home' );
 	$rows    = array();
 
@@ -451,7 +452,7 @@ function liftedpath_seed_learning_page( array $images ): array {
 			'image'  => $child['image'],
 			'kicker' => $child['eyebrow'],
 			'title'  => $child['title'],
-			'line'   => $child['hero_summary'],
+			'line'   => $child['eyebrow'],
 			'link'   => liftedpath_seed_link( 'Read More', '/learning/' . $child['slug'] . '/' ),
 		);
 	}
@@ -461,8 +462,11 @@ function liftedpath_seed_learning_page( array $images ): array {
 		liftedpath_seed_data(
 			array(
 				array( 'name' => 'eyebrow', 'key' => 'field_liftedpath_programs_eyebrow', 'value' => 'LiftedPath Learning' ),
-				array( 'name' => 'heading', 'key' => 'field_liftedpath_programs_heading', 'value' => 'Four learning pathways' ),
-				array( 'name' => 'intro', 'key' => 'field_liftedpath_programs_intro', 'value' => $intro ),
+				array( 'name' => 'heading', 'key' => 'field_liftedpath_programs_heading', 'value' => 'Learning grows with every step.' ),
+				array( 'name' => 'intro', 'key' => 'field_liftedpath_programs_intro', 'value' => $section ),
+				array( 'name' => 'card_layout', 'key' => 'field_liftedpath_programs_layout', 'value' => 'pathway' ),
+				array( 'name' => 'index_label', 'key' => 'field_liftedpath_programs_index_label', 'value' => 'LiftedPath Learning' ),
+				array( 'name' => 'heading_weight', 'key' => 'field_liftedpath_block_heading_weight', 'value' => '700' ),
 				array(
 					'name' => 'cards',
 					'key'  => 'field_liftedpath_programs_cards',
@@ -481,6 +485,7 @@ function liftedpath_seed_learning_page( array $images ): array {
 			)
 		)
 	);
+	$content .= liftedpath_seed_join_band( $images['students'] ?? 0 );
 
 	return liftedpath_seed_page_record( 'learning', 'LiftedPath Learning', '', $content, 'LiftedPath Learning', $intro, $intro );
 }

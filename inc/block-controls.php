@@ -35,6 +35,15 @@ function liftedpath_block_state_classes(): string {
 		$classes[] = 'is-reversed';
 	}
 
+	$weight = get_field( 'heading_weight' );
+	$weight = is_scalar( $weight ) ? (string) $weight : '';
+
+	if ( ! in_array( $weight, array( '500', '600', '700', '800' ), true ) ) {
+		$weight = '700';
+	}
+
+	$classes[] = 'is-weight-' . $weight;
+
 	return implode( ' ', $classes );
 }
 
@@ -205,6 +214,23 @@ function liftedpath_register_block_layout_fields(): void {
 						'reverse' => 'Right to left',
 					),
 					'default_value' => 'design',
+					'layout'        => 'horizontal',
+					'return_format' => 'value',
+				),
+				array(
+					'key'           => 'field_liftedpath_block_heading_weight',
+					'label'         => 'Heading weight',
+					'name'          => 'heading_weight',
+					'type'          => 'button_group',
+					'instructions'  => 'Sets how strong this block’s headings are. Strong is the default. It applies to the heading and to titles inside the block.',
+					'choices'       => array(
+						'500' => 'Regular',
+						'600' => 'Medium',
+						'700' => 'Strong',
+						'800' => 'Extra strong',
+					),
+					'default_value' => '700',
+					'allow_null'    => 0,
 					'layout'        => 'horizontal',
 					'return_format' => 'value',
 				),

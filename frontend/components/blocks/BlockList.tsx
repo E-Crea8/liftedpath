@@ -1,4 +1,4 @@
-import { Suspense, type ReactNode } from "react";
+import { Suspense, type CSSProperties, type ReactNode } from "react";
 import { AboutStory } from "@/components/blocks/AboutStory";
 import { BlockBackgroundVideo } from "@/components/blocks/BlockBackground";
 import { AboutTabs } from "@/components/blocks/AboutTabs";
@@ -23,7 +23,7 @@ import { StatGroup } from "@/components/blocks/StatGroup";
 import { Stewardship } from "@/components/blocks/Stewardship";
 import { Team } from "@/components/blocks/Team";
 import { PageMotion } from "@/components/motion/PageMotion";
-import { blockHidden, blockSurface, layoutClass, siteHost } from "@/lib/blocks/fields";
+import { blockHidden, blockSurface, headingWeight, layoutClass, siteHost } from "@/lib/blocks/fields";
 import type { ContactNotices, DonateNotices } from "@/lib/forms";
 import type { Block, FeaturedImage } from "@/lib/wp/types";
 
@@ -182,18 +182,51 @@ function BlockView({
 		case "core/columns":
 			view = <CoreContent block={block} images={images} />;
 			break;
+		case "core/block": {
+			const nested = Array.isArray(block.attributes.innerBlocks) ? block.attributes.innerBlocks : [];
+			if (nested.length === 0) {
+				return null;
+			}
+			return (
+				<>
+					{nested.map((child, childIndex) => (
+						<BlockView
+							address={address}
+							block={child}
+							contactNotices={contactNotices}
+							donateNotices={donateNotices}
+							email={email}
+							images={images}
+							key={`${child.name}-${childIndex}`}
+							paymentsConfigured={paymentsConfigured}
+							phone={phone}
+							phrases={phrases}
+							providerLabel={providerLabel}
+							radioKey={`${radioKey}-${childIndex}`}
+							siteHost={host}
+						/>
+					))}
+				</>
+			);
+		}
 		default:
 			return null;
 	}
 
 	const layout = layoutClass(block);
 	const surface = blockSurface(block, images);
+	const weight = headingWeight(block.attributes.heading_weight);
 	if (!layout && !surface) {
 		return view;
 	}
 
+	const style = {
+		...(surface?.style ?? {}),
+		"--heading-weight": weight,
+	} as CSSProperties;
+
 	return (
-		<div className={[layout, surface?.className].filter(Boolean).join(" ")} style={surface?.style}>
+		<div className={[layout || "liftedpath-layout", surface?.className].filter(Boolean).join(" ")} style={style}>
 			{surface?.videoUrl ? <BlockBackgroundVideo src={surface.videoUrl} /> : null}
 			{surface && surface.kind !== "color" ? (
 				<span aria-hidden="true" className="liftedpath-block-bg-shade" style={{ backgroundColor: surface.shade }} />

@@ -183,7 +183,8 @@ export function layoutClass(block: Block): string {
 	const align = text(block.attributes.heading_align);
 	const place = text(block.attributes.heading_place);
 	const order = text(block.attributes.column_order);
-	const classes = ["liftedpath-layout"];
+	const weight = headingWeight(block.attributes.heading_weight);
+	const classes = ["liftedpath-layout", `is-weight-${weight}`];
 
 	if (align === "left" || align === "center" || align === "right") {
 		classes.push(`is-heading-${align}`);
@@ -195,7 +196,12 @@ export function layoutClass(block: Block): string {
 		classes.push("is-reversed");
 	}
 
-	return classes.length > 1 ? classes.join(" ") : "";
+	return classes.join(" ");
+}
+
+export function headingWeight(value: JsonValue | Block[] | undefined): string {
+	const weight = text(value);
+	return weight === "500" || weight === "600" || weight === "700" || weight === "800" ? weight : "700";
 }
 
 export interface BlockSurface {
