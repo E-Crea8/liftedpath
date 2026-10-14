@@ -78,7 +78,15 @@ export async function exchangePreviewToken(token: string): Promise<string> {
 
 export async function getPaths(): Promise<PathIndex> {
 	const url = new URL(`${apiUrl()}/liftedpath/v1/paths`);
-	return mapPaths(await readJson(url, undefined, false));
+	try {
+		// Build-time static params. Prefer a plain read; SiteGround sometimes returns an
+		// empty HTML 202 on the first hit, so fall back once with lp_fresh.
+		return mapPaths(await readJson(url, undefined, false));
+	} catch (error) {
+		unstable_rethrow(error);
+		const retry = new URL(`${apiUrl()}/liftedpath/v1/paths`);
+		return mapPaths(await readJson(retry, undefined, true));
+	}
 }
 
 export async function getNavigation(): Promise<Navigation> {
