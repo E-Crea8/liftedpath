@@ -1,6 +1,7 @@
 import { draftMode } from "next/headers";
 import { unstable_rethrow } from "next/navigation";
 import { connection } from "next/server";
+import { wordpressApiUrl } from "@/lib/wp/api-url";
 import { assertPublicPath, mapDesign, mapDiscovery, mapMedia, mapNavigation, mapPage, mapPaths, mapSettings } from "@/lib/wp/map";
 import {
 	holdCopy,
@@ -186,12 +187,11 @@ async function published<T>(
 }
 
 function apiUrl(): string {
-	const raw = process.env.WORDPRESS_API_URL;
-	if (!raw) {
+	try {
+		return wordpressApiUrl();
+	} catch {
 		throw new WordpressError("missing_config", "WORDPRESS_API_URL is not set.", 500);
 	}
-
-	return raw.replace(/\/$/, "");
 }
 
 function previewHeaders(): Record<string, string> {

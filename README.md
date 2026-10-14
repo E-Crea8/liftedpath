@@ -120,7 +120,7 @@ Set these in `.env.local` locally and in the Vercel project for production. Do n
 
 | Variable | Role |
 | --- | --- |
-| `WORDPRESS_API_URL` | WordPress REST root, such as `https://liftedpathfoundation.org/wp-json` |
+| `WORDPRESS_API_URL` | WordPress REST root. Production must be `https://cms.liftedpathfoundation.org/wp-json` (never the public www host) |
 | `WORDPRESS_PREVIEW_USER` | Administrator username |
 | `WORDPRESS_PREVIEW_APP_PASSWORD` | Application password for that user, not the wp-admin password |
 | `REVALIDATE_SECRET` | Shared with the WordPress option `liftedpath_revalidate_secret` |

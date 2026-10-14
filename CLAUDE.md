@@ -23,3 +23,7 @@ If implementation changes the architecture, scope, or standards documented in th
 Published WordPress edits reach the public site through `LIVE-WORDPRESS-UPDATES.md`. Do not change that flow unless the user asks.
 
 Never push to `main`, and never deploy, until the user explicitly says to in that request. A commit or a live error is not permission.
+
+### Public site must stay up
+
+The Next.js site on Vercel is the live public website. A green Vercel build is not enough. After any `frontend/` change that reaches Production, confirm the live HTML still shows real page content (not SiteHold “kept online”) and that `https://www.liftedpathfoundation.org/api/wp-health` returns `ok: true` once that route is deployed. Vercel `WORDPRESS_API_URL` must be `https://cms.liftedpathfoundation.org/wp-json` — never the www/apex public host and never `liftedpath.local`. Incident checklist: `context/incidents/2026-10-14-site-hold-outage.md`.

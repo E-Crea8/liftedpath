@@ -1,3 +1,4 @@
+import { wordpressApiUrl } from "@/lib/wp/api-url";
 import { reportReadFailure } from "@/lib/wp/safety";
 
 export interface ContactNotices {
@@ -174,10 +175,7 @@ export function formFailure(error: unknown, fallback: string) {
 }
 
 async function readJson(path: string, init: RequestInit, secret: boolean): Promise<unknown> {
-	const base = process.env.WORDPRESS_API_URL?.replace(/\/$/, "");
-	if (!base) {
-		throw new Error("WORDPRESS_API_URL is not set.");
-	}
+	const base = wordpressApiUrl();
 
 	const headers = new Headers(init.headers);
 	headers.set("Accept", "application/json");

@@ -1,10 +1,7 @@
 import type { NextConfig } from "next";
 
 function uploadRemotePatterns(): NonNullable<NextConfig["images"]>["remotePatterns"] {
-	const raw = process.env.WORDPRESS_API_URL;
-	if (!raw) {
-		return [];
-	}
+	const raw = process.env.WORDPRESS_API_URL?.trim() || "https://cms.liftedpathfoundation.org/wp-json";
 
 	try {
 		const url = new URL(raw);
@@ -12,16 +9,22 @@ function uploadRemotePatterns(): NonNullable<NextConfig["images"]>["remotePatter
 			return [];
 		}
 
+		const hosts = new Set([url.hostname, "cms.liftedpathfoundation.org"]);
+
+		return [...hosts].map((hostname) => ({
+			protocol: (url.protocol === "https:" || hostname === "cms.liftedpathfoundation.org" ? "https" : "http") as "http" | "https",
+			hostname,
+			...(url.port && hostname === url.hostname ? { port: url.port } : {}),
+			pathname: "/wp-content/uploads/**",
+		}));
+	} catch {
 		return [
 			{
-				protocol: url.protocol === "https:" ? "https" : "http",
-				hostname: url.hostname,
-				...(url.port ? { port: url.port } : {}),
+				protocol: "https",
+				hostname: "cms.liftedpathfoundation.org",
 				pathname: "/wp-content/uploads/**",
 			},
 		];
-	} catch {
-		return [];
 	}
 }
 
