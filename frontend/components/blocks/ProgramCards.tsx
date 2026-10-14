@@ -18,7 +18,7 @@ export function ProgramCards({
 	const calloutHeading = text(block.attributes.callout_heading);
 	const calloutText = text(block.attributes.callout_text);
 	const calloutButton = fieldLink(block.attributes.callout_button, siteHost);
-	const pathway = text(block.attributes.card_layout) === "pathway";
+	const pathway = block.name === "liftedpath/pathway-cards" || text(block.attributes.card_layout) === "pathway";
 	const indexLabel = text(block.attributes.index_label);
 	const cards = rows(block.attributes, "cards")
 		.map((row) => ({

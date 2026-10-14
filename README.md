@@ -63,7 +63,8 @@ Each folder is one ACF block: `block.json` plus `render.php`. The block name is 
 | `stat`, `stat-group` | Impact figures |
 | `cta-band` | Closing call to action |
 | `about-tabs` | Story, mission, and vision |
-| `program-cards` | Pathways and initiatives |
+| `program-cards` | Overlay initiative cards |
+| `pathway-cards` | Learning pathway grid |
 | `action-grid` | How the foundation works |
 | `sponsor-callout` | Sponsor line |
 | `process` | Process steps |

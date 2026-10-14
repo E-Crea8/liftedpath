@@ -458,30 +458,29 @@ function liftedpath_seed_learning_page( array $images ): array {
 	}
 
 	$content .= liftedpath_seed_block(
-		'program-cards',
+		'pathway-cards',
 		liftedpath_seed_data(
 			array(
-				array( 'name' => 'eyebrow', 'key' => 'field_liftedpath_programs_eyebrow', 'value' => 'LiftedPath Learning' ),
-				array( 'name' => 'heading', 'key' => 'field_liftedpath_programs_heading', 'value' => 'Learning grows with every step.' ),
-				array( 'name' => 'intro', 'key' => 'field_liftedpath_programs_intro', 'value' => $section ),
-				array( 'name' => 'card_layout', 'key' => 'field_liftedpath_programs_layout', 'value' => 'pathway' ),
-				array( 'name' => 'index_label', 'key' => 'field_liftedpath_programs_index_label', 'value' => 'LiftedPath Learning' ),
+				array( 'name' => 'eyebrow', 'key' => 'field_liftedpath_pathway_eyebrow', 'value' => 'LiftedPath Learning' ),
+				array( 'name' => 'heading', 'key' => 'field_liftedpath_pathway_heading', 'value' => 'Learning grows with every step.' ),
+				array( 'name' => 'intro', 'key' => 'field_liftedpath_pathway_intro', 'value' => $section ),
+				array( 'name' => 'index_label', 'key' => 'field_liftedpath_pathway_index_label', 'value' => 'LiftedPath Learning' ),
 				array( 'name' => 'heading_weight', 'key' => 'field_liftedpath_block_heading_weight', 'value' => '700' ),
 				array(
 					'name' => 'cards',
-					'key'  => 'field_liftedpath_programs_cards',
+					'key'  => 'field_liftedpath_pathway_cards',
 					'rows' => $rows,
 					'subs' => array(
-						'image'  => 'field_liftedpath_programs_card_image',
-						'kicker' => 'field_liftedpath_programs_card_kicker',
-						'title'  => 'field_liftedpath_programs_card_title',
-						'line'   => 'field_liftedpath_programs_card_line',
-						'link'   => 'field_liftedpath_programs_card_link',
+						'image'  => 'field_liftedpath_pathway_card_image',
+						'kicker' => 'field_liftedpath_pathway_card_kicker',
+						'title'  => 'field_liftedpath_pathway_card_title',
+						'line'   => 'field_liftedpath_pathway_card_line',
+						'link'   => 'field_liftedpath_pathway_card_link',
 					),
 				),
-				array( 'name' => 'callout_heading', 'key' => 'field_liftedpath_programs_callout_heading', 'value' => '' ),
-				array( 'name' => 'callout_text', 'key' => 'field_liftedpath_programs_callout_text', 'value' => '' ),
-				array( 'name' => 'callout_button', 'key' => 'field_liftedpath_programs_callout_button', 'value' => '' ),
+				array( 'name' => 'callout_heading', 'key' => 'field_liftedpath_pathway_callout_heading', 'value' => '' ),
+				array( 'name' => 'callout_text', 'key' => 'field_liftedpath_pathway_callout_text', 'value' => '' ),
+				array( 'name' => 'callout_button', 'key' => 'field_liftedpath_pathway_callout_button', 'value' => '' ),
 			)
 		)
 	);

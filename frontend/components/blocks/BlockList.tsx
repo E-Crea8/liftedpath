@@ -137,6 +137,7 @@ function BlockView({
 			view = <Beliefs block={block} />;
 			break;
 		case "liftedpath/program-cards":
+		case "liftedpath/pathway-cards":
 			view = <ProgramCards block={block} images={images} siteHost={host} />;
 			break;
 		case "liftedpath/action-grid":

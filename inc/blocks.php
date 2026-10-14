@@ -44,6 +44,7 @@ function liftedpath_block_slugs(): array {
 		'about-story',
 		'beliefs',
 		'program-cards',
+		'pathway-cards',
 		'action-grid',
 		'sponsor-callout',
 		'stewardship',

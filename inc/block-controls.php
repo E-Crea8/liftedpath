@@ -592,6 +592,168 @@ function liftedpath_migrate_breadcrumb_current_run(): void {
 add_action( 'init', 'liftedpath_migrate_breadcrumb_current', 30 );
 
 /**
+ * Field keys copied from Program cards into Pathway cards on migrate.
+ *
+ * @return array<string, string>
+ */
+function liftedpath_pathway_cards_field_map(): array {
+	return array(
+		'field_liftedpath_programs_eyebrow'         => 'field_liftedpath_pathway_eyebrow',
+		'field_liftedpath_programs_heading'         => 'field_liftedpath_pathway_heading',
+		'field_liftedpath_programs_intro'           => 'field_liftedpath_pathway_intro',
+		'field_liftedpath_programs_index_label'     => 'field_liftedpath_pathway_index_label',
+		'field_liftedpath_programs_cards'           => 'field_liftedpath_pathway_cards',
+		'field_liftedpath_programs_card_image'      => 'field_liftedpath_pathway_card_image',
+		'field_liftedpath_programs_card_kicker'     => 'field_liftedpath_pathway_card_kicker',
+		'field_liftedpath_programs_card_title'      => 'field_liftedpath_pathway_card_title',
+		'field_liftedpath_programs_card_line'       => 'field_liftedpath_pathway_card_line',
+		'field_liftedpath_programs_card_link'       => 'field_liftedpath_pathway_card_link',
+		'field_liftedpath_programs_callout_heading' => 'field_liftedpath_pathway_callout_heading',
+		'field_liftedpath_programs_callout_text'    => 'field_liftedpath_pathway_callout_text',
+		'field_liftedpath_programs_callout_button'  => 'field_liftedpath_pathway_callout_button',
+	);
+}
+
+/**
+ * Turn a pathway-layout Program cards block into Pathway cards.
+ *
+ * @param array<string, mixed> $block Parsed block.
+ */
+function liftedpath_migrate_program_cards_block_to_pathway( array &$block ): bool {
+	if ( ( $block['blockName'] ?? '' ) !== 'liftedpath/program-cards' ) {
+		return false;
+	}
+
+	if ( ! isset( $block['attrs'] ) || ! is_array( $block['attrs'] ) ) {
+		return false;
+	}
+
+	$data = ( isset( $block['attrs']['data'] ) && is_array( $block['attrs']['data'] ) ) ? $block['attrs']['data'] : array();
+	$layout = ( isset( $data['card_layout'] ) && is_string( $data['card_layout'] ) ) ? $data['card_layout'] : '';
+
+	if ( 'pathway' !== $layout ) {
+		return false;
+	}
+
+	$map = liftedpath_pathway_cards_field_map();
+	$next = array();
+
+	foreach ( $data as $key => $value ) {
+		if ( ! is_string( $key ) ) {
+			continue;
+		}
+
+		if ( 'card_layout' === $key || '_card_layout' === $key ) {
+			continue;
+		}
+
+		if ( str_starts_with( $key, '_' ) && is_string( $value ) && isset( $map[ $value ] ) ) {
+			$next[ $key ] = $map[ $value ];
+			continue;
+		}
+
+		$next[ $key ] = $value;
+	}
+
+	$block['blockName']       = 'liftedpath/pathway-cards';
+	$block['attrs']['name']   = 'liftedpath/pathway-cards';
+	$block['attrs']['data']   = $next;
+
+	return true;
+}
+
+/**
+ * @param array<int, array<string, mixed>> $blocks Parsed blocks.
+ */
+function liftedpath_migrate_pathway_cards_blocks( array &$blocks ): bool {
+	$changed = false;
+
+	foreach ( $blocks as &$block ) {
+		if ( ! is_array( $block ) ) {
+			continue;
+		}
+
+		if ( ! empty( $block['innerBlocks'] ) && is_array( $block['innerBlocks'] ) ) {
+			if ( liftedpath_migrate_pathway_cards_blocks( $block['innerBlocks'] ) ) {
+				$changed = true;
+			}
+		}
+
+		if ( liftedpath_migrate_program_cards_block_to_pathway( $block ) ) {
+			$changed = true;
+		}
+	}
+
+	return $changed;
+}
+
+/**
+ * Split Learning’s pathway layout out of Program cards once.
+ */
+function liftedpath_migrate_pathway_cards(): void {
+	if ( get_option( 'liftedpath_pathway_cards_migrated' ) ) {
+		return;
+	}
+
+	try {
+		liftedpath_migrate_pathway_cards_run();
+	} catch ( Throwable $exception ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
+		unset( $exception );
+	}
+}
+
+/**
+ * Rewrite stored pathway Program cards into Pathway cards. Failures stay off the public request.
+ */
+function liftedpath_migrate_pathway_cards_run(): void {
+	global $wpdb;
+
+	$ids = $wpdb->get_col(
+		$wpdb->prepare(
+			"SELECT ID FROM {$wpdb->posts} WHERE post_content LIKE %s AND post_status != %s",
+			'%liftedpath/program-cards%',
+			'auto-draft'
+		)
+	);
+
+	if ( ! is_array( $ids ) ) {
+		return;
+	}
+
+	foreach ( $ids as $id ) {
+		$post = get_post( (int) $id );
+
+		if ( ! $post instanceof WP_Post || ! is_string( $post->post_content ) || ! str_contains( $post->post_content, 'liftedpath/program-cards' ) ) {
+			continue;
+		}
+
+		$blocks = parse_blocks( $post->post_content );
+
+		if ( ! liftedpath_migrate_pathway_cards_blocks( $blocks ) ) {
+			continue;
+		}
+
+		$content = serialize_blocks( $blocks );
+
+		if ( ! is_string( $content ) || '' === $content || ! str_contains( $content, 'liftedpath/pathway-cards' ) ) {
+			continue;
+		}
+
+		$wpdb->update(
+			$wpdb->posts,
+			array( 'post_content' => $content ),
+			array( 'ID' => (int) $id ),
+			array( '%s' ),
+			array( '%d' )
+		);
+		clean_post_cache( (int) $id );
+	}
+
+	update_option( 'liftedpath_pathway_cards_migrated', 1, false );
+}
+add_action( 'init', 'liftedpath_migrate_pathway_cards', 31 );
+
+/**
  * @param array<string, mixed> ...$parts Field pairs.
  * @return array<string, mixed>
  */

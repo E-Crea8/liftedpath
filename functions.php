@@ -8,7 +8,7 @@
  */
 
 if ( ! defined( 'LIFTEDPATH_VERSION' ) ) {
-	define( 'LIFTEDPATH_VERSION', '0.19.19' );
+	define( 'LIFTEDPATH_VERSION', '0.19.20' );
 }
 
 $liftedpath_boot_log = get_template_directory() . '/boot-error.txt';

@@ -5,8 +5,8 @@
 	"title": "Program cards",
 	"category": "liftedpath",
 	"icon": "grid-view",
-	"description": "Initiative cards and an optional sponsor cell.",
-	"keywords": ["programs", "initiatives", "cards"],
+	"description": "Overlay photograph cards for initiatives, with an optional sponsor cell.",
+	"keywords": ["programs", "initiatives", "cards", "overlay"],
 	"textdomain": "liftedpath",
 	"attributes": {
 		"align": {

@@ -10,7 +10,8 @@ $heading     = liftedpath_block_string( function_exists( 'get_field' ) ? get_fie
 $intro       = liftedpath_block_string( function_exists( 'get_field' ) ? get_field( 'intro' ) : '' );
 $layout      = liftedpath_block_string( function_exists( 'get_field' ) ? get_field( 'card_layout' ) : '' );
 $index_label = liftedpath_block_string( function_exists( 'get_field' ) ? get_field( 'index_label' ) : '' );
-$pathway     = 'pathway' === $layout;
+// Pathway cards force the pathway layout. Legacy Program cards with card_layout=pathway stay pathway until migrated.
+$pathway     = ! empty( $liftedpath_force_pathway ) || 'pathway' === $layout;
 $callout_heading = liftedpath_block_string( function_exists( 'get_field' ) ? get_field( 'callout_heading' ) : '' );
 $callout_text    = liftedpath_block_string( function_exists( 'get_field' ) ? get_field( 'callout_text' ) : '' );
 $callout_button  = function_exists( 'get_field' ) ? get_field( 'callout_button' ) : null;

@@ -63,57 +63,6 @@
             "placeholder": ""
         },
         {
-            "key": "field_liftedpath_programs_layout",
-            "label": "Card layout",
-            "name": "card_layout",
-            "aria-label": "",
-            "type": "button_group",
-            "instructions": "Overlay is the photograph cards. Pathway is the two-column learning grid.",
-            "required": 0,
-            "conditional_logic": false,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "choices": {
-                "overlay": "Overlay",
-                "pathway": "Pathway"
-            },
-            "default_value": "overlay",
-            "allow_null": 0,
-            "layout": "horizontal",
-            "return_format": "value"
-        },
-        {
-            "key": "field_liftedpath_programs_index_label",
-            "label": "Pathway index label",
-            "name": "index_label",
-            "aria-label": "",
-            "type": "text",
-            "instructions": "Pathway cards show this after the number, as 01 \/ this label. Leave it empty to use each card’s pillar label.",
-            "required": 0,
-            "conditional_logic": [
-                [
-                    {
-                        "field": "field_liftedpath_programs_layout",
-                        "operator": "==",
-                        "value": "pathway"
-                    }
-                ]
-            ],
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "maxlength": "",
-            "placeholder": "LiftedPath Learning",
-            "prepend": "",
-            "append": ""
-        },
-        {
             "key": "field_liftedpath_programs_cards",
             "label": "Cards",
             "name": "cards",
@@ -166,7 +115,7 @@
                     "name": "kicker",
                     "aria-label": "",
                     "type": "text",
-                    "instructions": "On overlay cards this sits on the photograph. Pathway cards use the pathway index label when that field is filled.",
+                    "instructions": "Sits on the photograph.",
                     "required": 0,
                     "conditional_logic": false,
                     "wrapper": {
@@ -208,7 +157,7 @@
                     "name": "line",
                     "aria-label": "",
                     "type": "text",
-                    "instructions": "On pathway cards this is the line under the title.",
+                    "instructions": "Short line under the title.",
                     "required": 0,
                     "conditional_logic": false,
                     "wrapper": {
@@ -318,5 +267,5 @@
     "description": "",
     "show_in_rest": 1,
     "display_title": "",
-    "modified": 1791994710
+    "modified": 1791999001
 }
