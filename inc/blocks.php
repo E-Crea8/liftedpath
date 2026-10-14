@@ -74,16 +74,25 @@ add_action( 'init', 'liftedpath_register_blocks' );
 
 /**
  * Host and editor presentation for the blocks.
+ *
+ * Tokens load first so blocks.css --color-* names resolve from theme.json.
  */
 function liftedpath_block_styles(): void {
 	wp_enqueue_style(
+		'liftedpath-wp-tokens',
+		get_template_directory_uri() . '/assets/wp-tokens.css',
+		array(),
+		LIFTEDPATH_VERSION
+	);
+	wp_enqueue_style(
 		'liftedpath-blocks',
 		get_template_directory_uri() . '/assets/blocks.css',
-		array(),
+		array( 'liftedpath-wp-tokens' ),
 		LIFTEDPATH_VERSION
 	);
 }
 add_action( 'wp_enqueue_scripts', 'liftedpath_block_styles' );
+add_action( 'enqueue_block_assets', 'liftedpath_block_styles' );
 
 /**
  * Hex color at an opacity WordPress will keep in a style attribute.

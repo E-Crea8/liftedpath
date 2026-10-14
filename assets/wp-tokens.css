@@ -1,0 +1,40 @@
+/**
+ * Map theme.json presets onto the --color-* / --font-* names used by blocks.css.
+ * Next.js defines those names in globals.css; WordPress needs this bridge.
+ */
+
+:root,
+.editor-styles-wrapper {
+	--color-paper: var(--wp--preset--color--paper, #fcfdfd);
+	--color-teal: var(--wp--preset--color--teal, #043c42);
+	--color-deep: var(--wp--preset--color--deep, #02272b);
+	--color-gold: var(--wp--preset--color--gold, #b78d4b);
+	--color-bronze: var(--wp--preset--color--bronze, #a57d3c);
+	--color-sand: var(--wp--preset--color--sand, #d6b886);
+	--color-surface: var(--wp--preset--color--surface, #e7ecec);
+	--color-warm: var(--wp--preset--color--warm, #f3ece0);
+	--color-cool: var(--wp--preset--color--cool, #d3dbdd);
+	--color-muted: var(--wp--preset--color--muted, #4c6e71);
+	--color-line: var(--wp--preset--color--line, #d3dcdc);
+	--gradient-veil: var(--wp--custom--color--veil, linear-gradient(90deg, color-mix(in oklch, #02272b 96%, transparent), color-mix(in oklch, #02272b 68%, transparent) 52%, color-mix(in oklch, #02272b 35%, transparent)));
+	--font-body: var(--wp--preset--font-family--body, "Plus Jakarta Sans", sans-serif);
+	--font-display: var(--wp--preset--font-family--display, "Stack Sans Headline", "Plus Jakarta Sans", sans-serif);
+	--text-display: var(--wp--preset--font-size--display, clamp(3rem, 6.25vw, 5rem));
+	--text-heading: var(--wp--preset--font-size--heading, clamp(2.25rem, 4.38vw, 3.5rem));
+	--text-h3: var(--wp--preset--font-size--heading-3, 1.28rem);
+	--text-stat: var(--wp--preset--font-size--stat, 2.6rem);
+	--text-body-lg: var(--wp--preset--font-size--body-large, 1.03rem);
+	--text-body: var(--wp--preset--font-size--body, 1rem);
+	--text-eyebrow: var(--wp--preset--font-size--eyebrow, 0.85rem);
+	--text-nav: var(--wp--preset--font-size--nav, 0.86rem);
+	--text-button: var(--wp--preset--font-size--button, 0.83rem);
+	--text-caption: var(--wp--preset--font-size--caption, 0.78rem);
+	--radius-sm: var(--wp--custom--radius--small, 8px);
+	--radius-control: var(--wp--custom--radius--control, 14px);
+	--radius-image: var(--wp--custom--radius--image, 16px);
+	--radius-card: var(--wp--custom--radius--card, 18px);
+	--radius-pill: var(--wp--custom--radius--pill, 999px);
+	--shadow-card: var(--wp--custom--shadow--card, 0 14px 34px rgba(2, 39, 43, 0.1));
+	--shadow-note: var(--wp--custom--shadow--note, 0 15px 30px rgba(2, 39, 43, 0.12));
+	--header-height: var(--wp--custom--header-height, 89px);
+}

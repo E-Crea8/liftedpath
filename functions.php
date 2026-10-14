@@ -8,7 +8,7 @@
  */
 
 if ( ! defined( 'LIFTEDPATH_VERSION' ) ) {
-	define( 'LIFTEDPATH_VERSION', '0.19.17' );
+	define( 'LIFTEDPATH_VERSION', '0.19.19' );
 }
 
 $liftedpath_boot_log = get_template_directory() . '/boot-error.txt';
@@ -56,8 +56,9 @@ function liftedpath_setup() {
 	add_theme_support( 'align-wide' );
 	add_theme_support( 'responsive-embeds' );
 	add_theme_support( 'editor-styles' );
-	add_editor_style( 'assets/editor.css' );
+	add_editor_style( 'assets/wp-tokens.css' );
 	add_editor_style( 'assets/blocks.css' );
+	add_editor_style( 'assets/editor.css' );
 
 	add_image_size( 'liftedpath-hero', 1920, 1080, true );
 	add_image_size( 'liftedpath-card', 720, 960, true );

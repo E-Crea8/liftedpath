@@ -2,7 +2,7 @@
  * Editor canvas rules that sit on top of theme.json.
  *
  * Fonts are registered in theme.json and loaded from assets/fonts.
- * Design 01 focus, button height, and the 520px heading sizes.
+ * Design 01 focus, button height, and hero contrast for the iframe.
  */
 
 .editor-styles-wrapper :where(a, button, input, select, textarea, .wp-element-button):focus-visible {
@@ -23,4 +23,40 @@
 	.editor-styles-wrapper h2 {
 		font-size: 2.15rem;
 	}
+}
+
+/* Theme heading/link colors must not flatten hero, page-hero, or CTA copy. */
+.editor-styles-wrapper .liftedpath-hero,
+.editor-styles-wrapper .liftedpath-page-hero,
+.editor-styles-wrapper .liftedpath-cta--photo,
+.editor-styles-wrapper .liftedpath-cta--teal {
+	color: var(--color-paper, #fcfdfd);
+}
+
+.editor-styles-wrapper .liftedpath-hero :is(h1, h2, h3, p),
+.editor-styles-wrapper .liftedpath-page-hero :is(h1, h2, h3, p),
+.editor-styles-wrapper .liftedpath-cta--photo :is(h1, h2, h3, p),
+.editor-styles-wrapper .liftedpath-cta--teal :is(h1, h2, h3, p) {
+	color: inherit;
+}
+
+.editor-styles-wrapper .liftedpath-page-hero__eyebrow,
+.editor-styles-wrapper .liftedpath-hero__eyebrow,
+.editor-styles-wrapper .liftedpath-page-hero__crumbs a,
+.editor-styles-wrapper .liftedpath-cta--photo .liftedpath-eyebrow,
+.editor-styles-wrapper .liftedpath-cta--teal .liftedpath-eyebrow {
+	color: var(--color-gold, #b78d4b);
+}
+
+.editor-styles-wrapper .liftedpath-page-hero__crumbs a:hover {
+	color: var(--color-sand, #d6b886);
+}
+
+.editor-styles-wrapper .liftedpath-page-hero__crumbs span {
+	color: var(--color-paper, #fcfdfd);
+}
+
+.editor-styles-wrapper .liftedpath-is-hidden {
+	opacity: 0.45;
+	outline: 1px dashed var(--color-line, #d3dcdc);
 }

@@ -1,4 +1,4 @@
-/* LiftedPath block visibility in the editor. */
+/* LiftedPath block visibility and insert defaults in the editor. */
 (function (wp) {
 	if (!wp || !wp.hooks || !wp.element || !wp.blockEditor || !wp.components || !wp.compose) {
 		return;
@@ -15,6 +15,36 @@
 	function isLiftedPath(name) {
 		return typeof name === "string" && name.indexOf("liftedpath/") === 0;
 	}
+
+	/**
+	 * Use each block's example payload as the default attributes on insert,
+	 * so the canvas is filled instead of an empty placeholder.
+	 */
+	addFilter("blocks.registerBlockType", "liftedpath/example-defaults", function (settings, name) {
+		if (!isLiftedPath(name) || !settings || !settings.example || !settings.example.attributes) {
+			return settings;
+		}
+
+		var example = settings.example.attributes;
+		var attributes = Object.assign({}, settings.attributes || {});
+
+		if (example.data && typeof example.data === "object") {
+			attributes.data = Object.assign({}, attributes.data || {}, {
+				type: "object",
+				default: example.data,
+			});
+		}
+
+		if (typeof example.mode === "string") {
+			attributes.mode = Object.assign({}, attributes.mode || {}, {
+				type: "string",
+				default: example.mode,
+			});
+		}
+
+		settings.attributes = attributes;
+		return settings;
+	});
 
 	var withVisibility = createHigherOrderComponent(function (BlockEdit) {
 		return function (props) {

@@ -644,350 +644,286 @@ function liftedpath_example_repeater( string $name, string $key, array $subkeys,
 }
 
 /**
- * Sample content so the inserter can draw the block.
+ * Attachment ID for sample content, by media file basename without extension.
+ */
+function liftedpath_example_media_id( string $slug ): int {
+	static $cache = array();
+
+	if ( isset( $cache[ $slug ] ) ) {
+		return $cache[ $slug ];
+	}
+
+	$posts = get_posts(
+		array(
+			'post_type'              => 'attachment',
+			'post_status'            => 'inherit',
+			'posts_per_page'         => 1,
+			'fields'                 => 'ids',
+			'no_found_rows'          => true,
+			'update_post_meta_cache' => false,
+			'update_post_term_cache' => false,
+			'meta_query'             => array( // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- editor samples only.
+				array(
+					'key'     => '_wp_attached_file',
+					'value'   => $slug . '.',
+					'compare' => 'LIKE',
+				),
+			),
+		)
+	);
+
+	if ( array() === $posts ) {
+		$by_title = get_page_by_title( $slug, OBJECT, 'attachment' );
+		$posts    = $by_title instanceof WP_Post ? array( (int) $by_title->ID ) : array();
+	}
+
+	$cache[ $slug ] = ( isset( $posts[0] ) ) ? (int) $posts[0] : 0;
+
+	return $cache[ $slug ];
+}
+
+/**
+ * Published IA pages used as the source of insert samples, in preference order.
+ *
+ * @return array<int, WP_Post>
+ */
+function liftedpath_example_source_pages(): array {
+	$pages = array();
+	$front = (int) get_option( 'page_on_front' );
+
+	if ( $front > 0 ) {
+		$home = get_post( $front );
+		if ( $home instanceof WP_Post ) {
+			$pages[] = $home;
+		}
+	}
+
+	foreach ( array( 'about', 'what-we-do', 'learning', 'impact', 'contact', 'donate' ) as $slug ) {
+		$page = get_page_by_path( $slug );
+		if ( $page instanceof WP_Post ) {
+			$pages[] = $page;
+		}
+	}
+
+	return $pages;
+}
+
+/**
+ * First published occurrence of each LiftedPath block on the public IA pages.
+ *
+ * @return array<string, array{data: array<string, mixed>, inner: array<int, array<string, mixed>>}>
+ */
+function liftedpath_example_site_catalog(): array {
+	static $catalog = null;
+
+	if ( is_array( $catalog ) ) {
+		return $catalog;
+	}
+
+	$catalog = array();
+	$needed  = array();
+
+	foreach ( liftedpath_block_slugs() as $slug ) {
+		$needed[ 'liftedpath/' . $slug ] = true;
+	}
+
+	$walk = static function ( array $blocks ) use ( &$walk, &$catalog, &$needed ): void {
+		foreach ( $blocks as $block ) {
+			if ( ! is_array( $block ) ) {
+				continue;
+			}
+
+			$name = isset( $block['blockName'] ) ? (string) $block['blockName'] : '';
+
+			if ( isset( $needed[ $name ] ) && ! isset( $catalog[ $name ] ) ) {
+				$data = ( isset( $block['attrs']['data'] ) && is_array( $block['attrs']['data'] ) ) ? $block['attrs']['data'] : array();
+				$inner = array();
+
+				if ( ! empty( $block['innerBlocks'] ) && is_array( $block['innerBlocks'] ) ) {
+					foreach ( $block['innerBlocks'] as $child ) {
+						if ( ! is_array( $child ) || empty( $child['blockName'] ) ) {
+							continue;
+						}
+
+						$child_data = ( isset( $child['attrs']['data'] ) && is_array( $child['attrs']['data'] ) ) ? $child['attrs']['data'] : array();
+						$inner[]    = array(
+							'name' => (string) $child['blockName'],
+							'data' => $child_data,
+						);
+					}
+				}
+
+				if ( array() !== $data || array() !== $inner ) {
+					$catalog[ $name ] = array(
+						'data'  => $data,
+						'inner' => $inner,
+					);
+					unset( $needed[ $name ] );
+				}
+			}
+
+			if ( array() === $needed ) {
+				return;
+			}
+
+			if ( ! empty( $block['innerBlocks'] ) && is_array( $block['innerBlocks'] ) ) {
+				$walk( $block['innerBlocks'] );
+			}
+		}
+	};
+
+	foreach ( liftedpath_example_source_pages() as $page ) {
+		$walk( parse_blocks( (string) $page->post_content ) );
+
+		if ( array() === $needed ) {
+			break;
+		}
+	}
+
+	return $catalog;
+}
+
+/**
+ * Ensure Strong heading weight is present on sample data.
+ *
+ * @param array<string, mixed> $data ACF block data.
+ * @return array<string, mixed>
+ */
+function liftedpath_example_with_weight( array $data ): array {
+	if ( ! isset( $data['heading_weight'] ) || '' === $data['heading_weight'] || null === $data['heading_weight'] ) {
+		$data['heading_weight']  = '700';
+		$data['_heading_weight'] = 'field_liftedpath_block_heading_weight';
+	}
+
+	return $data;
+}
+
+/**
+ * Hand-written samples only for blocks that are not yet on a published IA page.
  *
  * @return array<string, mixed>
  */
-function liftedpath_block_example( string $name ): array {
-	$samples = array(
-		'liftedpath/hero'          => liftedpath_example_merge(
-			liftedpath_example_pair( 'eyebrow', 'field_liftedpath_hero_eyebrow', 'Lifting potential' ),
-			liftedpath_example_pair( 'heading', 'field_liftedpath_hero_heading', 'Breaking Barriers to Education & Opportunity' ),
-			liftedpath_example_pair( 'intro', 'field_liftedpath_hero_intro', 'A pathway for young people to learn, build, and grow.' ),
-			liftedpath_example_pair( 'figure', 'field_liftedpath_hero_figure', '128' ),
-			liftedpath_example_pair( 'label', 'field_liftedpath_hero_label', 'Scholars' ),
-			liftedpath_example_pair( 'detail', 'field_liftedpath_hero_detail', 'In school this year' )
-		),
-		'liftedpath/page-hero'     => liftedpath_example_merge(
-			liftedpath_example_pair( 'eyebrow', 'field_liftedpath_page_hero_eyebrow', 'About us' ),
-			liftedpath_example_pair( 'breadcrumb_current', 'field_liftedpath_page_hero_breadcrumb_current', 'About us' ),
-			liftedpath_example_pair( 'heading', 'field_liftedpath_page_hero_heading', 'Restoring hope, creating sustainable pathways.' ),
-			liftedpath_example_pair( 'intro', 'field_liftedpath_page_hero_intro', 'Lifting Potential, Inspiring Purpose and Creating Futures.' ),
-			liftedpath_example_pair( 'breadcrumb_label', 'field_liftedpath_page_hero_breadcrumb', 'Home' )
-		),
-		'liftedpath/stat'          => liftedpath_example_merge(
-			liftedpath_example_pair( 'figure', 'field_liftedpath_stat_figure', '128' ),
-			liftedpath_example_pair( 'label', 'field_liftedpath_stat_label', 'Scholars' ),
-			liftedpath_example_pair( 'detail', 'field_liftedpath_stat_detail', 'In school this year' )
-		),
-		'liftedpath/marquee'       => liftedpath_example_repeater(
-			'phrases',
-			'field_liftedpath_marquee_block_phrases',
-			array( 'phrase' => 'field_liftedpath_marquee_block_phrase' ),
-			array(
-				array( 'phrase' => 'Lifting potential' ),
-				array( 'phrase' => 'Inspiring purpose' ),
-				array( 'phrase' => 'Creating futures' ),
-			)
-		),
-		'liftedpath/cta-band'      => liftedpath_example_merge(
-			liftedpath_example_pair( 'tone', 'field_liftedpath_cta_tone', 'teal' ),
-			liftedpath_example_pair( 'eyebrow', 'field_liftedpath_cta_eyebrow', 'Join the journey' ),
-			liftedpath_example_pair( 'heading', 'field_liftedpath_cta_heading', 'Help a young person take the next step.' ),
-			liftedpath_example_pair( 'text', 'field_liftedpath_cta_text', 'Give, partner, or share a skill.' )
-		),
-		'liftedpath/about-tabs'    => liftedpath_example_merge(
-			liftedpath_example_pair( 'eyebrow', 'field_liftedpath_about_eyebrow', 'About our foundation' ),
-			liftedpath_example_pair( 'heading', 'field_liftedpath_about_heading', 'A pathway that stays open.' ),
-			liftedpath_example_pair( 'intro', 'field_liftedpath_about_intro', 'Mission, vision, and commitment.' ),
-			liftedpath_example_repeater(
-				'tabs',
-				'field_liftedpath_about_tabs',
-				array(
-					'label' => 'field_liftedpath_about_tab_label',
-					'title' => 'field_liftedpath_about_tab_title',
-					'body'  => 'field_liftedpath_about_tab_body',
-				),
-				array(
-					array(
-						'label' => 'Mission',
-						'title' => 'Keep learning within reach',
-						'body'  => 'We walk with young people from the first classroom to a livelihood.',
-					),
-				)
-			)
-		),
-		'liftedpath/about-story'   => liftedpath_example_merge(
-			liftedpath_example_pair( 'eyebrow', 'field_liftedpath_about_story_eyebrow', 'Lifting potential, inspiring purpose' ),
-			liftedpath_example_pair( 'heading', 'field_liftedpath_about_story_heading', 'Education is the start of a lasting pathway.' ),
-			liftedpath_example_pair( 'body', 'field_liftedpath_about_story_body', "Young people need more than a single gift.\nThey need a path that continues." )
-		),
-		'liftedpath/beliefs'       => liftedpath_example_repeater(
-			'items',
-			'field_liftedpath_beliefs_items',
-			array(
-				'eyebrow' => 'field_liftedpath_beliefs_item_eyebrow',
-				'heading' => 'field_liftedpath_beliefs_item_heading',
-				'text'    => 'field_liftedpath_beliefs_item_text',
-			),
-			array(
-				array(
-					'eyebrow' => '01 / Our mission',
-					'heading' => 'Mission',
-					'text'    => 'Create pathways that last.',
-				),
-				array(
-					'eyebrow' => '02 / Our vision',
-					'heading' => 'Vision',
-					'text'    => 'A community where potential is not wasted.',
-				),
-			)
-		),
-		'liftedpath/program-cards' => liftedpath_example_merge(
-			liftedpath_example_pair( 'eyebrow', 'field_liftedpath_programs_eyebrow', 'What we do' ),
-			liftedpath_example_pair( 'heading', 'field_liftedpath_programs_heading', 'Programs that open the next door.' ),
-			liftedpath_example_pair( 'intro', 'field_liftedpath_programs_intro', 'Learning, skills, and support.' ),
-			liftedpath_example_repeater(
-				'cards',
-				'field_liftedpath_programs_cards',
-				array(
-					'kicker' => 'field_liftedpath_programs_card_kicker',
-					'title'  => 'field_liftedpath_programs_card_title',
-					'line'   => 'field_liftedpath_programs_card_line',
-				),
-				array(
-					array(
-						'kicker' => 'Learning',
-						'title'  => 'LIFT-GROW',
-						'line'   => 'Secondary education',
-					),
-					array(
-						'kicker' => 'Skills',
-						'title'  => 'LIFT-EQUIP',
-						'line'   => 'Vocational training',
-					),
-				)
-			)
-		),
-		'liftedpath/action-grid'   => liftedpath_example_merge(
-			liftedpath_example_pair( 'eyebrow', 'field_liftedpath_actions_eyebrow', 'How we work' ),
-			liftedpath_example_pair( 'heading', 'field_liftedpath_actions_heading', 'Four ways to take part.' ),
-			liftedpath_example_repeater(
-				'items',
-				'field_liftedpath_actions_items',
-				array(
-					'title' => 'field_liftedpath_actions_item_title',
-					'text'  => 'field_liftedpath_actions_item_text',
-				),
-				array(
-					array(
-						'title' => 'Give',
-						'text'  => 'Fund a scholarship or a skill.',
-					),
-					array(
-						'title' => 'Partner',
-						'text'  => 'Bring a program to your community.',
-					),
-				)
-			)
-		),
-		'liftedpath/sponsor-callout' => liftedpath_example_merge(
-			liftedpath_example_pair( 'figure', 'field_liftedpath_sponsor_figure', '₦50,000' ),
-			liftedpath_example_pair( 'text', 'field_liftedpath_sponsor_text', 'can keep a student in school for a term.' )
-		),
-		'liftedpath/stewardship'   => liftedpath_example_merge(
-			liftedpath_example_pair( 'eyebrow', 'field_liftedpath_stewardship_eyebrow', 'Stewardship' ),
-			liftedpath_example_pair( 'heading', 'field_liftedpath_stewardship_heading', 'Every gift stays accountable.' ),
-			liftedpath_example_pair( 'intro', 'field_liftedpath_stewardship_intro', 'We report where support goes.' ),
-			liftedpath_example_repeater(
-				'points',
-				'field_liftedpath_stewardship_points',
-				array(
-					'title' => 'field_liftedpath_stewardship_point_title',
-					'text'  => 'field_liftedpath_stewardship_point_text',
-				),
-				array(
-					array(
-						'title' => 'Tracked',
-						'text'  => 'Each program has a record.',
-					),
-					array(
-						'title' => 'Reported',
-						'text'  => 'Partners can see the result.',
-					),
-				)
-			)
-		),
-		'liftedpath/process'       => liftedpath_example_merge(
-			liftedpath_example_pair( 'eyebrow', 'field_liftedpath_process_eyebrow', 'Our process' ),
-			liftedpath_example_pair( 'heading', 'field_liftedpath_process_heading', 'From a first meeting to a lasting skill.' ),
-			liftedpath_example_repeater(
-				'steps',
-				'field_liftedpath_process_steps',
-				array(
-					'title' => 'field_liftedpath_process_step_title',
-					'text'  => 'field_liftedpath_process_step_text',
-				),
-				array(
-					array(
-						'title' => 'Listen',
-						'text'  => 'Start with the young person.',
-					),
-					array(
-						'title' => 'Support',
-						'text'  => 'Stay through the next step.',
-					),
-				)
-			)
-		),
-		'liftedpath/pillars'       => liftedpath_example_merge(
-			liftedpath_example_pair( 'eyebrow', 'field_liftedpath_pillars_eyebrow', 'Our pillars' ),
-			liftedpath_example_pair( 'heading', 'field_liftedpath_pillars_heading', 'Give, partner, empower, and reach out.' ),
-			liftedpath_example_repeater(
-				'items',
-				'field_liftedpath_pillars_items',
-				array(
-					'title' => 'field_liftedpath_pillars_item_title',
-					'text'  => 'field_liftedpath_pillars_item_text',
-				),
-				array(
-					array(
-						'title' => 'Give',
-						'text'  => 'Resources that reach a student.',
-					),
-					array(
-						'title' => 'Partner',
-						'text'  => 'Work that is shared.',
-					),
-				)
-			)
-		),
-		'liftedpath/goals'         => liftedpath_example_merge(
-			liftedpath_example_pair( 'eyebrow', 'field_liftedpath_goals_eyebrow', 'Future goals' ),
-			liftedpath_example_pair( 'heading', 'field_liftedpath_goals_heading', 'Grow skills and opportunities.' ),
-			liftedpath_example_pair( 'intro', 'field_liftedpath_goals_intro', 'The next years of the pathway.' ),
-			liftedpath_example_repeater(
-				'goals',
-				'field_liftedpath_goals_goals',
-				array(
-					'title' => 'field_liftedpath_goals_goal_title',
-					'text'  => 'field_liftedpath_goals_goal_text',
-				),
-				array(
-					array(
-						'title' => 'Scholarships',
-						'text'  => 'Keep more students in class.',
-					),
-					array(
-						'title' => 'Skills',
-						'text'  => 'Open a route to work.',
-					),
-				)
-			)
-		),
-		'liftedpath/faq'           => liftedpath_example_merge(
-			liftedpath_example_pair( 'eyebrow', 'field_liftedpath_faq_eyebrow', 'Questions' ),
-			liftedpath_example_pair( 'heading', 'field_liftedpath_faq_heading', 'What partners ask first.' ),
-			liftedpath_example_repeater(
-				'items',
-				'field_liftedpath_faq_items',
-				array(
-					'question' => 'field_liftedpath_faq_item_question',
-					'answer'   => 'field_liftedpath_faq_item_answer',
-				),
-				array(
-					array(
-						'question' => 'Where does a gift go?',
-						'answer'   => 'Into the program you choose, with a record of the result.',
-					),
-				)
-			)
-		),
-		'liftedpath/contact-form'  => liftedpath_example_merge(
-			liftedpath_example_pair( 'eyebrow', 'field_liftedpath_contact_eyebrow', "Let's talk" ),
-			liftedpath_example_pair( 'heading', 'field_liftedpath_contact_heading', 'Tell us how you want to help.' ),
-			liftedpath_example_pair( 'intro', 'field_liftedpath_contact_intro', 'A note is enough to begin.' ),
-			liftedpath_example_pair( 'form_eyebrow', 'field_liftedpath_contact_form_eyebrow', 'Get in touch' ),
-			liftedpath_example_pair( 'form_heading', 'field_liftedpath_contact_form_heading', 'Send a message' )
-		),
-		'liftedpath/donate-panel'  => liftedpath_example_merge(
-			liftedpath_example_pair( 'eyebrow', 'field_liftedpath_donate_eyebrow', 'Make a difference' ),
-			liftedpath_example_pair( 'heading', 'field_liftedpath_donate_heading', 'Choose a gift.' ),
-			liftedpath_example_pair( 'intro', 'field_liftedpath_donate_intro', 'One gift can keep a pathway open.' ),
-			liftedpath_example_repeater(
-				'amounts',
-				'field_liftedpath_donate_amounts',
-				array(
-					'amount' => 'field_liftedpath_donate_amount_amount',
-					'title'  => 'field_liftedpath_donate_amount_title',
-					'detail' => 'field_liftedpath_donate_amount_detail',
-				),
-				array(
-					array(
-						'amount' => '50000',
-						'title'  => 'A term',
-						'detail' => 'School costs for one student.',
-					),
-				)
-			)
-		),
-		'liftedpath/team'          => liftedpath_example_merge(
+function liftedpath_example_fallback_data( string $name ): array {
+	$classroom = liftedpath_example_media_id( 'classroom' );
+	$students  = liftedpath_example_media_id( 'students' );
+	$skills    = liftedpath_example_media_id( 'skills' );
+	$season    = liftedpath_example_media_id( 'season' );
+	$orphanage = liftedpath_example_media_id( 'orphanage' );
+
+	$fallbacks = array(
+		'liftedpath/team' => liftedpath_example_merge(
 			liftedpath_example_pair( 'eyebrow', 'field_liftedpath_team_eyebrow', 'Our team' ),
 			liftedpath_example_pair( 'heading', 'field_liftedpath_team_heading', 'People carrying the pathway.' ),
+			liftedpath_example_pair( 'heading_weight', 'field_liftedpath_block_heading_weight', '700' ),
 			liftedpath_example_repeater(
 				'members',
 				'field_liftedpath_team_members',
 				array(
+					'image'    => 'field_liftedpath_team_member_image',
 					'name'     => 'field_liftedpath_team_member_name',
 					'position' => 'field_liftedpath_team_member_position',
 				),
 				array(
 					array(
-						'name'     => 'Amaka Adeyemi',
+						'image'    => $classroom > 0 ? $classroom : '',
+						'name'     => 'Name',
 						'position' => 'Executive Director',
 					),
 					array(
-						'name'     => 'Chinedu Okonkwo',
+						'image'    => $students > 0 ? $students : '',
+						'name'     => 'Name',
 						'position' => 'Programs Lead',
 					),
 					array(
-						'name'     => 'Fatima Bello',
+						'image'    => $skills > 0 ? $skills : '',
+						'name'     => 'Name',
 						'position' => 'Learning Coordinator',
 					),
 					array(
-						'name'     => 'Tunde Lawal',
+						'image'    => $season > 0 ? $season : ( $orphanage > 0 ? $orphanage : '' ),
+						'name'     => 'Name',
 						'position' => 'Partnerships',
 					),
 				)
 			)
 		),
-		'liftedpath/gallery'       => liftedpath_example_merge(
-			liftedpath_example_pair( 'eyebrow', 'field_liftedpath_gallery_eyebrow', 'The work' ),
-			liftedpath_example_pair( 'heading', 'field_liftedpath_gallery_heading', 'Scenes from the pathway.' ),
-			liftedpath_example_pair( 'layout', 'field_liftedpath_gallery_layout', 'mosaic' ),
-			liftedpath_example_pair( 'columns', 'field_liftedpath_gallery_columns', '3' ),
-			liftedpath_example_pair( 'show_captions', 'field_liftedpath_gallery_captions', 1 ),
-			liftedpath_example_pair( 'enlarge', 'field_liftedpath_gallery_enlarge', 1 ),
-			liftedpath_example_repeater(
-				'items',
-				'field_liftedpath_gallery_items',
-				array(
-					'media_kind' => 'field_liftedpath_gallery_item_kind',
-					'caption'    => 'field_liftedpath_gallery_item_caption',
-					'tile'       => 'field_liftedpath_gallery_item_tile',
-				),
-				array(
-					array(
-						'media_kind' => 'image',
-						'caption'    => 'A classroom visit',
-						'tile'       => 'wide',
-					),
-					array(
-						'media_kind' => 'video',
-						'caption'    => 'A short film',
-						'tile'       => 'standard',
-					),
-					array(
-						'media_kind' => 'image',
-						'caption'    => 'A season together',
-						'tile'       => 'tall',
-					),
-				)
-			)
+		'liftedpath/stat' => liftedpath_example_merge(
+			liftedpath_example_pair( 'figure', 'field_liftedpath_stat_figure', '128' ),
+			liftedpath_example_pair( 'label', 'field_liftedpath_stat_label', 'Scholars' ),
+			liftedpath_example_pair( 'detail', 'field_liftedpath_stat_detail', 'In school this year' )
 		),
 	);
 
-	$data = $samples[ $name ] ?? liftedpath_example_pair( 'heading', '', 'Section heading' );
+	return $fallbacks[ $name ] ?? liftedpath_example_pair( 'heading', '', 'Section heading' );
+}
+
+/**
+ * When the marquee block leaves phrases empty, the public site uses Settings phrases.
+ *
+ * @param array<string, mixed> $data Block data.
+ * @return array<string, mixed>
+ */
+function liftedpath_example_fill_marquee( array $data ): array {
+	$has_phrase = false;
+
+	foreach ( $data as $key => $value ) {
+		if ( is_string( $key ) && preg_match( '/^phrases_\d+_phrase$/', $key ) && is_string( $value ) && '' !== trim( $value ) ) {
+			$has_phrase = true;
+			break;
+		}
+	}
+
+	if ( $has_phrase ) {
+		return $data;
+	}
+
+	$rows = function_exists( 'get_field' ) ? get_field( 'marquee_phrases', 'option' ) : null;
+
+	if ( ! is_array( $rows ) || array() === $rows ) {
+		$rows = array(
+			array( 'phrase' => 'Lifting potential' ),
+			array( 'phrase' => 'Inspiring purpose' ),
+			array( 'phrase' => 'Creating futures' ),
+		);
+	}
+
+	return array_merge(
+		$data,
+		liftedpath_example_repeater(
+			'phrases',
+			'field_liftedpath_marquee_block_phrases',
+			array( 'phrase' => 'field_liftedpath_marquee_block_phrase' ),
+			array_values(
+				array_filter(
+					array_map(
+						static function ( $row ) {
+							if ( ! is_array( $row ) || empty( $row['phrase'] ) || ! is_string( $row['phrase'] ) ) {
+								return null;
+							}
+
+							return array( 'phrase' => $row['phrase'] );
+						},
+						$rows
+					)
+				)
+			)
+		)
+	);
+}
+
+/**
+ * Sample content so the inserter and a new insert draw the block as it appears on the site.
+ *
+ * @return array<string, mixed>
+ */
+function liftedpath_block_example( string $name ): array {
+	$catalog = liftedpath_example_site_catalog();
+	$entry   = $catalog[ $name ] ?? null;
+	$data    = is_array( $entry ) ? liftedpath_example_with_weight( $entry['data'] ) : liftedpath_example_with_weight( liftedpath_example_fallback_data( $name ) );
+
+	if ( 'liftedpath/marquee' === $name ) {
+		$data = liftedpath_example_fill_marquee( $data );
+	}
 
 	$example = array(
 		'viewportWidth' => 1100,
@@ -998,15 +934,32 @@ function liftedpath_block_example( string $name ): array {
 	);
 
 	if ( 'liftedpath/stat-group' === $name ) {
-		$example['innerBlocks'] = array(
-			array(
-				'name'       => 'liftedpath/stat',
+		$inner = ( is_array( $entry ) && ! empty( $entry['inner'] ) ) ? $entry['inner'] : array();
+
+		if ( array() === $inner ) {
+			$inner = array(
+				array(
+					'name' => 'liftedpath/stat',
+					'data' => liftedpath_example_fallback_data( 'liftedpath/stat' ),
+				),
+			);
+		}
+
+		$example['innerBlocks'] = array();
+
+		foreach ( $inner as $child ) {
+			$child_name = isset( $child['name'] ) ? (string) $child['name'] : 'liftedpath/stat';
+			$child_data = isset( $child['data'] ) && is_array( $child['data'] ) ? $child['data'] : liftedpath_example_fallback_data( 'liftedpath/stat' );
+
+			$example['innerBlocks'][] = array(
+				'name'       => $child_name,
 				'attributes' => array(
 					'mode' => 'preview',
-					'data' => $samples['liftedpath/stat'],
+					'data' => $child_data,
 				),
-			),
-		);
+			);
+		}
+
 		$example['attributes']['data'] = array();
 	}
 
