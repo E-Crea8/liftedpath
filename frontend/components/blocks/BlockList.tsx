@@ -19,6 +19,7 @@ import { Process } from "@/components/blocks/Process";
 import { ProgramCards } from "@/components/blocks/ProgramCards";
 import { SponsorCallout } from "@/components/blocks/SponsorCallout";
 import { WorkLayout } from "@/components/blocks/WorkLayout";
+import { FooterCta2 } from "@/components/blocks/FooterCta2";
 import { Stat } from "@/components/blocks/Stat";
 import { StatGroup } from "@/components/blocks/StatGroup";
 import { Stewardship } from "@/components/blocks/Stewardship";
@@ -143,6 +144,9 @@ function BlockView({
 			break;
 		case "liftedpath/work-layout":
 			view = <WorkLayout block={block} images={images} phone={phone} siteHost={host} />;
+			break;
+		case "liftedpath/footer-cta-2":
+			view = <FooterCta2 block={block} images={images} siteHost={host} />;
 			break;
 		case "liftedpath/action-grid":
 			view = <ActionGrid block={block} siteHost={host} />;

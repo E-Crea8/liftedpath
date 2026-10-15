@@ -3271,3 +3271,105 @@ div.has-block-background.has-block-background-color {
 	}
 }
 
+
+/* Footer CTA 2 — work-page closing band with optional photograph */
+.liftedpath-footer-cta {
+	position: relative;
+	isolation: isolate;
+	overflow: hidden;
+	background: var(--color-cool);
+	padding-block: 72px;
+	color: var(--color-teal);
+}
+
+.liftedpath-footer-cta--photo {
+	color: var(--color-paper);
+	background: var(--color-deep);
+}
+
+.liftedpath-footer-cta__photo {
+	position: absolute;
+	inset: 0;
+	z-index: -2;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: 68% center;
+}
+
+.liftedpath-footer-cta__shade {
+	position: absolute;
+	inset: 0;
+	z-index: -1;
+	background: color-mix(in oklch, var(--color-deep) calc(var(--footer-cta-overlay, 0.72) * 100%), transparent);
+}
+
+.liftedpath-footer-cta__inner {
+	position: relative;
+	z-index: 1;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 40px;
+}
+
+.liftedpath-footer-cta__copy {
+	max-width: 660px;
+}
+
+.liftedpath-footer-cta__eyebrow {
+	display: inline-flex;
+	align-items: center;
+	margin-bottom: 16px;
+	padding: 6px 12px;
+	border-radius: var(--radius-pill, 999px);
+	background: var(--color-sand);
+	color: var(--color-teal);
+	font-size: 0.78rem;
+	font-weight: 700;
+	letter-spacing: 0;
+	text-transform: none;
+}
+
+.liftedpath-footer-cta--photo .liftedpath-footer-cta__eyebrow {
+	background: color-mix(in oklch, var(--color-sand) 88%, transparent);
+	color: var(--color-deep);
+}
+
+.liftedpath-footer-cta h2 {
+	margin: 0 0 16px;
+	font-size: 2.5rem;
+	color: inherit;
+}
+
+.liftedpath-footer-cta p {
+	margin: 0;
+	color: var(--color-muted);
+	font-size: 0.95rem;
+	line-height: 1.65;
+}
+
+.liftedpath-footer-cta--photo p {
+	color: color-mix(in oklch, var(--color-paper) 88%, transparent);
+}
+
+.liftedpath-footer-cta .liftedpath-button {
+	flex: 0 0 auto;
+}
+
+@media (max-width: 760px) {
+	.liftedpath-footer-cta {
+		padding-block: 56px;
+	}
+
+	.liftedpath-footer-cta__inner {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 24px;
+	}
+
+	.liftedpath-footer-cta h2 {
+		font-size: 2rem;
+	}
+}
+

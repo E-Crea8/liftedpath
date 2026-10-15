@@ -59,6 +59,11 @@
 	color: var(--color-paper);
 }
 
+.editor-styles-wrapper .liftedpath-footer-cta--photo,
+.editor-styles-wrapper .liftedpath-footer-cta--photo :is(h2, p) {
+	color: var(--color-paper, #fcfdfd);
+}
+
 .editor-styles-wrapper .liftedpath-page-hero__crumbs span {
 	color: var(--color-paper, #fcfdfd);
 }

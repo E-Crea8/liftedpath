@@ -109,11 +109,6 @@ export function WorkLayout({
 		.map((row) => ({ question: text(row.question), answer: text(row.answer) }))
 		.filter((item) => item.question || item.answer);
 
-	const endEyebrow = text(block.attributes.end_eyebrow);
-	const endHeading = text(block.attributes.end_heading);
-	const endText = text(block.attributes.end_text);
-	const endButton = fieldLink(block.attributes.end_button, siteHost);
-
 	const empty =
 		values.length === 0 &&
 		!sidebarHeading &&
@@ -122,7 +117,6 @@ export function WorkLayout({
 		!areasHeading &&
 		!whyHeading &&
 		!faqHeading &&
-		!endHeading &&
 		!contactHeading;
 
 	if (empty) {
@@ -315,19 +309,6 @@ export function WorkLayout({
 					</article>
 				</div>
 			</section>
-
-			{endHeading || endText || endButton ? (
-				<section className="liftedpath-section liftedpath-work-end">
-					<div className="liftedpath-section__inner liftedpath-work-end__inner">
-						<div>
-							{endEyebrow ? <span className="liftedpath-eyebrow">{endEyebrow}</span> : null}
-							{endHeading ? <h2>{endHeading}</h2> : null}
-							{endText ? <p>{endText}</p> : null}
-						</div>
-						<GoldButton link={endButton} />
-					</div>
-				</section>
-			) : null}
 		</>
 	);
 }

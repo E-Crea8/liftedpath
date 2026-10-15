@@ -7,7 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(useGSAP, ScrollTrigger);
 
-const SECTION = ".liftedpath-section, .liftedpath-stat-group, .liftedpath-cta, .liftedpath-copy";
+const SECTION = ".liftedpath-section, .liftedpath-stat-group, .liftedpath-cta, .liftedpath-footer-cta, .liftedpath-copy";
 
 const REVEAL = [
 	".liftedpath-about__photos",
@@ -31,6 +31,8 @@ const REVEAL = [
 	".liftedpath-work__principles",
 	".liftedpath-work__questions .liftedpath-faq__list",
 	".liftedpath-work-end",
+	".liftedpath-footer-cta",
+	".liftedpath-footer-cta__inner",
 	".liftedpath-programs__callout",
 	".liftedpath-actions__heading",
 	".liftedpath-actions__item",

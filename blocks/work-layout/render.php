@@ -61,11 +61,6 @@ $faq_kicker  = liftedpath_block_string( function_exists( 'get_field' ) ? get_fie
 $faq_heading = liftedpath_block_string( function_exists( 'get_field' ) ? get_field( 'faq_heading' ) : '' );
 $faq_items   = liftedpath_block_rows( function_exists( 'get_field' ) ? get_field( 'faq_items' ) : array() );
 
-$end_eyebrow = liftedpath_block_string( function_exists( 'get_field' ) ? get_field( 'end_eyebrow' ) : '' );
-$end_heading = liftedpath_block_string( function_exists( 'get_field' ) ? get_field( 'end_heading' ) : '' );
-$end_text    = liftedpath_block_string( function_exists( 'get_field' ) ? get_field( 'end_text' ) : '' );
-$end_button  = liftedpath_block_button( function_exists( 'get_field' ) ? get_field( 'end_button' ) : null );
-
 $empty = array() === $values
 	&& '' === $sidebar_heading
 	&& '' === $lead_heading
@@ -73,7 +68,6 @@ $empty = array() === $values
 	&& '' === $areas_heading
 	&& '' === $why_heading
 	&& '' === $faq_heading
-	&& '' === $end_heading
 	&& '' === $contact_heading;
 
 if ( $empty ) {
@@ -381,22 +375,3 @@ $work_link = static function ( array $link, string $title, string $subtitle, str
 		</article>
 	</div>
 <?php liftedpath_block_wrapper_close( 'section' ); ?>
-
-<?php if ( '' !== $end_heading || '' !== $end_text || '' !== $end_button ) : ?>
-	<section class="liftedpath-section liftedpath-work-end">
-		<div class="liftedpath-section__inner liftedpath-work-end__inner">
-			<div>
-				<?php if ( '' !== $end_eyebrow ) : ?>
-					<span class="liftedpath-eyebrow"><?php echo esc_html( $end_eyebrow ); ?></span>
-				<?php endif; ?>
-				<?php if ( '' !== $end_heading ) : ?>
-					<h2><?php echo esc_html( $end_heading ); ?></h2>
-				<?php endif; ?>
-				<?php if ( '' !== $end_text ) : ?>
-					<p><?php echo esc_html( $end_text ); ?></p>
-				<?php endif; ?>
-			</div>
-			<?php echo $end_button; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-		</div>
-	</section>
-<?php endif; ?>

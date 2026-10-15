@@ -66,6 +66,7 @@ Each folder is one ACF block: `block.json` plus `render.php`. The block name is 
 | `program-cards` | Overlay initiative cards |
 | `pathway-cards` | Learning pathway grid |
 | `work-layout` | What We Do / Learning work pages (sidebar, contact card, article) |
+| `footer-cta-2` | Work-page closing band (row layout) with optional photograph + overlay |
 | `action-grid` | How the foundation works |
 | `sponsor-callout` | Sponsor line |
 | `process` | Process steps |

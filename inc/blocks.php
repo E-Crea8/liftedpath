@@ -46,6 +46,7 @@ function liftedpath_block_slugs(): array {
 		'program-cards',
 		'pathway-cards',
 		'work-layout',
+		'footer-cta-2',
 		'action-grid',
 		'sponsor-callout',
 		'stewardship',
