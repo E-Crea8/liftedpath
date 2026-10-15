@@ -18,6 +18,7 @@ import { Pillars } from "@/components/blocks/Pillars";
 import { Process } from "@/components/blocks/Process";
 import { ProgramCards } from "@/components/blocks/ProgramCards";
 import { SponsorCallout } from "@/components/blocks/SponsorCallout";
+import { WorkLayout } from "@/components/blocks/WorkLayout";
 import { Stat } from "@/components/blocks/Stat";
 import { StatGroup } from "@/components/blocks/StatGroup";
 import { Stewardship } from "@/components/blocks/Stewardship";
@@ -139,6 +140,9 @@ function BlockView({
 		case "liftedpath/program-cards":
 		case "liftedpath/pathway-cards":
 			view = <ProgramCards block={block} images={images} siteHost={host} />;
+			break;
+		case "liftedpath/work-layout":
+			view = <WorkLayout block={block} images={images} phone={phone} siteHost={host} />;
 			break;
 		case "liftedpath/action-grid":
 			view = <ActionGrid block={block} siteHost={host} />;

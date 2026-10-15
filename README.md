@@ -65,6 +65,7 @@ Each folder is one ACF block: `block.json` plus `render.php`. The block name is 
 | `about-tabs` | Story, mission, and vision |
 | `program-cards` | Overlay initiative cards |
 | `pathway-cards` | Learning pathway grid |
+| `work-layout` | What We Do / Learning work pages (sidebar, contact card, article) |
 | `action-grid` | How the foundation works |
 | `sponsor-callout` | Sponsor line |
 | `process` | Process steps |
@@ -88,6 +89,7 @@ Core blocks (paragraph, heading, image, buttons, list, quote, group, columns, sp
 | `rest.php` | Public REST routes for a page, the path index, design tokens, navigation, and organization settings |
 | `revalidate.php` | Save hooks that call the Next.js revalidate webhook |
 | `seed.php` | Inserts the public pages and navigation when they are missing |
+| `work-layout.php` | What We Do / Learning work-layout seed catalog and page migration |
 | `seo.php` | Resolved search fields, the Search & verification screen, and `GET /liftedpath/v1/seo` |
 | `template-functions.php` | Small template helpers |
 

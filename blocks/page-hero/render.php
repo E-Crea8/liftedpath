@@ -8,12 +8,14 @@
 
 $image   = function_exists( 'get_field' ) ? get_field( 'image' ) : null;
 $video   = function_exists( 'get_field' ) ? get_field( 'video' ) : null;
+$variant = function_exists( 'get_field' ) ? get_field( 'variant' ) : '';
 $eyebrow = function_exists( 'get_field' ) ? get_field( 'eyebrow' ) : '';
 $heading = function_exists( 'get_field' ) ? get_field( 'heading' ) : '';
 $intro   = function_exists( 'get_field' ) ? get_field( 'intro' ) : '';
 $crumb   = function_exists( 'get_field' ) ? get_field( 'breadcrumb_label' ) : '';
 $current = function_exists( 'get_field' ) ? get_field( 'breadcrumb_current' ) : '';
 
+$variant = is_string( $variant ) && 'work' === $variant ? 'work' : 'default';
 $eyebrow = is_string( $eyebrow ) ? $eyebrow : '';
 $heading = is_string( $heading ) ? $heading : '';
 $intro   = is_string( $intro ) ? $intro : '';
@@ -23,6 +25,7 @@ $photo      = liftedpath_block_image( $image, 'liftedpath-hero', 'liftedpath-pag
 $clip       = liftedpath_hero_video( $video, 'liftedpath-page-hero__video', liftedpath_block_poster( $image ) );
 $is_preview = ! empty( $is_preview );
 $empty      = '' === $heading && '' === $eyebrow && '' === $intro && '' === $photo && '' === $clip;
+$class      = 'liftedpath-page-hero' . ( 'work' === $variant ? ' liftedpath-page-hero--work' : '' );
 
 if ( $empty ) {
 	if ( $is_preview ) {
@@ -33,12 +36,12 @@ if ( $empty ) {
 	return;
 }
 ?>
-<?php liftedpath_block_wrapper_open( 'section', 'liftedpath-page-hero' ); ?>
+<?php liftedpath_block_wrapper_open( 'section', $class ); ?>
 	<?php echo $photo; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- attachment image is escaped. ?>
 	<?php echo $clip; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- helper escapes. ?>
 	<div class="liftedpath-page-hero__shade" aria-hidden="true"></div>
 	<div class="liftedpath-page-hero__content">
-		<?php if ( '' !== $eyebrow ) : ?>
+		<?php if ( '' !== $eyebrow && 'work' !== $variant ) : ?>
 			<p class="liftedpath-page-hero__eyebrow"><?php echo esc_html( $eyebrow ); ?></p>
 		<?php endif; ?>
 		<?php if ( '' !== $heading ) : ?>

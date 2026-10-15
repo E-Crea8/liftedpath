@@ -1,172 +1,242 @@
 {
-	"key": "group_liftedpath_contact_form",
-	"title": "Contact form",
-	"fields": [
-		{
-			"key": "field_liftedpath_contact_eyebrow",
-			"label": "Eyebrow",
-			"name": "eyebrow",
-			"type": "text",
-			"instructions": "",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "", "class": "", "id": "" },
-			"default_value": "",
-			"maxlength": "",
-			"placeholder": ""
-		},
-		{
-			"key": "field_liftedpath_contact_heading",
-			"label": "Heading",
-			"name": "heading",
-			"type": "text",
-			"instructions": "",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "", "class": "", "id": "" },
-			"default_value": "",
-			"maxlength": "",
-			"placeholder": ""
-		},
-		{
-			"key": "field_liftedpath_contact_intro",
-			"label": "Introduction",
-			"name": "intro",
-			"type": "textarea",
-			"instructions": "",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "", "class": "", "id": "" },
-			"default_value": "",
-			"rows": 3,
-			"new_lines": ""
-		},
-		{
-			"key": "field_liftedpath_contact_form_eyebrow",
-			"label": "Form eyebrow",
-			"name": "form_eyebrow",
-			"type": "text",
-			"instructions": "",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "50", "class": "", "id": "" },
-			"default_value": "",
-			"maxlength": "",
-			"placeholder": ""
-		},
-		{
-			"key": "field_liftedpath_contact_form_heading",
-			"label": "Form heading",
-			"name": "form_heading",
-			"type": "text",
-			"instructions": "",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "50", "class": "", "id": "" },
-			"default_value": "",
-			"maxlength": "",
-			"placeholder": ""
-		},
-		{
-			"key": "field_liftedpath_contact_reasons",
-			"label": "Reasons",
-			"name": "reasons",
-			"type": "repeater",
-			"instructions": "An empty list uses the five standard reasons. Phone, email, and office come from LiftedPath settings.",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "", "class": "", "id": "" },
-			"layout": "table",
-			"button_label": "Add reason",
-			"min": 0,
-			"max": 0,
-			"rows_per_page": 20,
-			"collapsed": "",
-			"sub_fields": [
-				{
-					"key": "field_liftedpath_contact_reason_value",
-					"label": "Reason",
-					"name": "reason",
-					"type": "select",
-					"instructions": "",
-					"required": 0,
-					"conditional_logic": false,
-					"wrapper": { "width": "", "class": "", "id": "" },
-					"choices": {
-						"volunteer": "Volunteer",
-						"sponsor": "Sponsor a child or program",
-						"partner": "Partner as a school or organisation",
-						"in-kind": "In-kind donation",
-						"other": "Something else"
-					},
-					"default_value": "volunteer",
-					"return_format": "value",
-					"multiple": 0,
-					"allow_null": 0,
-					"ui": 0,
-					"ajax": 0,
-					"parent_repeater": "field_liftedpath_contact_reasons"
-				},
-				{
-					"key": "field_liftedpath_contact_reason_label",
-					"label": "Label",
-					"name": "label",
-					"type": "text",
-					"instructions": "",
-					"required": 0,
-					"conditional_logic": false,
-					"wrapper": { "width": "", "class": "", "id": "" },
-					"default_value": "",
-					"maxlength": "",
-					"placeholder": "",
-					"parent_repeater": "field_liftedpath_contact_reasons"
-				}
-			]
-		},
-		{
-			"key": "field_liftedpath_contact_button_label",
-			"label": "Button label",
-			"name": "button_label",
-			"type": "text",
-			"instructions": "The button does not send the message.",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "", "class": "", "id": "" },
-			"default_value": "Send message",
-			"maxlength": "",
-			"placeholder": ""
-		},
-		{
-			"key": "field_liftedpath_contact_note",
-			"label": "Note",
-			"name": "note",
-			"type": "text",
-			"instructions": "",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "", "class": "", "id": "" },
-			"default_value": "",
-			"maxlength": "",
-			"placeholder": ""
-		}
-	],
-	"location": [
-		[
-			{
-				"param": "block",
-				"operator": "==",
-				"value": "liftedpath/contact-form"
-			}
-		]
-	],
-	"menu_order": 0,
-	"position": "normal",
-	"style": "default",
-	"label_placement": "top",
-	"instruction_placement": "label",
-	"hide_on_screen": "",
-	"active": true,
-	"description": "",
-	"show_in_rest": 1,
-	"modified": 1791705600
+    "key": "group_liftedpath_contact_form",
+    "title": "Contact form",
+    "fields": [
+        {
+            "key": "field_liftedpath_contact_eyebrow",
+            "label": "Eyebrow",
+            "name": "eyebrow",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_liftedpath_contact_heading",
+            "label": "Heading",
+            "name": "heading",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_liftedpath_contact_intro",
+            "label": "Introduction",
+            "name": "intro",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "rows": 3,
+            "new_lines": "",
+            "maxlength": "",
+            "placeholder": ""
+        },
+        {
+            "key": "field_liftedpath_contact_form_eyebrow",
+            "label": "Form eyebrow",
+            "name": "form_eyebrow",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_liftedpath_contact_form_heading",
+            "label": "Form heading",
+            "name": "form_heading",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_liftedpath_contact_reasons",
+            "label": "Reasons",
+            "name": "reasons",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "An empty list uses the five standard reasons. Phone, email, and office come from LiftedPath settings.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "table",
+            "button_label": "Add reason",
+            "min": 0,
+            "max": 0,
+            "rows_per_page": 20,
+            "collapsed": "",
+            "sub_fields": [
+                {
+                    "key": "field_liftedpath_contact_reason_value",
+                    "label": "Reason",
+                    "name": "reason",
+                    "aria-label": "",
+                    "type": "select",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": false,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "volunteer": "Volunteer",
+                        "sponsor": "Sponsor a child or program",
+                        "partner": "Partner as a school or organisation",
+                        "in-kind": "In-kind donation",
+                        "other": "Something else"
+                    },
+                    "default_value": "volunteer",
+                    "return_format": "value",
+                    "multiple": 0,
+                    "allow_null": 0,
+                    "ui": 0,
+                    "ajax": 0,
+                    "parent_repeater": "field_liftedpath_contact_reasons",
+                    "placeholder": "",
+                    "create_options": 0,
+                    "save_options": 0
+                },
+                {
+                    "key": "field_liftedpath_contact_reason_label",
+                    "label": "Label",
+                    "name": "label",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": false,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "parent_repeater": "field_liftedpath_contact_reasons",
+                    "prepend": "",
+                    "append": ""
+                }
+            ]
+        },
+        {
+            "key": "field_liftedpath_contact_button_label",
+            "label": "Button label",
+            "name": "button_label",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "The button does not send the message.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Send message",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_liftedpath_contact_note",
+            "label": "Note",
+            "name": "note",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "liftedpath\/contact-form"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 1,
+    "display_title": "",
+    "modified": 1792019356
 }

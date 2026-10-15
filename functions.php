@@ -8,7 +8,7 @@
  */
 
 if ( ! defined( 'LIFTEDPATH_VERSION' ) ) {
-	define( 'LIFTEDPATH_VERSION', '0.19.20' );
+	define( 'LIFTEDPATH_VERSION', '0.20.0' );
 }
 
 $liftedpath_boot_log = get_template_directory() . '/boot-error.txt';
@@ -121,4 +121,5 @@ if ( is_readable( $liftedpath_site_icon ) ) {
 require get_template_directory() . '/inc/seo.php';
 require get_template_directory() . '/inc/blocks.php';
 require get_template_directory() . '/inc/block-controls.php';
+require get_template_directory() . '/inc/work-layout.php';
 require get_template_directory() . '/inc/seed.php';

@@ -3,6 +3,34 @@
     "title": "Page hero",
     "fields": [
         {
+            "key": "field_liftedpath_page_hero_variant",
+            "label": "Hero style",
+            "name": "variant",
+            "aria-label": "",
+            "type": "select",
+            "instructions": "Work uses the shorter What We Do hero and hides the eyebrow in the hero (the breadcrumb stays).",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "default": "Default",
+                "work": "Work"
+            },
+            "default_value": "default",
+            "return_format": "value",
+            "multiple": 0,
+            "allow_null": 0,
+            "ui": 1,
+            "ajax": 0,
+            "placeholder": "",
+            "create_options": 0,
+            "save_options": 0
+        },
+        {
             "key": "field_liftedpath_page_hero_image",
             "label": "Photograph",
             "name": "image",
@@ -251,5 +279,5 @@
     "description": "",
     "show_in_rest": 1,
     "display_title": "",
-    "modified": 1791944000
+    "modified": 1792019358
 }

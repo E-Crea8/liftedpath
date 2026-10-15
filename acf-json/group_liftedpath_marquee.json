@@ -1,57 +1,70 @@
 {
-	"key": "group_liftedpath_marquee",
-	"title": "Marquee",
-	"fields": [
-		{
-			"key": "field_liftedpath_marquee_block_phrases",
-			"label": "Phrases",
-			"name": "phrases",
-			"type": "repeater",
-			"instructions": "Leave empty to use the phrases in LiftedPath settings.",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "", "class": "", "id": "" },
-			"layout": "table",
-			"button_label": "Add phrase",
-			"min": 0,
-			"max": 0,
-			"rows_per_page": 20,
-			"collapsed": "",
-			"sub_fields": [
-				{
-					"key": "field_liftedpath_marquee_block_phrase",
-					"label": "Phrase",
-					"name": "phrase",
-					"type": "text",
-					"instructions": "",
-					"required": 0,
-					"conditional_logic": false,
-					"wrapper": { "width": "", "class": "", "id": "" },
-					"default_value": "",
-					"maxlength": "",
-					"placeholder": "",
-					"parent_repeater": "field_liftedpath_marquee_block_phrases"
-				}
-			]
-		}
-	],
-	"location": [
-		[
-			{
-				"param": "block",
-				"operator": "==",
-				"value": "liftedpath/marquee"
-			}
-		]
-	],
-	"menu_order": 0,
-	"position": "normal",
-	"style": "default",
-	"label_placement": "top",
-	"instruction_placement": "label",
-	"hide_on_screen": "",
-	"active": true,
-	"description": "",
-	"show_in_rest": 1,
-	"modified": 1791532800
+    "key": "group_liftedpath_marquee",
+    "title": "Marquee",
+    "fields": [
+        {
+            "key": "field_liftedpath_marquee_block_phrases",
+            "label": "Phrases",
+            "name": "phrases",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "Leave empty to use the phrases in LiftedPath settings.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "table",
+            "button_label": "Add phrase",
+            "min": 0,
+            "max": 0,
+            "rows_per_page": 20,
+            "collapsed": "",
+            "sub_fields": [
+                {
+                    "key": "field_liftedpath_marquee_block_phrase",
+                    "label": "Phrase",
+                    "name": "phrase",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": false,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "parent_repeater": "field_liftedpath_marquee_block_phrases",
+                    "prepend": "",
+                    "append": ""
+                }
+            ]
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "liftedpath\/marquee"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 1,
+    "display_title": "",
+    "modified": 1792019358
 }

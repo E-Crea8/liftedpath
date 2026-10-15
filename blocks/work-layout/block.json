@@ -1,0 +1,32 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "liftedpath/work-layout",
+	"title": "Work layout",
+	"category": "liftedpath",
+	"icon": "networking",
+	"description": "What We Do layout: values strip, sidebar navigation, contact card, and article sections.",
+	"keywords": ["work", "what we do", "sidebar", "learning"],
+	"textdomain": "liftedpath",
+	"attributes": {
+		"align": {
+			"type": "string",
+			"default": "full"
+		}
+	},
+	"supports": {
+		"anchor": true,
+		"align": ["full"],
+		"html": false,
+		"jsx": false,
+		"mode": false,
+		"spacing": false,
+		"color": false,
+		"typography": false
+	},
+	"acf": {
+		"blockVersion": 3,
+		"mode": "preview",
+		"renderTemplate": "render.php"
+	}
+}

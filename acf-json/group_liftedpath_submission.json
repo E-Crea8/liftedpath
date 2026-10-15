@@ -1,186 +1,255 @@
 {
-	"key": "group_liftedpath_submission",
-	"title": "Submission",
-	"fields": [
-		{
-			"key": "field_liftedpath_submission_type",
-			"label": "Type",
-			"name": "submission_type",
-			"type": "select",
-			"instructions": "",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "50", "class": "", "id": "" },
-			"choices": {
-				"contact": "Contact",
-				"donate": "Donate"
-			},
-			"default_value": "contact",
-			"return_format": "value",
-			"multiple": 0,
-			"allow_null": 0,
-			"ui": 0,
-			"ajax": 0
-		},
-		{
-			"key": "field_liftedpath_full_name",
-			"label": "Name",
-			"name": "full_name",
-			"type": "text",
-			"instructions": "",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "50", "class": "", "id": "" },
-			"default_value": "",
-			"maxlength": "",
-			"placeholder": ""
-		},
-		{
-			"key": "field_liftedpath_submission_email",
-			"label": "Email",
-			"name": "email",
-			"type": "email",
-			"instructions": "",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "50", "class": "", "id": "" },
-			"default_value": "",
-			"placeholder": ""
-		},
-		{
-			"key": "field_liftedpath_reason",
-			"label": "Reason",
-			"name": "reason",
-			"type": "select",
-			"instructions": "Contact messages.",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "50", "class": "", "id": "" },
-			"choices": {
-				"volunteer": "Volunteer",
-				"sponsor": "Sponsor a child or program",
-				"partner": "Partner as a school or organisation",
-				"in-kind": "In-kind donation",
-				"other": "Something else"
-			},
-			"default_value": "",
-			"return_format": "value",
-			"multiple": 0,
-			"allow_null": 1,
-			"ui": 0,
-			"ajax": 0
-		},
-		{
-			"key": "field_liftedpath_message",
-			"label": "Message",
-			"name": "message",
-			"type": "textarea",
-			"instructions": "",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "", "class": "", "id": "" },
-			"default_value": "",
-			"rows": 4,
-			"new_lines": ""
-		},
-		{
-			"key": "field_liftedpath_currency",
-			"label": "Currency",
-			"name": "currency",
-			"type": "select",
-			"instructions": "Gift intents.",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "25", "class": "", "id": "" },
-			"choices": {
-				"NGN": "NGN",
-				"USD": "USD",
-				"GBP": "GBP"
-			},
-			"default_value": "NGN",
-			"return_format": "value",
-			"multiple": 0,
-			"allow_null": 1,
-			"ui": 0,
-			"ajax": 0
-		},
-		{
-			"key": "field_liftedpath_amount",
-			"label": "Amount",
-			"name": "amount",
-			"type": "number",
-			"instructions": "",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "25", "class": "", "id": "" },
-			"default_value": "",
-			"min": 0,
-			"max": "",
-			"step": "0.01",
-			"placeholder": ""
-		},
-		{
-			"key": "field_liftedpath_frequency",
-			"label": "Frequency",
-			"name": "frequency",
-			"type": "select",
-			"instructions": "",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "25", "class": "", "id": "" },
-			"choices": {
-				"one-off": "One-off",
-				"monthly": "Monthly"
-			},
-			"default_value": "one-off",
-			"return_format": "value",
-			"multiple": 0,
-			"allow_null": 1,
-			"ui": 0,
-			"ajax": 0
-		},
-		{
-			"key": "field_liftedpath_designation",
-			"label": "Designation",
-			"name": "designation",
-			"type": "select",
-			"instructions": "",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "25", "class": "", "id": "" },
-			"choices": {
-				"greatest-need": "Wherever the need is greatest",
-				"education": "Education Sponsorship / Scholarship",
-				"skills": "Skills Acquisition & Vocational Training",
-				"mentorship": "Mentorship & Coaching",
-				"orphanage": "Orphanage Visitations",
-				"season": "Share the Joy of the Season"
-			},
-			"default_value": "",
-			"return_format": "value",
-			"multiple": 0,
-			"allow_null": 1,
-			"ui": 0,
-			"ajax": 0
-		}
-	],
-	"location": [
-		[
-			{
-				"param": "post_type",
-				"operator": "==",
-				"value": "submission"
-			}
-		]
-	],
-	"menu_order": 0,
-	"position": "normal",
-	"style": "default",
-	"label_placement": "top",
-	"instruction_placement": "label",
-	"hide_on_screen": "",
-	"active": true,
-	"description": "",
-	"show_in_rest": 1,
-	"modified": 1791360000
+    "key": "group_liftedpath_submission",
+    "title": "Submission",
+    "fields": [
+        {
+            "key": "field_liftedpath_submission_type",
+            "label": "Type",
+            "name": "submission_type",
+            "aria-label": "",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "contact": "Contact",
+                "donate": "Donate"
+            },
+            "default_value": "contact",
+            "return_format": "value",
+            "multiple": 0,
+            "allow_null": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "create_options": 0,
+            "save_options": 0
+        },
+        {
+            "key": "field_liftedpath_full_name",
+            "label": "Name",
+            "name": "full_name",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_liftedpath_submission_email",
+            "label": "Email",
+            "name": "email",
+            "aria-label": "",
+            "type": "email",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_liftedpath_reason",
+            "label": "Reason",
+            "name": "reason",
+            "aria-label": "",
+            "type": "select",
+            "instructions": "Contact messages.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "volunteer": "Volunteer",
+                "sponsor": "Sponsor a child or program",
+                "partner": "Partner as a school or organisation",
+                "in-kind": "In-kind donation",
+                "other": "Something else"
+            },
+            "default_value": false,
+            "return_format": "value",
+            "multiple": 0,
+            "allow_null": 1,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "create_options": 0,
+            "save_options": 0
+        },
+        {
+            "key": "field_liftedpath_message",
+            "label": "Message",
+            "name": "message",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "rows": 4,
+            "new_lines": "",
+            "maxlength": "",
+            "placeholder": ""
+        },
+        {
+            "key": "field_liftedpath_currency",
+            "label": "Currency",
+            "name": "currency",
+            "aria-label": "",
+            "type": "select",
+            "instructions": "Gift intents.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "NGN": "NGN",
+                "USD": "USD",
+                "GBP": "GBP"
+            },
+            "default_value": "NGN",
+            "return_format": "value",
+            "multiple": 0,
+            "allow_null": 1,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "create_options": 0,
+            "save_options": 0
+        },
+        {
+            "key": "field_liftedpath_amount",
+            "label": "Amount",
+            "name": "amount",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "min": 0,
+            "max": "",
+            "step": "0.01",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_liftedpath_frequency",
+            "label": "Frequency",
+            "name": "frequency",
+            "aria-label": "",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "one-off": "One-off",
+                "monthly": "Monthly"
+            },
+            "default_value": "one-off",
+            "return_format": "value",
+            "multiple": 0,
+            "allow_null": 1,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "create_options": 0,
+            "save_options": 0
+        },
+        {
+            "key": "field_liftedpath_designation",
+            "label": "Designation",
+            "name": "designation",
+            "aria-label": "",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "25",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "greatest-need": "Wherever the need is greatest",
+                "education": "Education Sponsorship \/ Scholarship",
+                "skills": "Skills Acquisition & Vocational Training",
+                "mentorship": "Mentorship & Coaching",
+                "orphanage": "Orphanage Visitations",
+                "season": "Share the Joy of the Season"
+            },
+            "default_value": false,
+            "return_format": "value",
+            "multiple": 0,
+            "allow_null": 1,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "create_options": 0,
+            "save_options": 0
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "submission"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 1,
+    "display_title": "",
+    "modified": 1792019360
 }

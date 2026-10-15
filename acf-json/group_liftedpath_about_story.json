@@ -1,90 +1,131 @@
 {
-	"key": "group_liftedpath_about_story",
-	"title": "About story",
-	"fields": [
-		{
-			"key": "field_liftedpath_about_story_eyebrow",
-			"label": "Eyebrow",
-			"name": "eyebrow",
-			"type": "text",
-			"instructions": "",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "", "class": "", "id": "" },
-			"default_value": "",
-			"maxlength": "",
-			"placeholder": ""
-		},
-		{
-			"key": "field_liftedpath_about_story_heading",
-			"label": "Heading",
-			"name": "heading",
-			"type": "text",
-			"instructions": "",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "", "class": "", "id": "" },
-			"default_value": "",
-			"maxlength": "",
-			"placeholder": ""
-		},
-		{
-			"key": "field_liftedpath_about_story_body",
-			"label": "Paragraphs",
-			"name": "body",
-			"type": "textarea",
-			"instructions": "Each new line is its own paragraph.",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "", "class": "", "id": "" },
-			"default_value": "",
-			"rows": 8,
-			"new_lines": ""
-		},
-		{
-			"key": "field_liftedpath_about_story_image",
-			"label": "Photograph",
-			"name": "image",
-			"type": "image",
-			"instructions": "Shown beside the story.",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "", "class": "", "id": "" },
-			"return_format": "id",
-			"preview_size": "medium",
-			"library": "all"
-		},
-		{
-			"key": "field_liftedpath_about_story_image_alt",
-			"label": "Photograph description",
-			"name": "image_alt",
-			"type": "text",
-			"instructions": "Leave blank to use the description saved on the image in the media library.",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "", "class": "", "id": "" },
-			"default_value": "",
-			"maxlength": "",
-			"placeholder": ""
-		}
-	],
-	"location": [
-		[
-			{
-				"param": "block",
-				"operator": "==",
-				"value": "liftedpath/about-story"
-			}
-		]
-	],
-	"menu_order": 0,
-	"position": "normal",
-	"style": "default",
-	"label_placement": "top",
-	"instruction_placement": "label",
-	"hide_on_screen": "",
-	"active": true,
-	"description": "",
-	"show_in_rest": 1,
-	"modified": 1791944000
+    "key": "group_liftedpath_about_story",
+    "title": "About story",
+    "fields": [
+        {
+            "key": "field_liftedpath_about_story_eyebrow",
+            "label": "Eyebrow",
+            "name": "eyebrow",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_liftedpath_about_story_heading",
+            "label": "Heading",
+            "name": "heading",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_liftedpath_about_story_body",
+            "label": "Paragraphs",
+            "name": "body",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Each new line is its own paragraph.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "rows": 8,
+            "new_lines": "",
+            "maxlength": "",
+            "placeholder": ""
+        },
+        {
+            "key": "field_liftedpath_about_story_image",
+            "label": "Photograph",
+            "name": "image",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "Shown beside the story.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "id",
+            "preview_size": "medium",
+            "library": "all",
+            "min_width": 0,
+            "min_height": 0,
+            "min_size": 0,
+            "max_width": 0,
+            "max_height": 0,
+            "max_size": 0,
+            "mime_types": ""
+        },
+        {
+            "key": "field_liftedpath_about_story_image_alt",
+            "label": "Photograph description",
+            "name": "image_alt",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Leave blank to use the description saved on the image in the media library.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "liftedpath\/about-story"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 1,
+    "display_title": "",
+    "modified": 1792019355
 }

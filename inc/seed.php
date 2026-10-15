@@ -400,93 +400,14 @@ function liftedpath_seed_about_page( array $images, string $join ): array {
  * @param array<string, int> $images Attachment IDs.
  */
 function liftedpath_seed_work_page( array $images ): array {
-	$intro   = 'Explore LiftedPath Learning, Path Guide and Community Initiatives — pathways to education, guidance and lasting support.';
-	$content = liftedpath_seed_page_hero( $images['scholarship'] ?? 0, 'What We Do', 'Education, guidance and community support.', $intro, 'Home' );
-	$content .= liftedpath_seed_block(
-		'program-cards',
-		liftedpath_seed_data(
-			array(
-				array( 'name' => 'eyebrow', 'key' => 'field_liftedpath_programs_eyebrow', 'value' => 'What We Do' ),
-				array( 'name' => 'heading', 'key' => 'field_liftedpath_programs_heading', 'value' => 'Three areas of work' ),
-				array( 'name' => 'intro', 'key' => 'field_liftedpath_programs_intro', 'value' => 'Explore the three areas of our work and the initiatives within each one.' ),
-				array(
-					'name' => 'cards',
-					'key'  => 'field_liftedpath_programs_cards',
-					'rows' => array(
-						array( 'image' => $images['classroom'] ?? 0, 'kicker' => 'Learning', 'title' => 'LiftedPath Learning', 'line' => 'From early education through higher education and practical skills, our learning pathways meet young people at every stage.', 'link' => liftedpath_seed_link( 'Read More', '/learning/' ) ),
-						array( 'image' => $images['mentorship'] ?? 0, 'kicker' => 'Guidance', 'title' => 'Path Guide', 'line' => 'Guidance and encouragement help young people navigate their next steps with confidence.', 'link' => liftedpath_seed_link( 'Read More', '/what-we-do/path-guide/' ) ),
-						array( 'image' => $images['orphanage'] ?? 0, 'kicker' => 'Community', 'title' => 'Community Initiatives', 'line' => 'Community-led support creates opportunities for young people and families facing barriers.', 'link' => liftedpath_seed_link( 'Read More', '/what-we-do/community-initiatives/' ) ),
-					),
-					'subs' => array(
-						'image'  => 'field_liftedpath_programs_card_image',
-						'kicker' => 'field_liftedpath_programs_card_kicker',
-						'title'  => 'field_liftedpath_programs_card_title',
-						'line'   => 'field_liftedpath_programs_card_line',
-						'link'   => 'field_liftedpath_programs_card_link',
-					),
-				),
-				array( 'name' => 'callout_heading', 'key' => 'field_liftedpath_programs_callout_heading', 'value' => '' ),
-				array( 'name' => 'callout_text', 'key' => 'field_liftedpath_programs_callout_text', 'value' => '' ),
-				array( 'name' => 'callout_button', 'key' => 'field_liftedpath_programs_callout_button', 'value' => '' ),
-			)
-		)
-	);
-
-	return liftedpath_seed_page_record( 'what-we-do', 'What We Do', '', $content, 'What We Do', $intro, $intro );
+	return liftedpath_seed_work_layout_page( 'what-we-do', $images );
 }
 
 /**
  * @param array<string, int> $images Attachment IDs.
  */
 function liftedpath_seed_learning_page( array $images ): array {
-	$intro   = 'From first steps to new skills, we help young people continue learning and create their own futures.';
-	$section = 'Four pathways that meet learners where they are and help them move forward.';
-	$content = liftedpath_seed_page_hero( $images['classroom'] ?? 0, 'LiftedPath Learning', 'A pathway for every stage of learning.', $intro, 'Home' );
-	$rows    = array();
-
-	foreach ( liftedpath_seed_child_pages( $images ) as $key => $child ) {
-		if ( 'learning' !== ( $child['parent'] ?? '' ) ) {
-			continue;
-		}
-		$rows[] = array(
-			'image'  => $child['image'],
-			'kicker' => $child['eyebrow'],
-			'title'  => $child['title'],
-			'line'   => $child['eyebrow'],
-			'link'   => liftedpath_seed_link( 'Read More', '/learning/' . $child['slug'] . '/' ),
-		);
-	}
-
-	$content .= liftedpath_seed_block(
-		'pathway-cards',
-		liftedpath_seed_data(
-			array(
-				array( 'name' => 'eyebrow', 'key' => 'field_liftedpath_pathway_eyebrow', 'value' => 'LiftedPath Learning' ),
-				array( 'name' => 'heading', 'key' => 'field_liftedpath_pathway_heading', 'value' => 'Learning grows with every step.' ),
-				array( 'name' => 'intro', 'key' => 'field_liftedpath_pathway_intro', 'value' => $section ),
-				array( 'name' => 'index_label', 'key' => 'field_liftedpath_pathway_index_label', 'value' => 'LiftedPath Learning' ),
-				array( 'name' => 'heading_weight', 'key' => 'field_liftedpath_block_heading_weight', 'value' => '700' ),
-				array(
-					'name' => 'cards',
-					'key'  => 'field_liftedpath_pathway_cards',
-					'rows' => $rows,
-					'subs' => array(
-						'image'  => 'field_liftedpath_pathway_card_image',
-						'kicker' => 'field_liftedpath_pathway_card_kicker',
-						'title'  => 'field_liftedpath_pathway_card_title',
-						'line'   => 'field_liftedpath_pathway_card_line',
-						'link'   => 'field_liftedpath_pathway_card_link',
-					),
-				),
-				array( 'name' => 'callout_heading', 'key' => 'field_liftedpath_pathway_callout_heading', 'value' => '' ),
-				array( 'name' => 'callout_text', 'key' => 'field_liftedpath_pathway_callout_text', 'value' => '' ),
-				array( 'name' => 'callout_button', 'key' => 'field_liftedpath_pathway_callout_button', 'value' => '' ),
-			)
-		)
-	);
-	$content .= liftedpath_seed_join_band( $images['students'] ?? 0 );
-
-	return liftedpath_seed_page_record( 'learning', 'LiftedPath Learning', '', $content, 'LiftedPath Learning', $intro, $intro );
+	return liftedpath_seed_work_layout_page( 'learning', $images );
 }
 
 /**
@@ -637,32 +558,30 @@ function liftedpath_seed_donate_page( array $images ): array {
  * @return array<string, array<string, mixed>>
  */
 function liftedpath_seed_child_pages( array $images ): array {
-	$children = array(
-		array( 'learning/lift-root', 'LIFT-ROOT', 'Early Education', 'A strong beginning opens a lifetime of possibility. We help young learners access the essentials that support their first steps in education.', 'scholarship' ),
-		array( 'learning/lift-grow', 'LIFT-GROW', 'Secondary Education', 'We support determined students through their secondary years, helping them stay in school and keep moving toward their goals.', 'students' ),
-		array( 'learning/lift-beyond', 'LIFT-BEYOND', 'Higher Education', 'We help young adults overcome financial barriers to further education and pursue the futures they imagine for themselves.', 'classroom' ),
-		array( 'learning/lift-equip', 'LIFT-EQUIP', 'Skills & Vocational Development', 'Practical training and tools build confidence, independence, and pathways into meaningful work.', 'skills' ),
-		array( 'what-we-do/path-guide', 'Path Guide', 'What We Do', 'Guidance and encouragement help young people navigate their next steps with confidence.', 'mentorship' ),
-		array( 'what-we-do/mentorship-coaching', 'Mentorship & Coaching', 'Path Guide', 'Our mentors and coaches walk with students and trainees through study habits, career choices and confidence, helping them stay focused on their goals.', 'mentorship' ),
-		array( 'what-we-do/community-initiatives', 'Community Initiatives', 'What We Do', 'Community-led support creates opportunities for young people and families facing barriers.', 'orphanage' ),
-		array( 'what-we-do/lift-beyond-barriers', 'Lift Beyond Barriers', 'Special Needs Education', 'We believe access to education should include young people with special educational needs.', 'classroom' ),
-		array( 'what-we-do/lift-beyond-borders', 'Lift Beyond Borders', 'Juvenile & Correctional Center Education Outreach', 'Education and guidance can open new pathways for young people in juvenile and correctional settings.', 'students' ),
-		array( 'what-we-do/orphanage-outreach', 'Orphanage Outreach', 'Community Initiatives', 'We visit orphanage homes to share care, encouragement and essentials, reminding children they are seen, valued and remembered.', 'orphanage' ),
-		array( 'what-we-do/share-the-joy-of-the-season', 'Share the Joy of the Season', 'Community Initiatives', 'Each festive season we reach families facing financial hardship with food items and financial assistance, sharing the joy of the season with dignity.', 'season' ),
+	$paths = array(
+		'learning/lift-root',
+		'learning/lift-grow',
+		'learning/lift-beyond',
+		'learning/lift-equip',
+		'what-we-do/path-guide',
+		'what-we-do/mentorship-coaching',
+		'what-we-do/community-initiatives',
+		'what-we-do/lift-beyond-barriers',
+		'what-we-do/lift-beyond-borders',
+		'what-we-do/orphanage-outreach',
+		'what-we-do/share-the-joy-of-the-season',
 	);
-	$pages    = array();
+	$pages = array();
 
-	foreach ( $children as $child ) {
-		list( $path, $title, $eyebrow, $sentence, $image_key ) = $child;
-		$parent = str_contains( $path, '/' ) ? strtok( $path, '/' ) : '';
-		$slug   = substr( $path, strlen( $parent ) + 1 );
-		$image  = $images[ $image_key ] ?? 0;
-		$content = liftedpath_seed_page_hero( $image, $eyebrow, $title, $sentence, 'Home' );
-		$content .= liftedpath_seed_paragraph( $sentence );
-
-		$pages[ $path ] = liftedpath_seed_page_record( $slug, $title, $parent, $content, $title, $sentence, $sentence );
-		$pages[ $path ]['image']   = $image;
-		$pages[ $path ]['eyebrow'] = $eyebrow;
+	foreach ( $paths as $path ) {
+		$page = liftedpath_seed_work_layout_page( $path, $images );
+		if ( array() === $page ) {
+			continue;
+		}
+		$pages[ $path ] = $page;
+		$catalog        = liftedpath_work_page_catalog( $images );
+		$pages[ $path ]['image']   = (int) ( $catalog[ $path ]['image'] ?? 0 );
+		$pages[ $path ]['eyebrow'] = (string) ( $catalog[ $path ]['subtitle'] ?? '' );
 	}
 
 	return $pages;

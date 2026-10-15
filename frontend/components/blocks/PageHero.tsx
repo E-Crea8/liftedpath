@@ -15,6 +15,7 @@ export function PageHero({ block, images }: { block: Block; images: ReadonlyMap<
 	const loop = flag(block.attributes.video_loop, true);
 	const autoplay = flag(block.attributes.video_autoplay, true);
 	const still = photo !== null ? (images.get(photo) ?? null) : null;
+	const variant = text(block.attributes.variant) === "work" ? "work" : "default";
 	const eyebrow = text(block.attributes.eyebrow);
 	const heading = text(block.attributes.heading);
 	const intro = text(block.attributes.intro);
@@ -27,7 +28,7 @@ export function PageHero({ block, images }: { block: Block; images: ReadonlyMap<
 	}
 
 	return (
-		<section className="liftedpath-page-hero">
+		<section className={`liftedpath-page-hero${variant === "work" ? " liftedpath-page-hero--work" : ""}`}>
 			{hasVideo ? <link as="video" href={videoUrl} rel="preload" /> : null}
 			{hasVideo ? (
 				<HeroBackground
@@ -44,7 +45,7 @@ export function PageHero({ block, images }: { block: Block; images: ReadonlyMap<
 			)}
 			<div aria-hidden="true" className="liftedpath-page-hero__shade" />
 			<div className="liftedpath-page-hero__content">
-				{eyebrow ? <p className="liftedpath-page-hero__eyebrow">{eyebrow}</p> : null}
+				{eyebrow && variant !== "work" ? <p className="liftedpath-page-hero__eyebrow">{eyebrow}</p> : null}
 				{heading ? <h1>{heading}</h1> : null}
 				{intro ? <p className="liftedpath-page-hero__intro">{intro}</p> : null}
 				<p className="liftedpath-page-hero__crumbs">

@@ -52,6 +52,13 @@
 	color: var(--color-sand, #d6b886);
 }
 
+.editor-styles-wrapper .liftedpath-work__contact,
+.editor-styles-wrapper .liftedpath-work__contact h3,
+.editor-styles-wrapper .liftedpath-work__contact p,
+.editor-styles-wrapper .liftedpath-work__phone {
+	color: var(--color-paper);
+}
+
 .editor-styles-wrapper .liftedpath-page-hero__crumbs span {
 	color: var(--color-paper, #fcfdfd);
 }

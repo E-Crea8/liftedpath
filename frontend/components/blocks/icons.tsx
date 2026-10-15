@@ -1,4 +1,4 @@
-type IconName = "target" | "heart" | "link" | "sparkles" | "megaphone" | "phone" | "mail" | "map-pin" | "chevron";
+type IconName = "target" | "heart" | "link" | "sparkles" | "megaphone" | "phone" | "mail" | "map-pin" | "chevron" | "check";
 
 export function BlockIcon({ name }: { name: IconName }) {
 	return (
@@ -45,6 +45,7 @@ export function BlockIcon({ name }: { name: IconName }) {
 				</>
 			) : null}
 			{name === "chevron" ? <path d="m6 9 6 6 6-6" /> : null}
+			{name === "check" ? <path d="M20 6 9 17l-5-5" /> : null}
 			{name === "phone" ? (
 				<path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384" />
 			) : null}

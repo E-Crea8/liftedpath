@@ -1,200 +1,294 @@
 {
-	"key": "group_liftedpath_about_tabs",
-	"title": "About tabs",
-	"fields": [
-		{
-			"key": "field_liftedpath_about_primary_image",
-			"label": "Primary photograph",
-			"name": "primary_image",
-			"type": "image",
-			"instructions": "Set the alt text on the media item.",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "50", "class": "", "id": "" },
-			"return_format": "array",
-			"library": "all",
-			"preview_size": "medium",
-			"mime_types": "jpg,jpeg,png,webp"
-		},
-		{
-			"key": "field_liftedpath_about_secondary_image",
-			"label": "Secondary photograph",
-			"name": "secondary_image",
-			"type": "image",
-			"instructions": "Set the alt text on the media item.",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "50", "class": "", "id": "" },
-			"return_format": "array",
-			"library": "all",
-			"preview_size": "medium",
-			"mime_types": "jpg,jpeg,png,webp"
-		},
-		{
-			"key": "field_liftedpath_about_figure",
-			"label": "Figure",
-			"name": "figure",
-			"type": "text",
-			"instructions": "Shown on the photographs, such as 2+.",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "50", "class": "", "id": "" },
-			"default_value": "",
-			"maxlength": "",
-			"placeholder": ""
-		},
-		{
-			"key": "field_liftedpath_about_figure_label",
-			"label": "Figure label",
-			"name": "figure_label",
-			"type": "text",
-			"instructions": "",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "50", "class": "", "id": "" },
-			"default_value": "",
-			"maxlength": "",
-			"placeholder": ""
-		},
-		{
-			"key": "field_liftedpath_about_eyebrow",
-			"label": "Eyebrow",
-			"name": "eyebrow",
-			"type": "text",
-			"instructions": "",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "", "class": "", "id": "" },
-			"default_value": "",
-			"maxlength": "",
-			"placeholder": ""
-		},
-		{
-			"key": "field_liftedpath_about_heading",
-			"label": "Heading",
-			"name": "heading",
-			"type": "text",
-			"instructions": "",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "", "class": "", "id": "" },
-			"default_value": "",
-			"maxlength": "",
-			"placeholder": ""
-		},
-		{
-			"key": "field_liftedpath_about_intro",
-			"label": "Intro",
-			"name": "intro",
-			"type": "textarea",
-			"instructions": "",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "", "class": "", "id": "" },
-			"default_value": "",
-			"rows": 4,
-			"new_lines": ""
-		},
-		{
-			"key": "field_liftedpath_about_tabs",
-			"label": "Tabs",
-			"name": "tabs",
-			"type": "repeater",
-			"instructions": "The first tab is selected. Up to six.",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "", "class": "", "id": "" },
-			"layout": "block",
-			"button_label": "Add tab",
-			"min": 0,
-			"max": 6,
-			"rows_per_page": 20,
-			"collapsed": "",
-			"sub_fields": [
-				{
-					"key": "field_liftedpath_about_tab_label",
-					"label": "Label",
-					"name": "label",
-					"type": "text",
-					"instructions": "",
-					"required": 0,
-					"conditional_logic": false,
-					"wrapper": { "width": "40", "class": "", "id": "" },
-					"default_value": "",
-					"maxlength": "",
-					"placeholder": "",
-					"parent_repeater": "field_liftedpath_about_tabs"
-				},
-				{
-					"key": "field_liftedpath_about_tab_title",
-					"label": "Title",
-					"name": "title",
-					"type": "text",
-					"instructions": "",
-					"required": 0,
-					"conditional_logic": false,
-					"wrapper": { "width": "60", "class": "", "id": "" },
-					"default_value": "",
-					"maxlength": "",
-					"placeholder": "",
-					"parent_repeater": "field_liftedpath_about_tabs"
-				},
-				{
-					"key": "field_liftedpath_about_tab_body",
-					"label": "Body",
-					"name": "body",
-					"type": "textarea",
-					"instructions": "",
-					"required": 0,
-					"conditional_logic": false,
-					"wrapper": { "width": "", "class": "", "id": "" },
-					"default_value": "",
-					"rows": 3,
-					"new_lines": "",
-					"parent_repeater": "field_liftedpath_about_tabs"
-				}
-			]
-		},
-		{
-			"key": "field_liftedpath_about_primary_link",
-			"label": "Primary link",
-			"name": "primary_link",
-			"type": "link",
-			"instructions": "",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "50", "class": "", "id": "" },
-			"return_format": "array"
-		},
-		{
-			"key": "field_liftedpath_about_secondary_link",
-			"label": "Secondary link",
-			"name": "secondary_link",
-			"type": "link",
-			"instructions": "",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "50", "class": "", "id": "" },
-			"return_format": "array"
-		}
-	],
-	"location": [
-		[
-			{
-				"param": "block",
-				"operator": "==",
-				"value": "liftedpath/about-tabs"
-			}
-		]
-	],
-	"menu_order": 0,
-	"position": "normal",
-	"style": "default",
-	"label_placement": "top",
-	"instruction_placement": "label",
-	"hide_on_screen": "",
-	"active": true,
-	"description": "",
-	"show_in_rest": 1,
-	"modified": 1791619200
+    "key": "group_liftedpath_about_tabs",
+    "title": "About tabs",
+    "fields": [
+        {
+            "key": "field_liftedpath_about_primary_image",
+            "label": "Primary photograph",
+            "name": "primary_image",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "Set the alt text on the media item.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array",
+            "library": "all",
+            "preview_size": "medium",
+            "mime_types": "jpg,jpeg,png,webp",
+            "min_width": 0,
+            "min_height": 0,
+            "min_size": 0,
+            "max_width": 0,
+            "max_height": 0,
+            "max_size": 0
+        },
+        {
+            "key": "field_liftedpath_about_secondary_image",
+            "label": "Secondary photograph",
+            "name": "secondary_image",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "Set the alt text on the media item.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array",
+            "library": "all",
+            "preview_size": "medium",
+            "mime_types": "jpg,jpeg,png,webp",
+            "min_width": 0,
+            "min_height": 0,
+            "min_size": 0,
+            "max_width": 0,
+            "max_height": 0,
+            "max_size": 0
+        },
+        {
+            "key": "field_liftedpath_about_figure",
+            "label": "Figure",
+            "name": "figure",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Shown on the photographs, such as 2+.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_liftedpath_about_figure_label",
+            "label": "Figure label",
+            "name": "figure_label",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_liftedpath_about_eyebrow",
+            "label": "Eyebrow",
+            "name": "eyebrow",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_liftedpath_about_heading",
+            "label": "Heading",
+            "name": "heading",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_liftedpath_about_intro",
+            "label": "Intro",
+            "name": "intro",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "rows": 4,
+            "new_lines": "",
+            "maxlength": "",
+            "placeholder": ""
+        },
+        {
+            "key": "field_liftedpath_about_tabs",
+            "label": "Tabs",
+            "name": "tabs",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "The first tab is selected. Up to six.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "block",
+            "button_label": "Add tab",
+            "min": 0,
+            "max": 6,
+            "rows_per_page": 20,
+            "collapsed": "",
+            "sub_fields": [
+                {
+                    "key": "field_liftedpath_about_tab_label",
+                    "label": "Label",
+                    "name": "label",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": false,
+                    "wrapper": {
+                        "width": "40",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "parent_repeater": "field_liftedpath_about_tabs",
+                    "prepend": "",
+                    "append": ""
+                },
+                {
+                    "key": "field_liftedpath_about_tab_title",
+                    "label": "Title",
+                    "name": "title",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": false,
+                    "wrapper": {
+                        "width": "60",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "parent_repeater": "field_liftedpath_about_tabs",
+                    "prepend": "",
+                    "append": ""
+                },
+                {
+                    "key": "field_liftedpath_about_tab_body",
+                    "label": "Body",
+                    "name": "body",
+                    "aria-label": "",
+                    "type": "textarea",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": false,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "rows": 3,
+                    "new_lines": "",
+                    "parent_repeater": "field_liftedpath_about_tabs",
+                    "maxlength": "",
+                    "placeholder": ""
+                }
+            ]
+        },
+        {
+            "key": "field_liftedpath_about_primary_link",
+            "label": "Primary link",
+            "name": "primary_link",
+            "aria-label": "",
+            "type": "link",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array"
+        },
+        {
+            "key": "field_liftedpath_about_secondary_link",
+            "label": "Secondary link",
+            "name": "secondary_link",
+            "aria-label": "",
+            "type": "link",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array"
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "liftedpath\/about-tabs"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 1,
+    "display_title": "",
+    "modified": 1792019355
 }

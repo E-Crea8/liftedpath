@@ -1,85 +1,112 @@
 {
-	"key": "group_liftedpath_beliefs",
-	"title": "Beliefs",
-	"fields": [
-		{
-			"key": "field_liftedpath_beliefs_items",
-			"label": "Columns",
-			"name": "items",
-			"type": "repeater",
-			"instructions": "Each row is one column. The About page design uses two: mission, then vision.",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "", "class": "", "id": "" },
-			"layout": "block",
-			"button_label": "Add column",
-			"min": 0,
-			"max": 0,
-			"rows_per_page": 20,
-			"collapsed": "",
-			"sub_fields": [
-				{
-					"key": "field_liftedpath_beliefs_item_eyebrow",
-					"label": "Eyebrow",
-					"name": "eyebrow",
-					"type": "text",
-					"instructions": "",
-					"required": 0,
-					"conditional_logic": false,
-					"wrapper": { "width": "", "class": "", "id": "" },
-					"default_value": "",
-					"maxlength": "",
-					"placeholder": "",
-					"parent_repeater": "field_liftedpath_beliefs_items"
-				},
-				{
-					"key": "field_liftedpath_beliefs_item_heading",
-					"label": "Heading",
-					"name": "heading",
-					"type": "text",
-					"instructions": "",
-					"required": 0,
-					"conditional_logic": false,
-					"wrapper": { "width": "", "class": "", "id": "" },
-					"default_value": "",
-					"maxlength": "",
-					"placeholder": "",
-					"parent_repeater": "field_liftedpath_beliefs_items"
-				},
-				{
-					"key": "field_liftedpath_beliefs_item_text",
-					"label": "Text",
-					"name": "text",
-					"type": "textarea",
-					"instructions": "",
-					"required": 0,
-					"conditional_logic": false,
-					"wrapper": { "width": "", "class": "", "id": "" },
-					"default_value": "",
-					"rows": 4,
-					"new_lines": "",
-					"parent_repeater": "field_liftedpath_beliefs_items"
-				}
-			]
-		}
-	],
-	"location": [
-		[
-			{
-				"param": "block",
-				"operator": "==",
-				"value": "liftedpath/beliefs"
-			}
-		]
-	],
-	"menu_order": 0,
-	"position": "normal",
-	"style": "default",
-	"label_placement": "top",
-	"instruction_placement": "label",
-	"hide_on_screen": "",
-	"active": true,
-	"description": "",
-	"show_in_rest": 1,
-	"modified": 1791944000
+    "key": "group_liftedpath_beliefs",
+    "title": "Beliefs",
+    "fields": [
+        {
+            "key": "field_liftedpath_beliefs_items",
+            "label": "Columns",
+            "name": "items",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "Each row is one column. The About page design uses two: mission, then vision.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "block",
+            "button_label": "Add column",
+            "min": 0,
+            "max": 0,
+            "rows_per_page": 20,
+            "collapsed": "",
+            "sub_fields": [
+                {
+                    "key": "field_liftedpath_beliefs_item_eyebrow",
+                    "label": "Eyebrow",
+                    "name": "eyebrow",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": false,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "parent_repeater": "field_liftedpath_beliefs_items",
+                    "prepend": "",
+                    "append": ""
+                },
+                {
+                    "key": "field_liftedpath_beliefs_item_heading",
+                    "label": "Heading",
+                    "name": "heading",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": false,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "parent_repeater": "field_liftedpath_beliefs_items",
+                    "prepend": "",
+                    "append": ""
+                },
+                {
+                    "key": "field_liftedpath_beliefs_item_text",
+                    "label": "Text",
+                    "name": "text",
+                    "aria-label": "",
+                    "type": "textarea",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": false,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "rows": 4,
+                    "new_lines": "",
+                    "parent_repeater": "field_liftedpath_beliefs_items",
+                    "maxlength": "",
+                    "placeholder": ""
+                }
+            ]
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "liftedpath\/beliefs"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 1,
+    "display_title": "",
+    "modified": 1792019355
 }

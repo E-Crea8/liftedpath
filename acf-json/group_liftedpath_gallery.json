@@ -1,262 +1,370 @@
 {
-	"key": "group_liftedpath_gallery",
-	"title": "Gallery",
-	"fields": [
-		{
-			"key": "field_liftedpath_gallery_eyebrow",
-			"label": "Eyebrow",
-			"name": "eyebrow",
-			"type": "text",
-			"instructions": "The small line above the heading.",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "", "class": "", "id": "" },
-			"default_value": "",
-			"maxlength": "",
-			"placeholder": ""
-		},
-		{
-			"key": "field_liftedpath_gallery_heading",
-			"label": "Heading",
-			"name": "heading",
-			"type": "text",
-			"instructions": "The title above the gallery.",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "", "class": "", "id": "" },
-			"default_value": "",
-			"maxlength": "",
-			"placeholder": ""
-		},
-		{
-			"key": "field_liftedpath_gallery_intro",
-			"label": "Introduction",
-			"name": "intro",
-			"type": "textarea",
-			"instructions": "One paragraph per line.",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "", "class": "", "id": "" },
-			"default_value": "",
-			"rows": 3,
-			"new_lines": ""
-		},
-		{
-			"key": "field_liftedpath_gallery_layout",
-			"label": "Layout",
-			"name": "layout",
-			"type": "select",
-			"instructions": "Mosaic lets a tile be wide or tall. Grid keeps every tile the same shape.",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "50", "class": "", "id": "" },
-			"choices": {
-				"mosaic": "Mosaic",
-				"grid": "Grid"
-			},
-			"default_value": "mosaic",
-			"allow_null": 0,
-			"multiple": 0,
-			"ui": 0,
-			"return_format": "value"
-		},
-		{
-			"key": "field_liftedpath_gallery_columns",
-			"label": "Columns",
-			"name": "columns",
-			"type": "select",
-			"instructions": "Used on a wide screen. Smaller screens use fewer columns.",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "50", "class": "", "id": "" },
-			"choices": {
-				"2": "2",
-				"3": "3",
-				"4": "4"
-			},
-			"default_value": "3",
-			"allow_null": 0,
-			"multiple": 0,
-			"ui": 0,
-			"return_format": "value"
-		},
-		{
-			"key": "field_liftedpath_gallery_captions",
-			"label": "Captions",
-			"name": "show_captions",
-			"type": "true_false",
-			"instructions": "Show each caption along the bottom of its tile.",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "50", "class": "", "id": "" },
-			"message": "",
-			"default_value": 1,
-			"ui": 1
-		},
-		{
-			"key": "field_liftedpath_gallery_enlarge",
-			"label": "Enlarge",
-			"name": "enlarge",
-			"type": "true_false",
-			"instructions": "A click opens the photograph or video larger. Turn this off to play a video in the tile.",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "50", "class": "", "id": "" },
-			"message": "",
-			"default_value": 1,
-			"ui": 1
-		},
-		{
-			"key": "field_liftedpath_gallery_items",
-			"label": "Items",
-			"name": "items",
-			"type": "repeater",
-			"instructions": "Add up to 24 photographs or videos. Drag a row to change the order.",
-			"required": 0,
-			"conditional_logic": false,
-			"wrapper": { "width": "", "class": "", "id": "" },
-			"layout": "block",
-			"min": 0,
-			"max": 24,
-			"button_label": "Add item",
-			"sub_fields": [
-				{
-					"key": "field_liftedpath_gallery_item_kind",
-					"label": "Type",
-					"name": "media_kind",
-					"type": "select",
-					"instructions": "",
-					"required": 0,
-					"conditional_logic": false,
-					"wrapper": { "width": "50", "class": "", "id": "" },
-					"choices": {
-						"image": "Photograph",
-						"video": "Video"
-					},
-					"default_value": "image",
-					"allow_null": 0,
-					"multiple": 0,
-					"ui": 0,
-					"return_format": "value"
-				},
-				{
-					"key": "field_liftedpath_gallery_item_tile",
-					"label": "Tile",
-					"name": "tile",
-					"type": "select",
-					"instructions": "Mosaic only. Wide spans two columns. Tall spans two rows.",
-					"required": 0,
-					"conditional_logic": false,
-					"wrapper": { "width": "50", "class": "", "id": "" },
-					"choices": {
-						"standard": "Standard",
-						"wide": "Wide",
-						"tall": "Tall"
-					},
-					"default_value": "standard",
-					"allow_null": 0,
-					"multiple": 0,
-					"ui": 0,
-					"return_format": "value"
-				},
-				{
-					"key": "field_liftedpath_gallery_item_image",
-					"label": "Photograph",
-					"name": "image",
-					"type": "image",
-					"instructions": "Photograph, or the still frame shown before a video plays. Set the alt text on the media item.",
-					"required": 0,
-					"conditional_logic": false,
-					"wrapper": { "width": "", "class": "", "id": "" },
-					"return_format": "id",
-					"library": "all",
-					"preview_size": "medium",
-					"min_width": "",
-					"min_height": "",
-					"min_size": "",
-					"max_width": "",
-					"max_height": "",
-					"max_size": "",
-					"mime_types": "jpg,jpeg,png,webp"
-				},
-				{
-					"key": "field_liftedpath_gallery_item_url",
-					"label": "Video link",
-					"name": "video_url",
-					"type": "text",
-					"instructions": "YouTube, Vimeo, or a direct MP4 or WebM address. This is used before an uploaded file.",
-					"required": 0,
-					"conditional_logic": [
-						[
-							{
-								"field": "field_liftedpath_gallery_item_kind",
-								"operator": "==",
-								"value": "video"
-							}
-						]
-					],
-					"wrapper": { "width": "", "class": "", "id": "" },
-					"default_value": "",
-					"maxlength": "",
-					"placeholder": "https://"
-				},
-				{
-					"key": "field_liftedpath_gallery_item_video",
-					"label": "Video file",
-					"name": "video",
-					"type": "file",
-					"instructions": "Optional file. A video link is used instead when both are set.",
-					"required": 0,
-					"conditional_logic": [
-						[
-							{
-								"field": "field_liftedpath_gallery_item_kind",
-								"operator": "==",
-								"value": "video"
-							}
-						]
-					],
-					"wrapper": { "width": "", "class": "", "id": "" },
-					"return_format": "id",
-					"library": "all",
-					"min_size": "",
-					"max_size": "",
-					"mime_types": "mp4,webm"
-				},
-				{
-					"key": "field_liftedpath_gallery_item_caption",
-					"label": "Caption",
-					"name": "caption",
-					"type": "text",
-					"instructions": "A short line on the tile.",
-					"required": 0,
-					"conditional_logic": false,
-					"wrapper": { "width": "", "class": "", "id": "" },
-					"default_value": "",
-					"maxlength": "",
-					"placeholder": ""
-				}
-			]
-		}
-	],
-	"location": [
-		[
-			{
-				"param": "block",
-				"operator": "==",
-				"value": "liftedpath/gallery"
-			}
-		]
-	],
-	"menu_order": 0,
-	"position": "normal",
-	"style": "default",
-	"label_placement": "top",
-	"instruction_placement": "label",
-	"hide_on_screen": "",
-	"active": true,
-	"description": "",
-	"show_in_rest": 1,
-	"display_title": "",
-	"modified": 1760280000
+    "key": "group_liftedpath_gallery",
+    "title": "Gallery",
+    "fields": [
+        {
+            "key": "field_liftedpath_gallery_eyebrow",
+            "label": "Eyebrow",
+            "name": "eyebrow",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "The small line above the heading.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_liftedpath_gallery_heading",
+            "label": "Heading",
+            "name": "heading",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "The title above the gallery.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_liftedpath_gallery_intro",
+            "label": "Introduction",
+            "name": "intro",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "One paragraph per line.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "rows": 3,
+            "new_lines": "",
+            "maxlength": "",
+            "placeholder": ""
+        },
+        {
+            "key": "field_liftedpath_gallery_layout",
+            "label": "Layout",
+            "name": "layout",
+            "aria-label": "",
+            "type": "select",
+            "instructions": "Mosaic lets a tile be wide or tall. Grid keeps every tile the same shape.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "mosaic": "Mosaic",
+                "grid": "Grid"
+            },
+            "default_value": "mosaic",
+            "allow_null": 0,
+            "multiple": 0,
+            "ui": 0,
+            "return_format": "value",
+            "ajax": 0,
+            "placeholder": "",
+            "create_options": 0,
+            "save_options": 0
+        },
+        {
+            "key": "field_liftedpath_gallery_columns",
+            "label": "Columns",
+            "name": "columns",
+            "aria-label": "",
+            "type": "select",
+            "instructions": "Used on a wide screen. Smaller screens use fewer columns.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "2": "2",
+                "3": "3",
+                "4": "4"
+            },
+            "default_value": 3,
+            "allow_null": 0,
+            "multiple": 0,
+            "ui": 0,
+            "return_format": "value",
+            "ajax": 0,
+            "placeholder": "",
+            "create_options": 0,
+            "save_options": 0
+        },
+        {
+            "key": "field_liftedpath_gallery_captions",
+            "label": "Captions",
+            "name": "show_captions",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Show each caption along the bottom of its tile.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 1,
+            "ui": 1,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_liftedpath_gallery_enlarge",
+            "label": "Enlarge",
+            "name": "enlarge",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "A click opens the photograph or video larger. Turn this off to play a video in the tile.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 1,
+            "ui": 1,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_liftedpath_gallery_items",
+            "label": "Items",
+            "name": "items",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "Add up to 24 photographs or videos. Drag a row to change the order.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "block",
+            "min": 0,
+            "max": 24,
+            "button_label": "Add item",
+            "rows_per_page": 20,
+            "collapsed": "",
+            "sub_fields": [
+                {
+                    "key": "field_liftedpath_gallery_item_kind",
+                    "label": "Type",
+                    "name": "media_kind",
+                    "aria-label": "",
+                    "type": "select",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": false,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "image": "Photograph",
+                        "video": "Video"
+                    },
+                    "default_value": "image",
+                    "allow_null": 0,
+                    "multiple": 0,
+                    "ui": 0,
+                    "return_format": "value",
+                    "ajax": 0,
+                    "placeholder": "",
+                    "create_options": 0,
+                    "save_options": 0,
+                    "parent_repeater": "field_liftedpath_gallery_items"
+                },
+                {
+                    "key": "field_liftedpath_gallery_item_tile",
+                    "label": "Tile",
+                    "name": "tile",
+                    "aria-label": "",
+                    "type": "select",
+                    "instructions": "Mosaic only. Wide spans two columns. Tall spans two rows.",
+                    "required": 0,
+                    "conditional_logic": false,
+                    "wrapper": {
+                        "width": "50",
+                        "class": "",
+                        "id": ""
+                    },
+                    "choices": {
+                        "standard": "Standard",
+                        "wide": "Wide",
+                        "tall": "Tall"
+                    },
+                    "default_value": "standard",
+                    "allow_null": 0,
+                    "multiple": 0,
+                    "ui": 0,
+                    "return_format": "value",
+                    "ajax": 0,
+                    "placeholder": "",
+                    "create_options": 0,
+                    "save_options": 0,
+                    "parent_repeater": "field_liftedpath_gallery_items"
+                },
+                {
+                    "key": "field_liftedpath_gallery_item_image",
+                    "label": "Photograph",
+                    "name": "image",
+                    "aria-label": "",
+                    "type": "image",
+                    "instructions": "Photograph, or the still frame shown before a video plays. Set the alt text on the media item.",
+                    "required": 0,
+                    "conditional_logic": false,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "id",
+                    "library": "all",
+                    "preview_size": "medium",
+                    "min_width": "",
+                    "min_height": "",
+                    "min_size": "",
+                    "max_width": "",
+                    "max_height": "",
+                    "max_size": "",
+                    "mime_types": "jpg,jpeg,png,webp",
+                    "parent_repeater": "field_liftedpath_gallery_items"
+                },
+                {
+                    "key": "field_liftedpath_gallery_item_url",
+                    "label": "Video link",
+                    "name": "video_url",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "YouTube, Vimeo, or a direct MP4 or WebM address. This is used before an uploaded file.",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_liftedpath_gallery_item_kind",
+                                "operator": "==",
+                                "value": "video"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "https:\/\/",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_liftedpath_gallery_items"
+                },
+                {
+                    "key": "field_liftedpath_gallery_item_video",
+                    "label": "Video file",
+                    "name": "video",
+                    "aria-label": "",
+                    "type": "file",
+                    "instructions": "Optional file. A video link is used instead when both are set.",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_liftedpath_gallery_item_kind",
+                                "operator": "==",
+                                "value": "video"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "return_format": "id",
+                    "library": "all",
+                    "min_size": "",
+                    "max_size": "",
+                    "mime_types": "mp4,webm",
+                    "parent_repeater": "field_liftedpath_gallery_items"
+                },
+                {
+                    "key": "field_liftedpath_gallery_item_caption",
+                    "label": "Caption",
+                    "name": "caption",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "A short line on the tile.",
+                    "required": 0,
+                    "conditional_logic": false,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_liftedpath_gallery_items"
+                }
+            ]
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "liftedpath\/gallery"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 1,
+    "display_title": "",
+    "modified": 1792019357
 }
