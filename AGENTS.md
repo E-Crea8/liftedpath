@@ -22,7 +22,7 @@ If implementation changes the architecture, scope, or standards documented in th
 
 Published WordPress edits reach the public site through `LIVE-WORDPRESS-UPDATES.md`. Do not change that flow unless the user asks.
 
-Never push to `main`, and never deploy, until the user explicitly says to in that request. A commit or a live error is not permission.
+**STRICT RULE: NEVER push to `main` without permission.** Push only when the user says **push to main** in that same request. “Fix it”, “fix once and for all”, “continue”, a commit, a live outage, or SiteHold is not permission. Never deploy until the user says to deploy. Full rule: `context/github.md`.
 
 ### Public site must stay up
 

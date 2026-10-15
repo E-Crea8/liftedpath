@@ -1009,11 +1009,13 @@ button.liftedpath-gallery__play:focus-visible {
 	padding-block: clamp(76px, 9vw, 130px);
 }
 
-.liftedpath-actions:has(+ .liftedpath-sponsor) {
+/* Blocks sit inside .liftedpath-layout wrappers (display:contents), so section
+   sibling selectors never match the element tree. Target the wrappers. */
+.liftedpath-layout:has(> .liftedpath-actions):has(+ .liftedpath-layout > .liftedpath-sponsor) > .liftedpath-actions {
 	padding-bottom: 0;
 }
 
-.liftedpath-actions + .liftedpath-sponsor {
+.liftedpath-layout:has(> .liftedpath-actions) + .liftedpath-layout > .liftedpath-sponsor {
 	padding-top: 45px;
 	padding-bottom: clamp(76px, 9vw, 130px);
 }
@@ -1363,16 +1365,16 @@ button.liftedpath-gallery__play:focus-visible {
 	}
 
 	.liftedpath-actions,
-	.liftedpath-actions + .liftedpath-sponsor {
+	.liftedpath-layout:has(> .liftedpath-actions) + .liftedpath-layout > .liftedpath-sponsor {
 		padding-bottom: 80px;
 	}
 
 	.liftedpath-actions,
-	.liftedpath-actions:has(+ .liftedpath-sponsor) {
+	.liftedpath-layout:has(> .liftedpath-actions):has(+ .liftedpath-layout > .liftedpath-sponsor) > .liftedpath-actions {
 		padding-top: 80px;
 	}
 
-	.liftedpath-actions:has(+ .liftedpath-sponsor) {
+	.liftedpath-layout:has(> .liftedpath-actions):has(+ .liftedpath-layout > .liftedpath-sponsor) > .liftedpath-actions {
 		padding-bottom: 0;
 	}
 
@@ -1439,16 +1441,16 @@ button.liftedpath-gallery__play:focus-visible {
 	}
 
 	.liftedpath-actions,
-	.liftedpath-actions + .liftedpath-sponsor {
+	.liftedpath-layout:has(> .liftedpath-actions) + .liftedpath-layout > .liftedpath-sponsor {
 		padding-bottom: 65px;
 	}
 
 	.liftedpath-actions,
-	.liftedpath-actions:has(+ .liftedpath-sponsor) {
+	.liftedpath-layout:has(> .liftedpath-actions):has(+ .liftedpath-layout > .liftedpath-sponsor) > .liftedpath-actions {
 		padding-top: 65px;
 	}
 
-	.liftedpath-actions:has(+ .liftedpath-sponsor) {
+	.liftedpath-layout:has(> .liftedpath-actions):has(+ .liftedpath-layout > .liftedpath-sponsor) > .liftedpath-actions {
 		padding-bottom: 0;
 	}
 
