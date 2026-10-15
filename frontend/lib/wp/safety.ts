@@ -9,28 +9,43 @@ import { WordpressError } from "@/lib/wp/types";
  * Last successful public read. The content webhook does not use this tag, so a
  * failed refresh keeps the previous copy. The WordPress fetch itself stays outside
  * this cache and still runs on the visitor's request.
+ *
+ * Durable copies must NOT use a timed `revalidate`. With `revalidate: 30`, Next
+ * re-ran this factory on cold isolates while `pending` was empty, threw
+ * "no saved copy to store", and `recallCopy` treated that throw as a miss even
+ * when the Data Cache still held a good copy → SiteHold + Vercel error spam.
+ * `revalidate: false` means the factory runs only on a real miss (holdCopy with
+ * pending set, or first-ever read). Successful WP reads still return live data;
+ * this cache is only the outage fallback.
  */
 const pending = new Map<string, unknown>();
 const memory = new Map<string, unknown>();
 
 const persist = unstable_cache(
 	async (key: string): Promise<unknown> => {
-		const value = pending.get(key);
+		const value = pending.get(key) ?? memory.get(key);
 		if (value === undefined) {
+			// Cache miss only. Throw so Next does not store null and block a
+			// later holdCopy write. With revalidate:false this never runs as a
+			// timed refresh of an existing entry.
 			throw new Error("LiftedPath has no saved copy to store.");
 		}
 		return value;
 	},
 	["liftedpath-saved-copy"],
-	{ revalidate: 30, tags: ["liftedpath-saved-copy"] },
+	{ revalidate: false, tags: ["liftedpath-saved-copy"] },
 );
 
 export function holdCopy(key: string, value: unknown): void {
 	memory.set(key, value);
 	pending.set(key, value);
-	void persist(key).catch(() => {
-		// A failed refresh keeps the previous saved copy.
-	});
+	void persist(key)
+		.catch(() => {
+			// A failed write keeps the previous saved copy.
+		})
+		.finally(() => {
+			pending.delete(key);
+		});
 }
 
 export async function recallCopy<T>(key: string, accept: (value: unknown) => value is T): Promise<T | null> {
@@ -39,11 +54,15 @@ export async function recallCopy<T>(key: string, accept: (value: unknown) => val
 		return local;
 	}
 
+	const inflight = pending.get(key);
+	if (accept(inflight)) {
+		return inflight;
+	}
+
 	try {
 		const saved = await persist(key);
 		if (accept(saved)) {
 			memory.set(key, saved);
-			pending.set(key, saved);
 			return saved;
 		}
 	} catch {
