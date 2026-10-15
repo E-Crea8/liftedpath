@@ -1597,3 +1597,73 @@ function liftedpath_migrate_footer_cta_2_run(): void {
 	update_option( 'liftedpath_footer_cta_2_migrated_v1', 1, false );
 }
 
+/**
+ * Whether a page's work-layout block is missing its ACF field payload.
+ */
+function liftedpath_work_layout_needs_repair( string $content ): bool {
+	$found = false;
+
+	foreach ( parse_blocks( $content ) as $block ) {
+		if ( ( $block['blockName'] ?? '' ) !== 'liftedpath/work-layout' ) {
+			continue;
+		}
+
+		$found = true;
+		$data  = ( isset( $block['attrs']['data'] ) && is_array( $block['attrs']['data'] ) ) ? $block['attrs']['data'] : array();
+		$sidebar = isset( $data['sidebar_heading'] ) ? trim( (string) $data['sidebar_heading'] ) : '';
+		$lead    = isset( $data['lead_heading'] ) ? trim( (string) $data['lead_heading'] ) : '';
+		$values  = isset( $data['values'] ) ? (int) $data['values'] : 0;
+
+		return ( '' === $sidebar && '' === $lead && $values <= 0 );
+	}
+
+	return ! $found;
+}
+
+/**
+ * Rewrite catalog pages whose work-layout block has empty ACF data (once).
+ */
+function liftedpath_repair_empty_work_layouts(): void {
+	if ( get_option( 'liftedpath_work_layout_repaired_v1' ) || ! function_exists( 'update_field' ) ) {
+		return;
+	}
+
+	liftedpath_repair_empty_work_layouts_run();
+}
+add_action( 'init', 'liftedpath_repair_empty_work_layouts', 37 );
+
+/**
+ * Restore Design 01 work-layout (+ Footer CTA 2) only on broken catalog pages.
+ */
+function liftedpath_repair_empty_work_layouts_run(): void {
+	$images  = function_exists( 'liftedpath_seed_images' ) ? liftedpath_seed_images() : array();
+	$catalog = liftedpath_work_page_catalog( $images );
+
+	foreach ( $catalog as $path => $page ) {
+		$existing = get_page_by_path( $path, OBJECT, 'page' );
+		if ( ! $existing instanceof WP_Post ) {
+			continue;
+		}
+
+		if ( ! liftedpath_work_layout_needs_repair( (string) $existing->post_content ) ) {
+			continue;
+		}
+
+		$content = liftedpath_work_page_content( $page, $images );
+		global $wpdb;
+		$wpdb->update(
+			$wpdb->posts,
+			array( 'post_content' => $content ),
+			array( 'ID' => (int) $existing->ID ),
+			array( '%s' ),
+			array( '%d' )
+		);
+		clean_post_cache( (int) $existing->ID );
+		update_field( 'seo_title', (string) $page['seo_title'], (int) $existing->ID );
+		update_field( 'seo_description', (string) $page['seo_description'], (int) $existing->ID );
+		update_field( 'hero_summary', (string) $page['hero_summary'], (int) $existing->ID );
+	}
+
+	update_option( 'liftedpath_work_layout_repaired_v1', 1, false );
+}
+
