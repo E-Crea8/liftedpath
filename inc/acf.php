@@ -71,14 +71,14 @@ function liftedpath_seed_settings() {
 add_action( 'acf/init', 'liftedpath_seed_settings', 20 );
 
 /**
- * Load the donate panel group when the phone-order field is missing.
+ * Load the donate panel group when the payment-note field is missing.
  */
 function liftedpath_import_donate_bank_fields(): void {
 	if ( ! function_exists( 'acf_get_field' ) || ! function_exists( 'acf_import_field_group' ) ) {
 		return;
 	}
 
-	if ( acf_get_field( 'field_liftedpath_donate_bank_mobile_order' ) ) {
+	if ( acf_get_field( 'field_liftedpath_donate_payment_note' ) ) {
 		return;
 	}
 

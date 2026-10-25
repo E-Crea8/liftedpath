@@ -3375,3 +3375,33 @@ div.has-block-background.has-block-background-color {
 	}
 }
 
+.liftedpath-donate svg {
+	width: 24px;
+	height: 24px;
+	max-width: 24px;
+	max-height: 24px;
+	flex: none;
+}
+
+.liftedpath-donate .liftedpath-button__icon {
+	width: 18px;
+	height: 18px;
+	max-width: 18px;
+	max-height: 18px;
+}
+
+.liftedpath-donate__detail svg {
+	width: 18px;
+	height: 18px;
+	max-width: 18px;
+	max-height: 18px;
+	margin-top: 0.12em;
+}
+
+.liftedpath-donate__aside svg {
+	width: 26px;
+	height: 26px;
+	max-width: 26px;
+	max-height: 26px;
+}
+

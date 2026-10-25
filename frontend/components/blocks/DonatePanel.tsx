@@ -48,6 +48,7 @@ export function DonatePanel({
 	const monthly = text(block.attributes.monthly_label) || "Monthly";
 	const buttonLabel = text(block.attributes.button_label) || "Arrange my gift";
 	const note = text(block.attributes.note);
+	const paymentNote = text(block.attributes.payment_note);
 	const asideHeading = text(block.attributes.aside_heading);
 	const asideText = text(block.attributes.aside_text);
 	const photo = imageId(block.attributes.aside_image);
@@ -229,11 +230,15 @@ export function DonatePanel({
 						<ArrowIcon />
 					</button>
 					{note ? <p className="liftedpath-form-note">{note}</p> : null}
-					<p className="liftedpath-form-note">
-						{paymentsConfigured
-							? notices?.checkoutNote || `You finish this gift on ${providerLabel}. Card details stay with ${providerLabel}.`
-							: notices?.unconfigured || "Payments are not connected yet. An administrator can choose Stripe, Paystack, or Flutterwave in Form settings."}
-					</p>
+					{paymentNote ? (
+						<p className="liftedpath-form-note">{paymentNote}</p>
+					) : (
+						<p className="liftedpath-form-note">
+							{paymentsConfigured
+								? notices?.checkoutNote || `You finish this gift on ${providerLabel}. Card details stay with ${providerLabel}.`
+								: notices?.unconfigured || "Payments are not connected yet. An administrator can choose Stripe, Paystack, or Flutterwave in Form settings."}
+						</p>
+					)}
 					{showCancelled ? (
 						<FormNotice
 							level="warning"

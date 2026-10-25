@@ -20,11 +20,13 @@ export function BlockIcon({ name }: { name: IconName }) {
 			aria-hidden="true"
 			fill="none"
 			focusable="false"
+			height={24}
 			stroke="currentColor"
 			strokeLinecap="round"
 			strokeLinejoin="round"
 			strokeWidth="2"
 			viewBox="0 0 24 24"
+			width={24}
 		>
 			{name === "target" ? (
 				<>

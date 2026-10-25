@@ -541,6 +541,7 @@ function liftedpath_seed_donate_page( array $images ): array {
 				),
 				array( 'name' => 'button_label', 'key' => 'field_liftedpath_donate_button_label', 'value' => 'Arrange my gift' ),
 				array( 'name' => 'note', 'key' => 'field_liftedpath_donate_note', 'value' => 'No payment is collected on this website.' ),
+				array( 'name' => 'payment_note', 'key' => 'field_liftedpath_donate_payment_note', 'value' => 'Payments are not connected yet. An administrator can choose Stripe, Paystack, or Flutterwave in Form settings.' ),
 				array( 'name' => 'bank_heading', 'key' => 'field_liftedpath_donate_bank_heading', 'value' => 'Bank transfer' ),
 				array( 'name' => 'bank_account_number', 'key' => 'field_liftedpath_donate_bank_account_number', 'value' => '1999590091' ),
 				array( 'name' => 'bank_account_name', 'key' => 'field_liftedpath_donate_bank_account_name', 'value' => 'LIFTEDPATH EMPOWERMENT FOUNDATION' ),
@@ -786,6 +787,123 @@ function liftedpath_migrate_donate_bank_mobile_order_blocks( array &$blocks ): b
 	return $changed;
 }
 add_action( 'init', 'liftedpath_migrate_donate_bank_mobile_order', 33 );
+
+/**
+ * Copy the second line under the gift button onto the donate block once.
+ */
+function liftedpath_migrate_donate_payment_note(): void {
+	if ( get_option( 'liftedpath_donate_payment_note_v1' ) ) {
+		return;
+	}
+
+	try {
+		liftedpath_migrate_donate_payment_note_run();
+	} catch ( Throwable $exception ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
+		unset( $exception );
+	}
+}
+
+/**
+ * Write the not-connected sentence when a donate panel has no payment note yet.
+ */
+function liftedpath_migrate_donate_payment_note_run(): void {
+	global $wpdb;
+
+	$ids = $wpdb->get_col(
+		$wpdb->prepare(
+			"SELECT ID FROM {$wpdb->posts} WHERE post_content LIKE %s AND post_status != %s",
+			'%liftedpath/donate-panel%',
+			'auto-draft'
+		)
+	);
+
+	if ( ! is_array( $ids ) || array() === $ids ) {
+		return;
+	}
+
+	$note = 'Payments are not connected yet. An administrator can choose Stripe, Paystack, or Flutterwave in Form settings.';
+
+	if ( function_exists( 'liftedpath_forms_notice' ) ) {
+		$saved = liftedpath_forms_notice( 'donate_unconfigured' );
+
+		if ( is_string( $saved ) && '' !== trim( $saved ) ) {
+			$note = trim( $saved );
+		}
+	}
+
+	foreach ( $ids as $id ) {
+		$post = get_post( (int) $id );
+
+		if ( ! $post instanceof WP_Post || ! is_string( $post->post_content ) || ! str_contains( $post->post_content, 'liftedpath/donate-panel' ) ) {
+			continue;
+		}
+
+		$blocks = parse_blocks( $post->post_content );
+
+		if ( ! liftedpath_migrate_donate_payment_note_blocks( $blocks, $note ) ) {
+			continue;
+		}
+
+		$content = serialize_blocks( $blocks );
+
+		if ( ! is_string( $content ) || '' === $content ) {
+			continue;
+		}
+
+		$wpdb->update(
+			$wpdb->posts,
+			array( 'post_content' => $content ),
+			array( 'ID' => (int) $id ),
+			array( '%s' ),
+			array( '%d' )
+		);
+		clean_post_cache( (int) $id );
+	}
+
+	update_option( 'liftedpath_donate_payment_note_v1', 1, false );
+}
+
+/**
+ * Fill an empty payment_note on donate panels.
+ *
+ * @param array<int, array<string, mixed>> $blocks Parsed blocks.
+ * @param string                            $note   Current not-connected sentence.
+ */
+function liftedpath_migrate_donate_payment_note_blocks( array &$blocks, string $note ): bool {
+	$changed = false;
+
+	foreach ( $blocks as &$block ) {
+		if ( isset( $block['innerBlocks'] ) && is_array( $block['innerBlocks'] ) && liftedpath_migrate_donate_payment_note_blocks( $block['innerBlocks'], $note ) ) {
+			$changed = true;
+		}
+
+		if ( ( $block['blockName'] ?? '' ) !== 'liftedpath/donate-panel' ) {
+			continue;
+		}
+
+		if ( ! isset( $block['attrs'] ) || ! is_array( $block['attrs'] ) ) {
+			$block['attrs'] = array();
+		}
+
+		if ( ! isset( $block['attrs']['data'] ) || ! is_array( $block['attrs']['data'] ) ) {
+			$block['attrs']['data'] = array();
+		}
+
+		$current = isset( $block['attrs']['data']['payment_note'] ) ? trim( (string) $block['attrs']['data']['payment_note'] ) : '';
+
+		if ( '' !== $current ) {
+			continue;
+		}
+
+		$block['attrs']['data']['payment_note']  = $note;
+		$block['attrs']['data']['_payment_note'] = 'field_liftedpath_donate_payment_note';
+		$changed = true;
+	}
+	unset( $block );
+
+	return $changed;
+}
+add_action( 'init', 'liftedpath_migrate_donate_payment_note', 34 );
 
 /**
  * Child pages. The description is the sentence already written. No new essay.

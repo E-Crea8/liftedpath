@@ -333,11 +333,13 @@
         },
         {
             "key": "field_liftedpath_donate_note",
-            "label": "Note",
+            "label": "Note under the button",
             "name": "note",
             "aria-label": "",
-            "type": "text",
-            "instructions": "",
+            "type": "textarea",
+            "instructions": "The first line under Arrange my gift.",
+            "rows": 2,
+            "new_lines": "",
             "required": 0,
             "conditional_logic": false,
             "wrapper": {
@@ -347,9 +349,27 @@
             },
             "default_value": "No payment is collected on this website.",
             "maxlength": "",
-            "placeholder": "",
-            "prepend": "",
-            "append": ""
+            "placeholder": ""
+        },
+        {
+            "key": "field_liftedpath_donate_payment_note",
+            "label": "Payment note",
+            "name": "payment_note",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "The second line under Arrange my gift. Clear it to use the line from Form settings.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Payments are not connected yet. An administrator can choose Stripe, Paystack, or Flutterwave in Form settings.",
+            "rows": 3,
+            "new_lines": "",
+            "maxlength": "",
+            "placeholder": ""
         },
         {
             "key": "field_liftedpath_donate_bank_heading",
@@ -559,5 +579,5 @@
     "description": "",
     "show_in_rest": 1,
     "display_title": "",
-    "modified": 1793050000
+    "modified": 1793136000
 }

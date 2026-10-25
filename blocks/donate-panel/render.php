@@ -12,6 +12,7 @@ $one_off       = liftedpath_block_string( function_exists( 'get_field' ) ? get_f
 $monthly       = liftedpath_block_string( function_exists( 'get_field' ) ? get_field( 'monthly_label' ) : '' );
 $button_label  = liftedpath_block_string( function_exists( 'get_field' ) ? get_field( 'button_label' ) : '' );
 $note          = liftedpath_block_string( function_exists( 'get_field' ) ? get_field( 'note' ) : '' );
+$payment_note  = liftedpath_block_string( function_exists( 'get_field' ) ? get_field( 'payment_note' ) : '' );
 $aside_heading      = liftedpath_block_string( function_exists( 'get_field' ) ? get_field( 'aside_heading' ) : '' );
 $aside_text         = liftedpath_block_string( function_exists( 'get_field' ) ? get_field( 'aside_text' ) : '' );
 $bank_heading       = liftedpath_block_string( function_exists( 'get_field' ) ? get_field( 'bank_heading' ) : '' );
@@ -280,6 +281,9 @@ $symbols    = array(
 			</button>
 			<?php if ( '' !== $note ) : ?>
 				<p class="liftedpath-form-note"><?php echo esc_html( $note ); ?></p>
+			<?php endif; ?>
+			<?php if ( '' !== $payment_note ) : ?>
+				<p class="liftedpath-form-note"><?php echo esc_html( $payment_note ); ?></p>
 			<?php endif; ?>
 		</form>
 
