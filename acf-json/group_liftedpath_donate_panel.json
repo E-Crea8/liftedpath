@@ -452,6 +452,29 @@
             "append": ""
         },
         {
+            "key": "field_liftedpath_donate_bank_mobile_order",
+            "label": "On a phone",
+            "name": "bank_mobile_order",
+            "aria-label": "",
+            "type": "button_group",
+            "instructions": "Places the bank transfer card on a narrow screen. Before the form puts it under the page hero. A wide screen keeps the form on the left and the account beside it.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "before": "Before the form",
+                "after": "After the form"
+            },
+            "default_value": "before",
+            "return_format": "value",
+            "allow_null": 0,
+            "layout": "horizontal"
+        },
+        {
             "key": "field_liftedpath_donate_aside_image",
             "label": "Aside photograph",
             "name": "aside_image",
@@ -536,5 +559,5 @@
     "description": "",
     "show_in_rest": 1,
     "display_title": "",
-    "modified": 1792963200
+    "modified": 1793050000
 }

@@ -24,6 +24,8 @@ Published WordPress edits reach the public site through `LIVE-WORDPRESS-UPDATES.
 
 **STRICT RULE: NEVER push to `main` without permission.** Push only when the user says **push to main** in that same request. “Fix it”, “fix once and for all”, “continue”, a commit, a live outage, or SiteHold is not permission. Never deploy until the user says to deploy. Full rule: `context/github.md`.
 
+**STRICT RULE: never stall on a browser check.** Confirm a page with one HTTP request. Do not wait on the in-IDE browser, and do not retry it if it stalls. Full rule: `context/ai-workflow-rules.md`. Incident: `context/incidents/2026-10-25-browser-check-stall.md`.
+
 ### Public site must stay up
 
 The Next.js site on Vercel is the live public website. A green Vercel build is not enough. After any `frontend/` change that reaches Production, confirm the live HTML still shows real page content (not SiteHold “kept online”) and that `https://www.liftedpathfoundation.org/api/wp-health` returns `ok: true` once that route is deployed. Vercel `WORDPRESS_API_URL` must be `https://cms.liftedpathfoundation.org/wp-json` — never the www/apex public host and never `liftedpath.local`. Incident checklist: `context/incidents/2026-10-14-site-hold-outage.md`.

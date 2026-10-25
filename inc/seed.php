@@ -546,6 +546,7 @@ function liftedpath_seed_donate_page( array $images ): array {
 				array( 'name' => 'bank_account_name', 'key' => 'field_liftedpath_donate_bank_account_name', 'value' => 'LIFTEDPATH EMPOWERMENT FOUNDATION' ),
 				array( 'name' => 'bank_name', 'key' => 'field_liftedpath_donate_bank_name', 'value' => 'ACCESS BANK OF NIGERIA' ),
 				array( 'name' => 'bank_currency', 'key' => 'field_liftedpath_donate_bank_currency', 'value' => 'NIGERIAN NAIRA' ),
+				array( 'name' => 'bank_mobile_order', 'key' => 'field_liftedpath_donate_bank_mobile_order', 'value' => 'before' ),
 				array( 'name' => 'aside_image', 'key' => 'field_liftedpath_donate_aside_image', 'value' => $images['scholarship'] ?? 0 ),
 				array( 'name' => 'aside_heading', 'key' => 'field_liftedpath_donate_aside_heading', 'value' => '85% of funds go directly to programs.' ),
 				array( 'name' => 'aside_text', 'key' => 'field_liftedpath_donate_aside_text', 'value' => 'Every donation is documented and receipted, and where possible we pay schools and training providers directly.' ),
@@ -679,6 +680,112 @@ function liftedpath_migrate_donate_bank_blocks( array &$blocks, array $defaults,
 	return $changed;
 }
 add_action( 'init', 'liftedpath_migrate_donate_bank', 32 );
+
+/**
+ * Record the phone order on existing donate panels once.
+ */
+function liftedpath_migrate_donate_bank_mobile_order(): void {
+	if ( get_option( 'liftedpath_donate_bank_mobile_order_v1' ) ) {
+		return;
+	}
+
+	try {
+		liftedpath_migrate_donate_bank_mobile_order_run();
+	} catch ( Throwable $exception ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
+		unset( $exception );
+	}
+}
+
+/**
+ * Write Before the form when a donate panel has no phone order yet.
+ */
+function liftedpath_migrate_donate_bank_mobile_order_run(): void {
+	global $wpdb;
+
+	$ids = $wpdb->get_col(
+		$wpdb->prepare(
+			"SELECT ID FROM {$wpdb->posts} WHERE post_content LIKE %s AND post_status != %s",
+			'%liftedpath/donate-panel%',
+			'auto-draft'
+		)
+	);
+
+	if ( ! is_array( $ids ) || array() === $ids ) {
+		return;
+	}
+
+	foreach ( $ids as $id ) {
+		$post = get_post( (int) $id );
+
+		if ( ! $post instanceof WP_Post || ! is_string( $post->post_content ) || ! str_contains( $post->post_content, 'liftedpath/donate-panel' ) ) {
+			continue;
+		}
+
+		$blocks = parse_blocks( $post->post_content );
+
+		if ( ! liftedpath_migrate_donate_bank_mobile_order_blocks( $blocks ) ) {
+			continue;
+		}
+
+		$content = serialize_blocks( $blocks );
+
+		if ( ! is_string( $content ) || '' === $content ) {
+			continue;
+		}
+
+		$wpdb->update(
+			$wpdb->posts,
+			array( 'post_content' => $content ),
+			array( 'ID' => (int) $id ),
+			array( '%s' ),
+			array( '%d' )
+		);
+		clean_post_cache( (int) $id );
+	}
+
+	update_option( 'liftedpath_donate_bank_mobile_order_v1', 1, false );
+}
+
+/**
+ * Fill an empty bank_mobile_order on donate panels.
+ *
+ * @param array<int, array<string, mixed>> $blocks Parsed blocks.
+ */
+function liftedpath_migrate_donate_bank_mobile_order_blocks( array &$blocks ): bool {
+	$changed = false;
+
+	foreach ( $blocks as &$block ) {
+		if ( isset( $block['innerBlocks'] ) && is_array( $block['innerBlocks'] ) && liftedpath_migrate_donate_bank_mobile_order_blocks( $block['innerBlocks'] ) ) {
+			$changed = true;
+		}
+
+		if ( ( $block['blockName'] ?? '' ) !== 'liftedpath/donate-panel' ) {
+			continue;
+		}
+
+		if ( ! isset( $block['attrs'] ) || ! is_array( $block['attrs'] ) ) {
+			$block['attrs'] = array();
+		}
+
+		if ( ! isset( $block['attrs']['data'] ) || ! is_array( $block['attrs']['data'] ) ) {
+			$block['attrs']['data'] = array();
+		}
+
+		$order = isset( $block['attrs']['data']['bank_mobile_order'] ) ? trim( (string) $block['attrs']['data']['bank_mobile_order'] ) : '';
+
+		if ( 'before' === $order || 'after' === $order ) {
+			continue;
+		}
+
+		$block['attrs']['data']['bank_mobile_order']  = 'before';
+		$block['attrs']['data']['_bank_mobile_order'] = 'field_liftedpath_donate_bank_mobile_order';
+		$changed = true;
+	}
+	unset( $block );
+
+	return $changed;
+}
+add_action( 'init', 'liftedpath_migrate_donate_bank_mobile_order', 33 );
 
 /**
  * Child pages. The description is the sentence already written. No new essay.

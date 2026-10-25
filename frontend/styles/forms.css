@@ -421,6 +421,19 @@
 		grid-template-columns: 1fr;
 	}
 
+	.liftedpath-donate.is-bank-before .liftedpath-donate__layout {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.liftedpath-donate.is-bank-before .liftedpath-donate__rail {
+		display: contents;
+	}
+
+	.liftedpath-donate.is-bank-before .liftedpath-donate__bank {
+		order: -1;
+	}
+
 	.liftedpath-donate__photo {
 		height: 280px;
 	}

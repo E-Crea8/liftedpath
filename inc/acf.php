@@ -71,14 +71,14 @@ function liftedpath_seed_settings() {
 add_action( 'acf/init', 'liftedpath_seed_settings', 20 );
 
 /**
- * Load the donate bank fields into wp-admin when the saved group is older.
+ * Load the donate panel group when the phone-order field is missing.
  */
 function liftedpath_import_donate_bank_fields(): void {
 	if ( ! function_exists( 'acf_get_field' ) || ! function_exists( 'acf_import_field_group' ) ) {
 		return;
 	}
 
-	if ( acf_get_field( 'field_liftedpath_donate_bank_account_number' ) ) {
+	if ( acf_get_field( 'field_liftedpath_donate_bank_mobile_order' ) ) {
 		return;
 	}
 

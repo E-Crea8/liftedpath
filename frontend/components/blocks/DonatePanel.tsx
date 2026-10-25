@@ -56,6 +56,7 @@ export function DonatePanel({
 	const bankAccountName = text(block.attributes.bank_account_name);
 	const bankName = text(block.attributes.bank_name);
 	const bankCurrency = text(block.attributes.bank_currency);
+	const bankMobileOrder = text(block.attributes.bank_mobile_order);
 	const usdRate = numeric(block.attributes.usd_rate) > 0 ? numeric(block.attributes.usd_rate) : 1500;
 	const gbpRate = numeric(block.attributes.gbp_rate) > 0 ? numeric(block.attributes.gbp_rate) : 2000;
 	const amounts = rows(block.attributes, "amounts")
@@ -75,6 +76,7 @@ export function DonatePanel({
 	const [showCancelled, setShowCancelled] = useState(cancelled);
 
 	const showBank = Boolean(bankNumber || bankAccountName || bankName || bankCurrency);
+	const bankBefore = showBank && bankMobileOrder !== "after";
 	const showAside = photo !== null || Boolean(asideHeading || asideText);
 
 	if (!heading && !eyebrow && !intro && !showAside && !showBank) {
@@ -129,7 +131,7 @@ export function DonatePanel({
 	}
 
 	return (
-		<section className="liftedpath-section liftedpath-donate">
+		<section className={bankBefore ? "liftedpath-section liftedpath-donate is-bank-before" : "liftedpath-section liftedpath-donate"}>
 			<div className="liftedpath-section__inner liftedpath-donate__layout">
 				<form className="liftedpath-donate__form" onSubmit={onSubmit}>
 					{eyebrow ? <p className="liftedpath-eyebrow">{eyebrow}</p> : null}

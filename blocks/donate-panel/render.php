@@ -19,6 +19,7 @@ $bank_number        = liftedpath_block_string( function_exists( 'get_field' ) ? 
 $bank_account_name  = liftedpath_block_string( function_exists( 'get_field' ) ? get_field( 'bank_account_name' ) : '' );
 $bank_name          = liftedpath_block_string( function_exists( 'get_field' ) ? get_field( 'bank_name' ) : '' );
 $bank_currency      = liftedpath_block_string( function_exists( 'get_field' ) ? get_field( 'bank_currency' ) : '' );
+$bank_mobile_order  = liftedpath_block_string( function_exists( 'get_field' ) ? get_field( 'bank_mobile_order' ) : '' );
 $aside_image   = function_exists( 'get_field' ) ? get_field( 'aside_image' ) : null;
 $usd_rate      = function_exists( 'get_field' ) ? (float) get_field( 'usd_rate' ) : 0;
 $gbp_rate      = function_exists( 'get_field' ) ? (float) get_field( 'gbp_rate' ) : 0;
@@ -136,6 +137,13 @@ if ( $empty ) {
 	return;
 }
 
+$show_bank         = '' !== $bank_number || '' !== $bank_account_name || '' !== $bank_name || '' !== $bank_currency;
+$section_class     = 'liftedpath-section liftedpath-donate';
+
+if ( $show_bank && 'after' !== $bank_mobile_order ) {
+	$section_class .= ' is-bank-before';
+}
+
 $currencies = array( 'NGN', 'USD', 'GBP' );
 $symbols    = array(
 	'NGN' => '₦',
@@ -143,7 +151,7 @@ $symbols    = array(
 	'GBP' => '£',
 );
 ?>
-<?php liftedpath_block_wrapper_open( 'section', 'liftedpath-section liftedpath-donate' ); ?>
+<?php liftedpath_block_wrapper_open( 'section', $section_class ); ?>
 	<div class="liftedpath-section__inner liftedpath-donate__layout">
 		<form class="liftedpath-donate__form" method="post" action="#" onsubmit="return false;">
 			<?php if ( '' !== $eyebrow ) : ?>
@@ -275,10 +283,7 @@ $symbols    = array(
 			<?php endif; ?>
 		</form>
 
-		<?php
-		$show_bank  = '' !== $bank_number || '' !== $bank_account_name || '' !== $bank_name || '' !== $bank_currency;
-		$show_aside = '' !== $image || '' !== $aside_heading || '' !== $aside_text;
-		?>
+		<?php $show_aside = '' !== $image || '' !== $aside_heading || '' !== $aside_text; ?>
 		<?php if ( $show_bank || $show_aside ) : ?>
 			<aside class="liftedpath-donate__rail">
 				<?php if ( $show_bank ) : ?>
