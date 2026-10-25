@@ -8,7 +8,7 @@
  */
 
 if ( ! defined( 'LIFTEDPATH_VERSION' ) ) {
-	define( 'LIFTEDPATH_VERSION', '0.20.2' );
+	define( 'LIFTEDPATH_VERSION', '0.20.3' );
 }
 
 $liftedpath_boot_log = get_template_directory() . '/boot-error.txt';
@@ -108,6 +108,7 @@ require get_template_directory() . '/inc/content-types.php';
 require get_template_directory() . '/inc/acf.php';
 require get_template_directory() . '/inc/rest.php';
 require get_template_directory() . '/inc/preview.php';
+require get_template_directory() . '/inc/public-redirect.php';
 require get_template_directory() . '/inc/revalidate.php';
 require get_template_directory() . '/inc/alert.php';
 require get_template_directory() . '/inc/vercel-env.php';
