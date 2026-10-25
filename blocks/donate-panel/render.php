@@ -12,8 +12,13 @@ $one_off       = liftedpath_block_string( function_exists( 'get_field' ) ? get_f
 $monthly       = liftedpath_block_string( function_exists( 'get_field' ) ? get_field( 'monthly_label' ) : '' );
 $button_label  = liftedpath_block_string( function_exists( 'get_field' ) ? get_field( 'button_label' ) : '' );
 $note          = liftedpath_block_string( function_exists( 'get_field' ) ? get_field( 'note' ) : '' );
-$aside_heading = liftedpath_block_string( function_exists( 'get_field' ) ? get_field( 'aside_heading' ) : '' );
-$aside_text    = liftedpath_block_string( function_exists( 'get_field' ) ? get_field( 'aside_text' ) : '' );
+$aside_heading      = liftedpath_block_string( function_exists( 'get_field' ) ? get_field( 'aside_heading' ) : '' );
+$aside_text         = liftedpath_block_string( function_exists( 'get_field' ) ? get_field( 'aside_text' ) : '' );
+$bank_heading       = liftedpath_block_string( function_exists( 'get_field' ) ? get_field( 'bank_heading' ) : '' );
+$bank_number        = liftedpath_block_string( function_exists( 'get_field' ) ? get_field( 'bank_account_number' ) : '' );
+$bank_account_name  = liftedpath_block_string( function_exists( 'get_field' ) ? get_field( 'bank_account_name' ) : '' );
+$bank_name          = liftedpath_block_string( function_exists( 'get_field' ) ? get_field( 'bank_name' ) : '' );
+$bank_currency      = liftedpath_block_string( function_exists( 'get_field' ) ? get_field( 'bank_currency' ) : '' );
 $aside_image   = function_exists( 'get_field' ) ? get_field( 'aside_image' ) : null;
 $usd_rate      = function_exists( 'get_field' ) ? (float) get_field( 'usd_rate' ) : 0;
 $gbp_rate      = function_exists( 'get_field' ) ? (float) get_field( 'gbp_rate' ) : 0;
@@ -194,7 +199,7 @@ $symbols    = array(
 					<?php continue; ?>
 				<?php endif; ?>
 				<p class="liftedpath-donate__detail" data-for="<?php echo esc_attr( (string) $index ); ?>">
-					<?php echo liftedpath_block_icon( 'heart' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static icon. ?>
+					<?php echo liftedpath_block_icon( liftedpath_donate_detail_icon( $item['title'] ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static icon. ?>
 					<span><?php echo esc_html( $item['detail'] ); ?></span>
 				</p>
 			<?php endforeach; ?>
@@ -270,18 +275,59 @@ $symbols    = array(
 			<?php endif; ?>
 		</form>
 
-		<?php if ( '' !== $image || '' !== $aside_heading || '' !== $aside_text ) : ?>
-			<aside class="liftedpath-donate__aside">
-				<?php echo $image; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- attachment markup is escaped. ?>
-				<div>
-					<?php echo liftedpath_block_icon( 'heart' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static icon. ?>
-					<?php if ( '' !== $aside_heading ) : ?>
-						<strong><?php echo esc_html( $aside_heading ); ?></strong>
-					<?php endif; ?>
-					<?php if ( '' !== $aside_text ) : ?>
-						<p><?php echo esc_html( $aside_text ); ?></p>
-					<?php endif; ?>
-				</div>
+		<?php
+		$show_bank  = '' !== $bank_number || '' !== $bank_account_name || '' !== $bank_name || '' !== $bank_currency;
+		$show_aside = '' !== $image || '' !== $aside_heading || '' !== $aside_text;
+		?>
+		<?php if ( $show_bank || $show_aside ) : ?>
+			<aside class="liftedpath-donate__rail">
+				<?php if ( $show_bank ) : ?>
+					<div class="liftedpath-donate__bank">
+						<?php if ( '' !== $bank_heading ) : ?>
+							<h3><?php echo esc_html( $bank_heading ); ?></h3>
+						<?php endif; ?>
+						<dl>
+							<?php if ( '' !== $bank_number ) : ?>
+								<div>
+									<dt><?php esc_html_e( 'Account number', 'liftedpath' ); ?></dt>
+									<dd><?php echo esc_html( $bank_number ); ?></dd>
+								</div>
+							<?php endif; ?>
+							<?php if ( '' !== $bank_account_name ) : ?>
+								<div>
+									<dt><?php esc_html_e( 'Account name', 'liftedpath' ); ?></dt>
+									<dd><?php echo esc_html( $bank_account_name ); ?></dd>
+								</div>
+							<?php endif; ?>
+							<?php if ( '' !== $bank_name ) : ?>
+								<div>
+									<dt><?php esc_html_e( 'Bank', 'liftedpath' ); ?></dt>
+									<dd><?php echo esc_html( $bank_name ); ?></dd>
+								</div>
+							<?php endif; ?>
+							<?php if ( '' !== $bank_currency ) : ?>
+								<div>
+									<dt><?php esc_html_e( 'Currency', 'liftedpath' ); ?></dt>
+									<dd><?php echo esc_html( $bank_currency ); ?></dd>
+								</div>
+							<?php endif; ?>
+						</dl>
+					</div>
+				<?php endif; ?>
+				<?php if ( $show_aside ) : ?>
+					<div class="liftedpath-donate__aside">
+						<?php echo $image; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- attachment markup is escaped. ?>
+						<div>
+							<?php echo liftedpath_block_icon( 'graduation-cap' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static icon. ?>
+							<?php if ( '' !== $aside_heading ) : ?>
+								<strong><?php echo esc_html( $aside_heading ); ?></strong>
+							<?php endif; ?>
+							<?php if ( '' !== $aside_text ) : ?>
+								<p><?php echo esc_html( $aside_text ); ?></p>
+							<?php endif; ?>
+						</div>
+					</div>
+				<?php endif; ?>
 			</aside>
 		<?php endif; ?>
 	</div>

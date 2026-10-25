@@ -352,6 +352,106 @@
             "append": ""
         },
         {
+            "key": "field_liftedpath_donate_bank_heading",
+            "label": "Bank transfer heading",
+            "name": "bank_heading",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Shown above the account details. Leave it empty to hide the heading.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "Bank transfer",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_liftedpath_donate_bank_account_number",
+            "label": "Account number",
+            "name": "bank_account_number",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Leave this empty to hide the bank transfer card.",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_liftedpath_donate_bank_account_name",
+            "label": "Account name",
+            "name": "bank_account_name",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_liftedpath_donate_bank_name",
+            "label": "Bank name",
+            "name": "bank_name",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_liftedpath_donate_bank_currency",
+            "label": "Account currency",
+            "name": "bank_currency",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": false,
+            "wrapper": {
+                "width": "50",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
             "key": "field_liftedpath_donate_aside_image",
             "label": "Aside photograph",
             "name": "aside_image",
@@ -436,5 +536,5 @@
     "description": "",
     "show_in_rest": 1,
     "display_title": "",
-    "modified": 1792019356
+    "modified": 1792963200
 }

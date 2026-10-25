@@ -70,6 +70,15 @@
 	font-weight: 500;
 }
 
+.liftedpath-field select {
+	appearance: none;
+	padding-right: 52px;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23043C42' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: right 20px center;
+	background-size: 16px 16px;
+}
+
 .liftedpath-field textarea {
 	min-height: 140px;
 	resize: vertical;
@@ -232,8 +241,8 @@
 	color: var(--color-paper);
 }
 
-.liftedpath-segment label:focus-within,
-.liftedpath-donate__choice:focus-within {
+.liftedpath-segment label:has(:focus-visible),
+.liftedpath-donate__choice:has(:focus-visible) {
 	outline: 2px solid var(--color-bronze);
 	outline-offset: 3px;
 }
@@ -291,11 +300,67 @@
 	color: var(--color-paper);
 }
 
+.liftedpath-donate__detail span {
+	line-height: 1.45;
+}
+
 .liftedpath-donate__detail svg {
 	flex: none;
-	width: 16px;
-	height: 16px;
+	width: 18px;
+	height: 18px;
+	margin-top: 0.12em;
 	color: var(--color-sand);
+}
+
+.liftedpath-donate__rail {
+	display: grid;
+	gap: 24px;
+	align-content: start;
+}
+
+.liftedpath-donate__bank {
+	padding: 28px 28px 12px;
+	border: 1px solid var(--color-line);
+	border-radius: 18px;
+	background: var(--color-paper);
+	box-shadow: var(--shadow-card);
+	color: var(--color-teal);
+}
+
+.liftedpath-donate .liftedpath-donate__bank h3 {
+	margin: 0 0 8px;
+	font-size: 1.35rem;
+}
+
+.liftedpath-donate__bank dl {
+	margin: 0;
+}
+
+.liftedpath-donate__bank dl > div {
+	display: grid;
+	gap: 4px;
+	padding: 14px 0;
+	border-top: 1px solid var(--color-line);
+}
+
+.liftedpath-donate__bank dt {
+	color: var(--color-muted);
+	font-size: 0.67rem;
+	font-weight: 700;
+	letter-spacing: 0.12em;
+	text-transform: uppercase;
+}
+
+.liftedpath-donate__bank dd {
+	margin: 0;
+	font-weight: 700;
+	line-height: 1.35;
+}
+
+.liftedpath-donate__bank dl > div:first-child dd {
+	font-size: 1.35rem;
+	font-variant-numeric: tabular-nums;
+	letter-spacing: 0.04em;
 }
 
 .liftedpath-donate__aside {
@@ -344,7 +409,7 @@
 }
 
 @media (min-width: 761px) {
-	.liftedpath-donate__aside {
+	.liftedpath-donate__rail {
 		position: sticky;
 		top: calc(var(--header-height) + 24px);
 	}

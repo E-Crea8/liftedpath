@@ -541,6 +541,11 @@ function liftedpath_seed_donate_page( array $images ): array {
 				),
 				array( 'name' => 'button_label', 'key' => 'field_liftedpath_donate_button_label', 'value' => 'Arrange my gift' ),
 				array( 'name' => 'note', 'key' => 'field_liftedpath_donate_note', 'value' => 'No payment is collected on this website.' ),
+				array( 'name' => 'bank_heading', 'key' => 'field_liftedpath_donate_bank_heading', 'value' => 'Bank transfer' ),
+				array( 'name' => 'bank_account_number', 'key' => 'field_liftedpath_donate_bank_account_number', 'value' => '1999590091' ),
+				array( 'name' => 'bank_account_name', 'key' => 'field_liftedpath_donate_bank_account_name', 'value' => 'LIFTEDPATH EMPOWERMENT FOUNDATION' ),
+				array( 'name' => 'bank_name', 'key' => 'field_liftedpath_donate_bank_name', 'value' => 'ACCESS BANK OF NIGERIA' ),
+				array( 'name' => 'bank_currency', 'key' => 'field_liftedpath_donate_bank_currency', 'value' => 'NIGERIAN NAIRA' ),
 				array( 'name' => 'aside_image', 'key' => 'field_liftedpath_donate_aside_image', 'value' => $images['scholarship'] ?? 0 ),
 				array( 'name' => 'aside_heading', 'key' => 'field_liftedpath_donate_aside_heading', 'value' => '85% of funds go directly to programs.' ),
 				array( 'name' => 'aside_text', 'key' => 'field_liftedpath_donate_aside_text', 'value' => 'Every donation is documented and receipted, and where possible we pay schools and training providers directly.' ),
@@ -550,6 +555,130 @@ function liftedpath_seed_donate_page( array $images ): array {
 
 	return liftedpath_seed_page_record( 'donate', 'Donate', '', $content, 'Donate', $intro, $intro );
 }
+
+/**
+ * Fill an empty bank-transfer card on existing donate panels once.
+ */
+function liftedpath_migrate_donate_bank(): void {
+	if ( get_option( 'liftedpath_donate_bank_migrated_v1' ) ) {
+		return;
+	}
+
+	try {
+		liftedpath_migrate_donate_bank_run();
+	} catch ( Throwable $exception ) { // phpcs:ignore Generic.CodeAnalysis.EmptyStatement.DetectedCatch
+		unset( $exception );
+	}
+}
+
+/**
+ * Write the foundation account onto donate panels that do not have one yet.
+ */
+function liftedpath_migrate_donate_bank_run(): void {
+	global $wpdb;
+
+	$ids = $wpdb->get_col(
+		$wpdb->prepare(
+			"SELECT ID FROM {$wpdb->posts} WHERE post_content LIKE %s AND post_status != %s",
+			'%liftedpath/donate-panel%',
+			'auto-draft'
+		)
+	);
+
+	if ( ! is_array( $ids ) || array() === $ids ) {
+		return;
+	}
+
+	$defaults = array(
+		'bank_heading'        => 'Bank transfer',
+		'bank_account_number' => '1999590091',
+		'bank_account_name'   => 'LIFTEDPATH EMPOWERMENT FOUNDATION',
+		'bank_name'           => 'ACCESS BANK OF NIGERIA',
+		'bank_currency'       => 'NIGERIAN NAIRA',
+	);
+	$keys     = array(
+		'bank_heading'        => 'field_liftedpath_donate_bank_heading',
+		'bank_account_number' => 'field_liftedpath_donate_bank_account_number',
+		'bank_account_name'   => 'field_liftedpath_donate_bank_account_name',
+		'bank_name'           => 'field_liftedpath_donate_bank_name',
+		'bank_currency'       => 'field_liftedpath_donate_bank_currency',
+	);
+
+	foreach ( $ids as $id ) {
+		$post = get_post( (int) $id );
+
+		if ( ! $post instanceof WP_Post || ! is_string( $post->post_content ) || ! str_contains( $post->post_content, 'liftedpath/donate-panel' ) ) {
+			continue;
+		}
+
+		$blocks = parse_blocks( $post->post_content );
+
+		if ( ! liftedpath_migrate_donate_bank_blocks( $blocks, $defaults, $keys ) ) {
+			continue;
+		}
+
+		$content = serialize_blocks( $blocks );
+
+		if ( ! is_string( $content ) || '' === $content ) {
+			continue;
+		}
+
+		$wpdb->update(
+			$wpdb->posts,
+			array( 'post_content' => $content ),
+			array( 'ID' => (int) $id ),
+			array( '%s' ),
+			array( '%d' )
+		);
+		clean_post_cache( (int) $id );
+	}
+
+	update_option( 'liftedpath_donate_bank_migrated_v1', 1, false );
+}
+
+/**
+ * @param array<int, array<string, mixed>> $blocks   Parsed blocks.
+ * @param array<string, string>            $defaults Field values.
+ * @param array<string, string>            $keys     ACF field keys.
+ */
+function liftedpath_migrate_donate_bank_blocks( array &$blocks, array $defaults, array $keys ): bool {
+	$changed = false;
+
+	foreach ( $blocks as &$block ) {
+		if ( isset( $block['innerBlocks'] ) && is_array( $block['innerBlocks'] ) && liftedpath_migrate_donate_bank_blocks( $block['innerBlocks'], $defaults, $keys ) ) {
+			$changed = true;
+		}
+
+		if ( ( $block['blockName'] ?? '' ) !== 'liftedpath/donate-panel' ) {
+			continue;
+		}
+
+		if ( ! isset( $block['attrs'] ) || ! is_array( $block['attrs'] ) ) {
+			$block['attrs'] = array();
+		}
+
+		if ( ! isset( $block['attrs']['data'] ) || ! is_array( $block['attrs']['data'] ) ) {
+			$block['attrs']['data'] = array();
+		}
+
+		$number = isset( $block['attrs']['data']['bank_account_number'] ) ? trim( (string) $block['attrs']['data']['bank_account_number'] ) : '';
+
+		if ( '' !== $number ) {
+			continue;
+		}
+
+		foreach ( $defaults as $name => $value ) {
+			$block['attrs']['data'][ $name ]        = $value;
+			$block['attrs']['data'][ '_' . $name ] = $keys[ $name ];
+		}
+
+		$changed = true;
+	}
+	unset( $block );
+
+	return $changed;
+}
+add_action( 'init', 'liftedpath_migrate_donate_bank', 32 );
 
 /**
  * Child pages. The description is the sentence already written. No new essay.

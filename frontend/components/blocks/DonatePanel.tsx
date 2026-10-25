@@ -51,6 +51,11 @@ export function DonatePanel({
 	const asideHeading = text(block.attributes.aside_heading);
 	const asideText = text(block.attributes.aside_text);
 	const photo = imageId(block.attributes.aside_image);
+	const bankHeading = text(block.attributes.bank_heading);
+	const bankNumber = text(block.attributes.bank_account_number);
+	const bankAccountName = text(block.attributes.bank_account_name);
+	const bankName = text(block.attributes.bank_name);
+	const bankCurrency = text(block.attributes.bank_currency);
 	const usdRate = numeric(block.attributes.usd_rate) > 0 ? numeric(block.attributes.usd_rate) : 1500;
 	const gbpRate = numeric(block.attributes.gbp_rate) > 0 ? numeric(block.attributes.gbp_rate) : 2000;
 	const amounts = rows(block.attributes, "amounts")
@@ -69,7 +74,10 @@ export function DonatePanel({
 	const cancelled = params.get("cancelled") === "1";
 	const [showCancelled, setShowCancelled] = useState(cancelled);
 
-	if (!heading && !eyebrow && !intro && !asideHeading && photo === null) {
+	const showBank = Boolean(bankNumber || bankAccountName || bankName || bankCurrency);
+	const showAside = photo !== null || Boolean(asideHeading || asideText);
+
+	if (!heading && !eyebrow && !intro && !showAside && !showBank) {
 		return null;
 	}
 
@@ -171,7 +179,7 @@ export function DonatePanel({
 					</div>
 					{choices[amountIndex] && custom.trim() === "" && choices[amountIndex].detail ? (
 						<p className="liftedpath-donate__detail liftedpath-donate__detail--visible">
-							<BlockIcon name="heart" />
+							<BlockIcon name={giftIcon(choices[amountIndex].title)} />
 							<span>{choices[amountIndex].detail}</span>
 						</p>
 					) : null}
@@ -233,19 +241,68 @@ export function DonatePanel({
 					) : null}
 					{notice ? <FormNotice level={notice.level} message={notice.message} onClose={() => setNotice(null)} /> : null}
 				</form>
-				{photo !== null || asideHeading || asideText ? (
-					<aside className="liftedpath-donate__aside">
-						<BlockPhoto className="liftedpath-donate__photo" id={photo} images={images} />
-						<div>
-							<BlockIcon name="heart" />
-							{asideHeading ? <strong>{asideHeading}</strong> : null}
-							{asideText ? <p>{asideText}</p> : null}
-						</div>
+				{showBank || showAside ? (
+					<aside className="liftedpath-donate__rail">
+						{showBank ? (
+							<div className="liftedpath-donate__bank">
+								{bankHeading ? <h3>{bankHeading}</h3> : null}
+								<dl>
+									{bankNumber ? (
+										<div>
+											<dt>Account number</dt>
+											<dd>{bankNumber}</dd>
+										</div>
+									) : null}
+									{bankAccountName ? (
+										<div>
+											<dt>Account name</dt>
+											<dd>{bankAccountName}</dd>
+										</div>
+									) : null}
+									{bankName ? (
+										<div>
+											<dt>Bank</dt>
+											<dd>{bankName}</dd>
+										</div>
+									) : null}
+									{bankCurrency ? (
+										<div>
+											<dt>Currency</dt>
+											<dd>{bankCurrency}</dd>
+										</div>
+									) : null}
+								</dl>
+							</div>
+						) : null}
+						{showAside ? (
+							<div className="liftedpath-donate__aside">
+								<BlockPhoto className="liftedpath-donate__photo" id={photo} images={images} />
+								<div>
+									<BlockIcon name="graduation-cap" />
+									{asideHeading ? <strong>{asideHeading}</strong> : null}
+									{asideText ? <p>{asideText}</p> : null}
+								</div>
+							</div>
+						) : null}
 					</aside>
 				) : null}
 			</div>
 		</section>
 	);
+}
+
+function giftIcon(title: string): "graduation-cap" | "book-open" | "wrench" | "users" {
+	const label = title.toLowerCase();
+	if (label.includes("skill") || label.includes("tool")) {
+		return "wrench";
+	}
+	if (label.includes("family") || label.includes("care") || label.includes("food")) {
+		return "users";
+	}
+	if (label.includes("school") || label.includes("essential") || label.includes("material")) {
+		return "book-open";
+	}
+	return "graduation-cap";
 }
 
 function converted(naira: number, currency: Currency, usdRate: number, gbpRate: number) {
