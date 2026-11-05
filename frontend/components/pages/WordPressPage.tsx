@@ -75,7 +75,9 @@ export async function WordPressPage({ form, path }: { form?: FormConfig; path: s
 	return (
 		<>
 			<PageSchema
+				blocks={page.blocks}
 				description={page.seoDescription}
+				images={images}
 				path={page.path}
 				siteUrl={discovery.siteUrl}
 				title={page.seoTitle || page.title}

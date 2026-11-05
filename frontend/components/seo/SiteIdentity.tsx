@@ -1,4 +1,5 @@
 import Script from "next/script";
+import { areaServedNodes, enrichPostalAddress, organizationKnowsAbout } from "@/lib/seo/page-graph";
 import { jsonLdScript } from "@/lib/seo/json";
 import { getDiscovery, getSettings } from "@/lib/wp/client";
 import type { Discovery, SiteSettings } from "@/lib/wp/types";
@@ -48,13 +49,14 @@ function Analytics({ id }: { id: string }) {
 }
 
 function organizationGraph(settings: SiteSettings, discovery: Discovery) {
-	const origin = discovery.siteUrl;
+	const origin = discovery.siteUrl.replace(/\/$/, "");
 	const organizationId = `${origin}/#organization`;
 	const organization: Record<string, unknown> = {
 		"@type": "NGO",
 		"@id": organizationId,
 		name: settings.legalName || settings.shortName || "LiftedPath",
 		url: `${origin}/`,
+		knowsAbout: organizationKnowsAbout(),
 	};
 
 	if (settings.shortName) {
@@ -69,15 +71,14 @@ function organizationGraph(settings: SiteSettings, discovery: Discovery) {
 	if (settings.phone) {
 		organization.telephone = settings.phone;
 	}
-	if (settings.postalAddress) {
-		organization.address = {
-			"@type": "PostalAddress",
-			streetAddress: settings.postalAddress,
-		};
+
+	const address = enrichPostalAddress(settings.postalAddress);
+	if (address) {
+		organization.address = address;
 	}
-	if (discovery.areaServed) {
-		organization.areaServed = discovery.areaServed;
-	}
+
+	organization.areaServed = areaServedNodes(discovery.areaServed);
+
 	if (settings.registrationNumber) {
 		organization.identifier = {
 			"@type": "PropertyValue",
@@ -96,7 +97,19 @@ function organizationGraph(settings: SiteSettings, discovery: Discovery) {
 	}
 	if (settings.logo) {
 		organization.logo = settings.logo.url;
+		organization.image = settings.logo.url;
 	}
+
+	organization.foundingLocation = {
+		"@type": "Place",
+		name: "Lagos, Nigeria",
+		address: {
+			"@type": "PostalAddress",
+			addressLocality: "Lagos",
+			addressRegion: "Lagos State",
+			addressCountry: "NG",
+		},
+	};
 
 	return {
 		"@context": "https://schema.org",
@@ -109,6 +122,7 @@ function organizationGraph(settings: SiteSettings, discovery: Discovery) {
 				name: settings.shortName || settings.legalName || "LiftedPath",
 				description: settings.tagline || discovery.geoSummary || undefined,
 				publisher: { "@id": organizationId },
+				inLanguage: "en-NG",
 			},
 		],
 	};
