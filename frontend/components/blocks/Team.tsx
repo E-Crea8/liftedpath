@@ -56,7 +56,13 @@ export function Team({
 									<article className="liftedpath-team__card">
 										<div className="liftedpath-team__media">
 											{photo ? (
-												<BlockPhoto alt={member.name || undefined} className="liftedpath-team__photo" id={photo} images={images} />
+												<BlockPhoto
+													alt={member.name || undefined}
+													className="liftedpath-team__photo"
+													id={photo}
+													images={images}
+													sizes="(max-width: 640px) 92vw, (max-width: 1100px) 45vw, 280px"
+												/>
 											) : (
 												<span aria-hidden="true" className="liftedpath-team__fallback">
 													{initial}

@@ -79,6 +79,7 @@ export function BlockPhoto({
 	id,
 	images,
 	priority = false,
+	sizes,
 }: {
 	alt?: string;
 	className: string;
@@ -86,6 +87,7 @@ export function BlockPhoto({
 	id: number | null;
 	images: ReadonlyMap<number, FeaturedImage>;
 	priority?: boolean;
+	sizes?: string;
 }) {
 	if (!id) {
 		return null;
@@ -102,6 +104,7 @@ export function BlockPhoto({
 			className={className}
 			height={image.height}
 			priority={priority}
+			sizes={sizes ?? (priority ? "100vw" : "(max-width: 768px) 100vw, min(1120px, 92vw)")}
 			src={image.url}
 			unoptimized={image.url.startsWith("http://")}
 			width={image.width}

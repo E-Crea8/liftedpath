@@ -445,14 +445,72 @@ function mapMediaItem(value: unknown): FeaturedImage | null {
 		return null;
 	}
 
+	const picked = pickDisplaySource(details, url, width, height, isVideo);
+
 	return {
 		id: value.id,
-		url,
+		url: picked.url,
 		alt: typeof value.alt_text === "string" ? value.alt_text : "",
-		width,
-		height,
+		width: picked.width,
+		height: picked.height,
 		mime,
 	};
+}
+
+/**
+ * Prefer a WordPress derivative when the full file is heavy. About team photos
+ * ship a 2.5MB original; the portrait/card sizes are ~150KB and keep the page
+ * from locking the main thread while decoding.
+ */
+function pickDisplaySource(
+	details: Record<string, unknown> | null,
+	sourceUrl: string,
+	width: number,
+	height: number,
+	isVideo: boolean,
+): { url: string; width: number; height: number } {
+	if (isVideo || !details) {
+		return { url: sourceUrl, width, height };
+	}
+
+	const filesize = typeof details.filesize === "number" ? details.filesize : 0;
+	const lightEnough = (filesize > 0 && filesize <= 400_000 && width <= 2000) || (filesize === 0 && width <= 1600);
+	if (lightEnough) {
+		return { url: sourceUrl, width, height };
+	}
+
+	const sizes = isRecord(details.sizes) ? details.sizes : null;
+	if (!sizes) {
+		return { url: sourceUrl, width, height };
+	}
+
+	const preferred = ["liftedpath-portrait", "liftedpath-hero", "liftedpath-card", "1536x1536", "medium_large", "large"];
+	let best: { url: string; width: number; height: number; score: number } | null = null;
+
+	for (const [name, raw] of Object.entries(sizes)) {
+		if (!isRecord(raw)) {
+			continue;
+		}
+		const candidateUrl = typeof raw.source_url === "string" ? raw.source_url : "";
+		const candidateWidth = typeof raw.width === "number" ? raw.width : 0;
+		const candidateHeight = typeof raw.height === "number" ? raw.height : 0;
+		if (
+			(!candidateUrl.startsWith("http://") && !candidateUrl.startsWith("https://")) ||
+			!Number.isInteger(candidateWidth) ||
+			!Number.isInteger(candidateHeight) ||
+			candidateWidth < 400 ||
+			candidateWidth > 1600
+		) {
+			continue;
+		}
+		const rank = preferred.indexOf(name);
+		const score = (rank === -1 ? 0 : (preferred.length - rank) * 1000) + candidateWidth;
+		if (!best || score > best.score) {
+			best = { url: candidateUrl, width: candidateWidth, height: candidateHeight, score };
+		}
+	}
+
+	return best ? { url: best.url, width: best.width, height: best.height } : { url: sourceUrl, width, height };
 }
 
 function stringRecord(value: unknown): Record<string, string> {

@@ -210,14 +210,20 @@ function revealTargets(section: HTMLElement): HTMLElement[] {
 	return outermost.length > 0 ? outermost : [section];
 }
 
-function armTree(node: Node, arm: (section: HTMLElement) => void) {
+function armTree(node: Node, arm: (section: HTMLElement) => boolean): boolean {
 	if (!(node instanceof HTMLElement)) {
-		return;
+		return false;
 	}
-	if (node.matches(SECTION)) {
-		arm(node);
+	let changed = false;
+	if (node.matches(SECTION) && arm(node)) {
+		changed = true;
 	}
-	node.querySelectorAll<HTMLElement>(SECTION).forEach(arm);
+	node.querySelectorAll<HTMLElement>(SECTION).forEach((section) => {
+		if (arm(section)) {
+			changed = true;
+		}
+	});
+	return changed;
 }
 
 export function PageMotion({ children }: { children: ReactNode }) {
@@ -254,48 +260,73 @@ export function PageMotion({ children }: { children: ReactNode }) {
 					);
 				});
 
-				const arm = (section: HTMLElement) => {
+				const arm = (section: HTMLElement): boolean => {
 					if (section.classList.contains("liftedpath-work")) {
 						// May mount before article nodes stream in; allow re-scan.
 						animateWork(section);
 						section.dataset.motion = "armed";
-						return;
+						return true;
 					}
 
 					if (section.dataset.motion === "armed") {
-						return;
+						return false;
 					}
 					section.dataset.motion = "armed";
 					if (section.classList.contains("liftedpath-pillars")) {
 						animateColumns(section, ".liftedpath-pillars__heading", ".liftedpath-pillars__grid > li", ".liftedpath-pillars__index, h3, p");
-						return;
+						return true;
 					}
 					if (section.classList.contains("liftedpath-team")) {
 						animateColumns(section, ".liftedpath-team__heading", ".liftedpath-team__card", ".liftedpath-team__info > *");
-						return;
+						return true;
 					}
 					revealTargets(section).forEach((target, index) => {
 						revealTween(target, index);
 					});
+					return true;
 				};
 
 				Array.from(scope.children).forEach((child) => armTree(child, arm));
 
-				const observer = new MutationObserver((records) => {
-					records.forEach((record) => {
-						record.addedNodes.forEach((node) => armTree(node, arm));
+				// Coalesce refreshes. About pins Goals + many reveals; refreshing on
+				// every streamed child was locking the main thread ("Page Unresponsive").
+				let refreshFrame = 0;
+				const queueRefresh = () => {
+					if (refreshFrame) {
+						return;
+					}
+					refreshFrame = requestAnimationFrame(() => {
+						refreshFrame = 0;
+						ScrollTrigger.refresh();
 					});
-					ScrollTrigger.refresh();
+				};
+
+				const observer = new MutationObserver((records) => {
+					let changed = false;
+					records.forEach((record) => {
+						record.addedNodes.forEach((node) => {
+							if (armTree(node, arm)) {
+								changed = true;
+							}
+						});
+					});
+					if (changed) {
+						queueRefresh();
+					}
 				});
 				// subtree: work-layout (and streamed blocks) nest inside .liftedpath-layout
 				observer.observe(scope, { childList: true, subtree: true });
 
-				const onLoad = () => ScrollTrigger.refresh();
+				const onLoad = () => queueRefresh();
 				window.addEventListener("load", onLoad);
 
 				return () => {
 					observer.disconnect();
 					window.removeEventListener("load", onLoad);
+					if (refreshFrame) {
+						cancelAnimationFrame(refreshFrame);
+						refreshFrame = 0;
+					}
 					scope.querySelectorAll<HTMLElement>("[data-motion]").forEach((node) => {
 						delete node.dataset.motion;
 					});

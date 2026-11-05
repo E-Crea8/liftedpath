@@ -26,7 +26,12 @@ export function CtaBand({
 
 	return (
 		<section className={`liftedpath-cta liftedpath-cta--${mode}`}>
-			<BlockPhoto className="liftedpath-cta__photo" id={photo} images={images} />
+			<BlockPhoto
+				className="liftedpath-cta__photo"
+				id={photo}
+				images={images}
+				sizes="(max-width: 1280px) 100vw, 1280px"
+			/>
 			<div className="liftedpath-cta__content">
 				{eyebrow ? <p className="liftedpath-cta__eyebrow">{eyebrow}</p> : null}
 				{heading ? <h2>{heading}</h2> : null}

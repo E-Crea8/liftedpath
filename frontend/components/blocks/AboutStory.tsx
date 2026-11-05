@@ -39,7 +39,13 @@ export function AboutStory({
 				</div>
 				{hasPhoto ? (
 					<div className="liftedpath-story__photo">
-						<BlockPhoto alt={alt || undefined} className="liftedpath-story__image" id={photo} images={images} />
+						<BlockPhoto
+							alt={alt || undefined}
+							className="liftedpath-story__image"
+							id={photo}
+							images={images}
+							sizes="(max-width: 900px) 92vw, 540px"
+						/>
 					</div>
 				) : null}
 			</div>
