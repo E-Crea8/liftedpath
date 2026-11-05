@@ -191,6 +191,11 @@ body {
 	background: var(--color-teal);
 }
 
+/* Missing pages have no hero, so the header uses the scrolled teal bar from the start. */
+body:has(.missing-page) .site-header {
+	background: var(--color-teal);
+}
+
 .brand-link {
 	display: flex;
 	flex: none;
@@ -778,6 +783,116 @@ body {
 
 .missing-page a:hover {
 	color: var(--color-bronze);
+}
+
+.missing-page__layout {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	align-items: center;
+	gap: var(--space-32);
+}
+
+@media (min-width: 761px) {
+	.missing-page__layout {
+		grid-template-columns: minmax(200px, 280px) minmax(0, 1fr);
+		gap: var(--space-64);
+	}
+}
+
+.missing-page__mark {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: var(--space-20);
+	min-height: 240px;
+	margin: 0;
+	padding: var(--space-32);
+	border-radius: var(--radius-card);
+	background: var(--color-warm);
+	box-shadow: var(--shadow-card);
+	color: var(--color-gold);
+}
+
+.missing-page__code {
+	font-family: var(--font-display);
+	font-size: clamp(4.5rem, 9vw, 6.5rem);
+	font-weight: 600;
+	line-height: 0.9;
+	letter-spacing: -0.04em;
+}
+
+.missing-page__trail {
+	display: flex;
+	align-items: center;
+	gap: var(--space-8);
+}
+
+.missing-page__trail span {
+	width: var(--space-8);
+	height: var(--space-8);
+	border-radius: var(--radius-pill);
+	background: var(--color-gold);
+}
+
+.missing-page__trail span:last-child {
+	width: 36px;
+	height: var(--space-4);
+	background: linear-gradient(90deg, var(--color-gold), transparent);
+}
+
+.missing-page--lost h1 {
+	max-width: 14ch;
+	margin: 0 0 var(--space-16);
+}
+
+.missing-page__lead {
+	max-width: 40ch;
+	margin: 0 0 var(--space-32);
+	color: var(--color-teal);
+	font-size: var(--text-body-lg);
+}
+
+.missing-page__actions {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--space-12) var(--space-24);
+}
+
+.missing-page--lost .liftedpath-button {
+	color: var(--color-teal);
+	font-weight: 800;
+}
+
+.missing-page--lost .liftedpath-button:hover {
+	background: var(--color-teal);
+	color: var(--color-paper);
+}
+
+.missing-page__quiet {
+	display: inline-flex;
+	align-items: center;
+	min-height: 48px;
+	color: var(--color-teal);
+	font-size: var(--text-button);
+	font-weight: 800;
+	line-height: 1.2;
+	text-decoration: none;
+}
+
+.missing-page--lost .missing-page__quiet:hover {
+	color: var(--color-bronze);
+}
+
+@media (max-width: 760px) {
+	.missing-page__mark {
+		min-height: 160px;
+	}
+
+	.missing-page__code {
+		font-size: clamp(3.5rem, 18vw, 5.5rem);
+	}
 }
 
 @media (min-width: 1050px) {
