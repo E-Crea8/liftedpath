@@ -1,11 +1,11 @@
 import { DonateReturn } from "@/components/donate/DonateReturn";
-import { confirmPayment, getFormConfig, paymentStatus, type DonateNotices } from "@/lib/forms";
+import { confirmPayment, donationWording, getFormConfig, paymentStatus, type DonateNotices } from "@/lib/forms";
 
 export const instant = false;
 
 export const metadata = {
-	title: "Gift confirmation",
-	description: "Confirmation for your gift to LiftedPath Empowerment Foundation.",
+	title: "Donation confirmation",
+	description: "Confirmation for your donation to LiftedPath Empowerment Foundation.",
 };
 
 const REFERENCE = /^lp_[a-f0-9]{24}$/;
@@ -25,8 +25,8 @@ export default async function DonateCompletePage({
 	return (
 		<DonateReturn
 			status={status}
-			heading={outcome.heading || copy.heading}
-			detail={outcome.detail || copy.detail}
+			heading={donationWording(outcome.heading || copy.heading)}
+			detail={donationWording(outcome.detail || copy.detail)}
 			reference={REFERENCE.test(reference) ? reference : ""}
 		/>
 	);

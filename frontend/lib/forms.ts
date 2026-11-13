@@ -35,19 +35,39 @@ const CONTACT_NOTICES: ContactNotices = {
 };
 
 const DONATE_NOTICES: DonateNotices = {
-	cancelled: "The payment page was closed before the gift was confirmed.",
-	error: "The gift could not be started. Please try again.",
+	cancelled: "The payment page was closed before the donation was confirmed.",
+	error: "The donation could not be started. Please try again.",
 	unconfigured: "Payments are not connected yet. An administrator can choose Stripe, Paystack, or Flutterwave in Form settings.",
 	checkoutNote: "Payments are processed securely.",
-	paidHeading: "Thank you. This gift is confirmed.",
+	paidHeading: "Thank you. Your donation has been received.",
 	paidDetail: "The foundation has the confirmation from the payment provider.",
-	pendingHeading: "This gift is still being confirmed.",
+	pendingHeading: "This donation is still being confirmed.",
 	pendingDetail: "The payment provider has not confirmed it yet. You can leave this page.",
-	failedHeading: "This gift was not completed.",
-	failedDetail: "No gift was recorded as paid.",
-	unknownHeading: "This return link does not match a gift.",
+	failedHeading: "This donation was not completed.",
+	failedDetail: "No donation was recorded as paid.",
+	unknownHeading: "This return link does not match a donation.",
 	unknownDetail: "Start again from the giving page if you still want to give.",
 };
+
+/** Prefer “donation” over legacy “gift” copy from CMS or older defaults. */
+export function donationWording(text: string): string {
+	const trimmed = text.trim();
+	if (!trimmed) {
+		return trimmed;
+	}
+	const map: Record<string, string> = {
+		"Thank you. This gift is confirmed.": DONATE_NOTICES.paidHeading,
+		"The payment page was closed before the gift was confirmed.": DONATE_NOTICES.cancelled,
+		"The gift could not be started. Please try again.": DONATE_NOTICES.error,
+		"The gift could not be started.": "The donation could not be started.",
+		"This gift is still being confirmed.": DONATE_NOTICES.pendingHeading,
+		"This gift was not completed.": DONATE_NOTICES.failedHeading,
+		"No gift was recorded as paid.": DONATE_NOTICES.failedDetail,
+		"This return link does not match a gift.": DONATE_NOTICES.unknownHeading,
+		"Start again from the giving page if you still want to give.": DONATE_NOTICES.unknownDetail,
+	};
+	return map[trimmed] ?? trimmed;
+}
 
 const EMPTY_CONFIG: FormConfig = {
 	provider: "",
@@ -78,17 +98,17 @@ export async function getFormConfig(): Promise<FormConfig> {
 				error: noticeText(contact.error, CONTACT_NOTICES.error),
 			},
 			donate: {
-				cancelled: noticeText(donate.cancelled, DONATE_NOTICES.cancelled),
-				error: noticeText(donate.error, DONATE_NOTICES.error),
+				cancelled: donationWording(noticeText(donate.cancelled, DONATE_NOTICES.cancelled)),
+				error: donationWording(noticeText(donate.error, DONATE_NOTICES.error)),
 				unconfigured: noticeText(donate.unconfigured, DONATE_NOTICES.unconfigured),
 				checkoutNote: noticeText(donate.checkoutNote, DONATE_NOTICES.checkoutNote),
-				paidHeading: noticeText(donate.paidHeading, DONATE_NOTICES.paidHeading),
+				paidHeading: donationWording(noticeText(donate.paidHeading, DONATE_NOTICES.paidHeading)),
 				paidDetail: noticeText(donate.paidDetail, DONATE_NOTICES.paidDetail),
-				pendingHeading: noticeText(donate.pendingHeading, DONATE_NOTICES.pendingHeading),
+				pendingHeading: donationWording(noticeText(donate.pendingHeading, DONATE_NOTICES.pendingHeading)),
 				pendingDetail: noticeText(donate.pendingDetail, DONATE_NOTICES.pendingDetail),
-				failedHeading: noticeText(donate.failedHeading, DONATE_NOTICES.failedHeading),
-				failedDetail: noticeText(donate.failedDetail, DONATE_NOTICES.failedDetail),
-				unknownHeading: noticeText(donate.unknownHeading, DONATE_NOTICES.unknownHeading),
+				failedHeading: donationWording(noticeText(donate.failedHeading, DONATE_NOTICES.failedHeading)),
+				failedDetail: donationWording(noticeText(donate.failedDetail, DONATE_NOTICES.failedDetail)),
+				unknownHeading: donationWording(noticeText(donate.unknownHeading, DONATE_NOTICES.unknownHeading)),
 				unknownDetail: noticeText(donate.unknownDetail, DONATE_NOTICES.unknownDetail),
 			},
 		};
@@ -133,8 +153,8 @@ export async function paymentStatus(reference: string): Promise<{ status: string
 	const status = isRecord(payload) && (payload.status === "paid" || payload.status === "pending" || payload.status === "failed") ? payload.status : "unknown";
 	return {
 		status,
-		heading: isRecord(payload) && typeof payload.heading === "string" ? payload.heading : "",
-		detail: isRecord(payload) && typeof payload.detail === "string" ? payload.detail : "",
+		heading: donationWording(isRecord(payload) && typeof payload.heading === "string" ? payload.heading : ""),
+		detail: donationWording(isRecord(payload) && typeof payload.detail === "string" ? payload.detail : ""),
 	};
 }
 

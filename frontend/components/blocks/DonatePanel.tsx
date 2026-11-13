@@ -121,7 +121,7 @@ export function DonatePanel({
 			});
 			const result = await readFormResult(response);
 			if (!result.ok) {
-				setNotice({ level: result.level, message: result.message || notices?.error || "The gift could not be started." });
+				setNotice({ level: result.level, message: result.message || notices?.error || "The donation could not be started." });
 				return;
 			}
 			if (result.checkoutUrl) {
@@ -129,7 +129,7 @@ export function DonatePanel({
 				return;
 			}
 		} catch {
-			setNotice({ level: "error", message: notices?.error || "The gift could not be started. Please try again." });
+			setNotice({ level: "error", message: notices?.error || "The donation could not be started. Please try again." });
 		} finally {
 			setSending(false);
 		}
@@ -210,7 +210,7 @@ export function DonatePanel({
 						{currency === "NGN"
 							? useCustom
 								? "Enter the amount you want to give."
-								: "Select a gift amount, or choose Custom to enter your own."
+								: "Select a donation amount, or choose Custom to enter your own."
 							: `Indicative conversion: ${money(currency === "USD" ? usdRate : gbpRate, "NGN")} = ${money(1, currency)}. The amount you confirm is the amount charged.`}
 					</p>
 					{useCustom ? (
@@ -237,7 +237,7 @@ export function DonatePanel({
 						<input autoComplete="email" name="email" required type="email" />
 					</label>
 					<label className="liftedpath-field">
-						Direct my gift to
+						Direct my donation to
 						<select name="designation">
 							{gifts.map((item) => (
 								<option key={item.value} value={item.value}>
@@ -263,7 +263,7 @@ export function DonatePanel({
 					{showCancelled ? (
 						<FormNotice
 							level="warning"
-							message={notices?.cancelled || "The payment page was closed before the gift was confirmed."}
+							message={notices?.cancelled || "The payment page was closed before the donation was confirmed."}
 							onClose={() => setShowCancelled(false)}
 						/>
 					) : null}

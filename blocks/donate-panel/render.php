@@ -221,7 +221,7 @@ $symbols    = array(
 				<span><?php esc_html_e( 'We appreciate any amount donated to help inspire purpose in a child.', 'liftedpath' ); ?></span>
 			</p>
 
-			<p class="liftedpath-donate__rate" data-currency="NGN"><?php esc_html_e( 'Select a gift amount, or choose Custom to enter your own.', 'liftedpath' ); ?></p>
+			<p class="liftedpath-donate__rate" data-currency="NGN"><?php esc_html_e( 'Select a donation amount, or choose Custom to enter your own.', 'liftedpath' ); ?></p>
 			<p class="liftedpath-donate__rate" data-currency="USD">
 				<?php
 				echo esc_html(
@@ -275,7 +275,7 @@ $symbols    = array(
 			</label>
 
 			<label class="liftedpath-field" for="<?php echo esc_attr( 'gift-designation-' . $instance ); ?>">
-				<?php esc_html_e( 'Direct my gift to', 'liftedpath' ); ?>
+				<?php esc_html_e( 'Direct my donation to', 'liftedpath' ); ?>
 				<select id="<?php echo esc_attr( 'gift-designation-' . $instance ); ?>" name="designation">
 					<?php foreach ( $designations as $item ) : ?>
 						<option value="<?php echo esc_attr( $item['value'] ); ?>"><?php echo esc_html( $item['label'] ); ?></option>
