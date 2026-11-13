@@ -1,10 +1,11 @@
-import Link from "next/link";
+import { DonateReturn } from "@/components/donate/DonateReturn";
 import { confirmPayment, getFormConfig, paymentStatus, type DonateNotices } from "@/lib/forms";
 
 export const instant = false;
 
 export const metadata = {
 	title: "Gift confirmation",
+	description: "Confirmation for your gift to LiftedPath Empowerment Foundation.",
 };
 
 const REFERENCE = /^lp_[a-f0-9]{24}$/;
@@ -19,20 +20,15 @@ export default async function DonateCompletePage({
 	const sessionId = first(params.session_id);
 	const [outcome, form] = await Promise.all([readStatus(reference, sessionId), getFormConfig()]);
 	const copy = lines(outcome.status, form.donate);
+	const status = normalizeStatus(outcome.status);
 
 	return (
-		<section className="liftedpath-section liftedpath-return">
-			<div className="liftedpath-section__inner">
-				<p className="liftedpath-eyebrow">Your gift</p>
-				<h1>{outcome.heading || copy.heading}</h1>
-				<p className="liftedpath-lead">{outcome.detail || copy.detail}</p>
-				<p>
-					<Link className="liftedpath-button" href="/donate">
-						Back to giving
-					</Link>
-				</p>
-			</div>
-		</section>
+		<DonateReturn
+			status={status}
+			heading={outcome.heading || copy.heading}
+			detail={outcome.detail || copy.detail}
+			reference={REFERENCE.test(reference) ? reference : ""}
+		/>
 	);
 }
 
@@ -44,7 +40,7 @@ async function readStatus(reference: string, sessionId: string) {
 	try {
 		await confirmPayment(reference, sessionId);
 	} catch {
-		// The status request below still reports what WordPress stored.
+		// Status below still reports what WordPress stored.
 	}
 
 	try {
@@ -57,6 +53,13 @@ async function readStatus(reference: string, sessionId: string) {
 function first(value: string | string[] | undefined) {
 	const item = Array.isArray(value) ? value[0] : value;
 	return typeof item === "string" ? item : "";
+}
+
+function normalizeStatus(status: string): "paid" | "pending" | "failed" | "unknown" {
+	if (status === "paid" || status === "pending" || status === "failed") {
+		return status;
+	}
+	return "unknown";
 }
 
 function lines(status: string, notices: DonateNotices) {
