@@ -191,7 +191,11 @@ body {
 	background: var(--color-teal);
 }
 
-/* Missing pages have no hero, so the header uses the scrolled teal bar from the start. */
+/*
+ * Pages without a hero cover image use the scrolled teal header from the start.
+ * Mark the page root with .no-hero (also keep .missing-page for the 404 layout).
+ */
+body:has(.no-hero) .site-header,
 body:has(.missing-page) .site-header {
 	background: var(--color-teal);
 }

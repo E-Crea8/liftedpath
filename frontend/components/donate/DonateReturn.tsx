@@ -19,7 +19,7 @@ export function DonateReturn({ status, heading, detail, reference = "" }: Donate
 	const mark = MARK[status];
 
 	return (
-		<section className={`donate-return donate-return--${status}`}>
+		<section className={`no-hero donate-return donate-return--${status}`}>
 			<div className="column donate-return__layout">
 				<div className={`donate-return__mark ${mark.tone}`} aria-hidden="true">
 					<span className="donate-return__badge">{mark.label}</span>

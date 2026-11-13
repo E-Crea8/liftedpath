@@ -3,7 +3,7 @@ import { ArrowIcon } from "@/components/blocks/icons";
 
 export function MissingPage() {
 	return (
-		<section className="missing-page missing-page--lost">
+		<section className="no-hero missing-page missing-page--lost">
 			<div className="column missing-page__layout">
 				<p aria-hidden="true" className="missing-page__mark">
 					<span className="missing-page__code">404</span>

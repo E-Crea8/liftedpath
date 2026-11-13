@@ -1570,7 +1570,7 @@ button.liftedpath-gallery__play:focus-visible {
 	.liftedpath-privacy__sidebar {
 		display: block;
 		position: sticky;
-		top: 116px;
+		top: calc(var(--header-height, 89px) + 28px);
 		min-width: 0;
 	}
 

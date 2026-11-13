@@ -539,7 +539,7 @@ function liftedpath_seed_donate_page( array $images ): array {
 						'label'       => 'field_liftedpath_donate_designation_label',
 					),
 				),
-				array( 'name' => 'button_label', 'key' => 'field_liftedpath_donate_button_label', 'value' => 'Arrange my gift' ),
+				array( 'name' => 'button_label', 'key' => 'field_liftedpath_donate_button_label', 'value' => 'Donate Now' ),
 				array( 'name' => 'note', 'key' => 'field_liftedpath_donate_note', 'value' => 'No payment is collected on this website.' ),
 				array( 'name' => 'payment_note', 'key' => 'field_liftedpath_donate_payment_note', 'value' => 'Payments are not connected yet. An administrator can choose Stripe, Paystack, or Flutterwave in Form settings.' ),
 				array( 'name' => 'bank_heading', 'key' => 'field_liftedpath_donate_bank_heading', 'value' => 'Bank transfer' ),

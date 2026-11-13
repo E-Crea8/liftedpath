@@ -325,7 +325,7 @@
                 "class": "",
                 "id": ""
             },
-            "default_value": "Arrange my gift",
+            "default_value": "Donate Now",
             "maxlength": "",
             "placeholder": "",
             "prepend": "",
@@ -337,7 +337,7 @@
             "name": "note",
             "aria-label": "",
             "type": "textarea",
-            "instructions": "The first line under Arrange my gift.",
+            "instructions": "Legacy editor note. The public site shows a short security line under Donate Now instead.",
             "rows": 2,
             "new_lines": "",
             "required": 0,
@@ -357,7 +357,7 @@
             "name": "payment_note",
             "aria-label": "",
             "type": "textarea",
-            "instructions": "The second line under Arrange my gift. Clear it to use the line from Form settings.",
+            "instructions": "Legacy editor note. The public site shows a short security line under Donate Now instead.",
             "required": 0,
             "conditional_logic": false,
             "wrapper": {

@@ -288,6 +288,15 @@
 	font-size: 0.85rem;
 }
 
+.liftedpath-donate__choice--custom {
+	justify-content: center;
+}
+
+.liftedpath-donate__choice--custom strong {
+	font-size: 1.05rem;
+	font-weight: 700;
+}
+
 .liftedpath-donate__detail,
 .liftedpath-donate__detail--visible {
 	display: flex;

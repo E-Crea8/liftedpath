@@ -46,9 +46,9 @@ export function DonatePanel({
 	const intro = text(block.attributes.intro);
 	const oneOff = text(block.attributes.one_off_label) || "One-off";
 	const monthly = text(block.attributes.monthly_label) || "Monthly";
-	const buttonLabel = text(block.attributes.button_label) || "Arrange my gift";
-	const note = text(block.attributes.note);
-	const paymentNote = text(block.attributes.payment_note);
+	const rawButton = text(block.attributes.button_label);
+	const buttonLabel =
+		!rawButton || rawButton === "Arrange my gift" || rawButton === "Process my gift" ? "Donate Now" : rawButton;
 	const asideHeading = text(block.attributes.aside_heading);
 	const asideText = text(block.attributes.aside_text);
 	const photo = imageId(block.attributes.aside_image);
@@ -62,7 +62,7 @@ export function DonatePanel({
 	const gbpRate = numeric(block.attributes.gbp_rate) > 0 ? numeric(block.attributes.gbp_rate) : 2000;
 	const amounts = rows(block.attributes, "amounts")
 		.map((row) => ({ amount: numeric(row.amount), title: text(row.title), detail: text(row.detail) }))
-		.filter((item) => item.amount > 0 && item.title);
+		.filter((item) => item.amount >= 1 && item.title && !/^custom$/i.test(item.title));
 	const choices = amounts.length > 0 ? amounts : AMOUNTS.map((item) => ({ ...item, detail: "" }));
 	const designations = rows(block.attributes, "designations")
 		.map((row) => ({ value: text(row.designation), label: text(row.label) }))
@@ -70,6 +70,7 @@ export function DonatePanel({
 	const gifts = designations.length > 0 ? designations : DESIGNATIONS.map((item) => ({ ...item }));
 	const [currency, setCurrency] = useState<Currency>("NGN");
 	const [amountIndex, setAmountIndex] = useState(0);
+	const [useCustom, setUseCustom] = useState(false);
 	const [custom, setCustom] = useState("");
 	const [sending, setSending] = useState(false);
 	const [notice, setNotice] = useState<{ level: NoticeLevel; message: string } | null>(null);
@@ -85,9 +86,12 @@ export function DonatePanel({
 	}
 
 	function chargeAmount() {
-		const typed = Number(custom);
-		if (custom.trim() !== "" && Number.isFinite(typed) && typed >= 1) {
-			return Math.round(typed);
+		if (useCustom) {
+			const typed = Number(custom);
+			if (custom.trim() !== "" && Number.isFinite(typed) && typed >= 1) {
+				return Math.round(typed);
+			}
+			return 0;
 		}
 		return converted(choices[amountIndex]?.amount ?? 0, currency, usdRate, gbpRate);
 	}
@@ -166,10 +170,11 @@ export function DonatePanel({
 						{choices.map((item, index) => (
 							<label className="liftedpath-donate__choice" key={`${item.title}-${item.amount}`}>
 								<input
-									checked={custom.trim() === "" && amountIndex === index}
+									checked={!useCustom && amountIndex === index}
 									name="amount"
 									onChange={() => {
 										setAmountIndex(index);
+										setUseCustom(false);
 										setCustom("");
 									}}
 									type="radio"
@@ -179,8 +184,18 @@ export function DonatePanel({
 								<span className="liftedpath-donate__choice-title">{item.title}</span>
 							</label>
 						))}
+						<label className="liftedpath-donate__choice liftedpath-donate__choice--custom">
+							<input
+								checked={useCustom}
+								name="amount"
+								onChange={() => setUseCustom(true)}
+								type="radio"
+								value="custom"
+							/>
+							<strong>Custom</strong>
+						</label>
 					</div>
-					{choices[amountIndex] && custom.trim() === "" && choices[amountIndex].detail ? (
+					{!useCustom && choices[amountIndex]?.detail ? (
 						<p className="liftedpath-donate__detail liftedpath-donate__detail--visible">
 							<BlockIcon name={giftIcon(choices[amountIndex].title)} />
 							<span>{choices[amountIndex].detail}</span>
@@ -188,21 +203,26 @@ export function DonatePanel({
 					) : null}
 					<p className="liftedpath-donate__rate">
 						{currency === "NGN"
-							? "Select a gift amount or enter your own below."
+							? useCustom
+								? "Enter the amount you want to give."
+								: "Select a gift amount, or choose Custom to enter your own."
 							: `Indicative conversion: ${money(currency === "USD" ? usdRate : gbpRate, "NGN")} = ${money(1, currency)}. The amount you confirm is the amount charged.`}
 					</p>
-					<label className="liftedpath-field">
-						Other amount ({currency})
-						<input
-							inputMode="numeric"
-							min={1}
-							name="amountCustom"
-							onChange={(event) => setCustom(event.target.value)}
-							step={1}
-							type="number"
-							value={custom}
-						/>
-					</label>
+					{useCustom ? (
+						<label className="liftedpath-field">
+							Other amount ({currency})
+							<input
+								inputMode="numeric"
+								min={1}
+								name="amountCustom"
+								onChange={(event) => setCustom(event.target.value)}
+								required
+								step={1}
+								type="number"
+								value={custom}
+							/>
+						</label>
+					) : null}
 					<label className="liftedpath-field">
 						Full name
 						<input autoComplete="name" name="fullName" required type="text" />
@@ -229,16 +249,12 @@ export function DonatePanel({
 						{sending ? "Opening payment" : buttonLabel}
 						<ArrowIcon />
 					</button>
-					{note ? <p className="liftedpath-form-note">{note}</p> : null}
-					{paymentNote ? (
-						<p className="liftedpath-form-note">{paymentNote}</p>
-					) : (
-						<p className="liftedpath-form-note">
-							{paymentsConfigured
-								? notices?.checkoutNote || `You finish this gift on ${providerLabel}. Card details stay with ${providerLabel}.`
-								: notices?.unconfigured || "Payments are not connected yet. An administrator can choose Stripe, Paystack, or Flutterwave in Form settings."}
-						</p>
-					)}
+					<p className="liftedpath-form-note">
+						{paymentsConfigured
+							? "Payments are processed securely."
+							: notices?.unconfigured ||
+								"Payments are not connected yet. An administrator can choose Stripe, Paystack, or Flutterwave in Form settings."}
+					</p>
 					{showCancelled ? (
 						<FormNotice
 							level="warning"

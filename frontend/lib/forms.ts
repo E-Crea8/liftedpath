@@ -38,7 +38,7 @@ const DONATE_NOTICES: DonateNotices = {
 	cancelled: "The payment page was closed before the gift was confirmed.",
 	error: "The gift could not be started. Please try again.",
 	unconfigured: "Payments are not connected yet. An administrator can choose Stripe, Paystack, or Flutterwave in Form settings.",
-	checkoutNote: "",
+	checkoutNote: "Payments are processed securely.",
 	paidHeading: "Thank you. This gift is confirmed.",
 	paidDetail: "The foundation has the confirmation from the payment provider.",
 	pendingHeading: "This gift is still being confirmed.",

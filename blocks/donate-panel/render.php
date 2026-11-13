@@ -48,8 +48,8 @@ if ( '' === $monthly ) {
 	$monthly = __( 'Monthly', 'liftedpath' );
 }
 
-if ( '' === $button_label ) {
-	$button_label = __( 'Arrange my gift', 'liftedpath' );
+if ( '' === $button_label || 'Arrange my gift' === $button_label || 'Process my gift' === $button_label ) {
+	$button_label = __( 'Donate Now', 'liftedpath' );
 }
 
 foreach ( $amount_rows as $row ) {
@@ -61,7 +61,7 @@ foreach ( $amount_rows as $row ) {
 	$title  = liftedpath_block_string( $row['title'] ?? '' );
 	$detail = liftedpath_block_string( $row['detail'] ?? '' );
 
-	if ( $amount <= 0 || '' === $title ) {
+	if ( $amount < 1 || '' === $title || 0 === strcasecmp( $title, 'Custom' ) ) {
 		continue;
 	}
 
@@ -201,6 +201,10 @@ $symbols    = array(
 						<span class="liftedpath-donate__choice-title"><?php echo esc_html( $item['title'] ); ?></span>
 					</label>
 				<?php endforeach; ?>
+				<label class="liftedpath-donate__choice liftedpath-donate__choice--custom">
+					<input class="liftedpath-donate__amount" type="radio" name="<?php echo esc_attr( 'amount-' . $instance ); ?>" value="custom" data-index="custom">
+					<strong><?php esc_html_e( 'Custom', 'liftedpath' ); ?></strong>
+				</label>
 			</div>
 
 			<?php foreach ( $amounts as $index => $item ) : ?>
@@ -213,7 +217,7 @@ $symbols    = array(
 				</p>
 			<?php endforeach; ?>
 
-			<p class="liftedpath-donate__rate" data-currency="NGN"><?php esc_html_e( 'Select a gift amount or enter your own below.', 'liftedpath' ); ?></p>
+			<p class="liftedpath-donate__rate" data-currency="NGN"><?php esc_html_e( 'Select a gift amount, or choose Custom to enter your own.', 'liftedpath' ); ?></p>
 			<p class="liftedpath-donate__rate" data-currency="USD">
 				<?php
 				echo esc_html(
@@ -239,7 +243,7 @@ $symbols    = array(
 				?>
 			</p>
 
-			<label class="liftedpath-field" for="<?php echo esc_attr( 'gift-custom-' . $instance ); ?>">
+			<label class="liftedpath-field liftedpath-donate__custom-amount" for="<?php echo esc_attr( 'gift-custom-' . $instance ); ?>" hidden>
 				<?php foreach ( $currencies as $code ) : ?>
 					<span class="liftedpath-money" data-currency="<?php echo esc_attr( $code ); ?>">
 						<?php
@@ -279,12 +283,7 @@ $symbols    = array(
 				<?php echo esc_html( $button_label ); ?>
 				<?php echo liftedpath_block_arrow(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static icon. ?>
 			</button>
-			<?php if ( '' !== $note ) : ?>
-				<p class="liftedpath-form-note"><?php echo esc_html( $note ); ?></p>
-			<?php endif; ?>
-			<?php if ( '' !== $payment_note ) : ?>
-				<p class="liftedpath-form-note"><?php echo esc_html( $payment_note ); ?></p>
-			<?php endif; ?>
+			<p class="liftedpath-form-note"><?php esc_html_e( 'Payments are processed securely.', 'liftedpath' ); ?></p>
 		</form>
 
 		<?php $show_aside = '' !== $image || '' !== $aside_heading || '' !== $aside_text; ?>
