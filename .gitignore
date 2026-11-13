@@ -7,6 +7,7 @@ Thumbs.db
 .env.*
 node_modules/
 vendor/
+boot-error.txt
 
 # Local copy of another project's SiteGround workflow. Not part of this repo.
 /deploy-sample.yml
@@ -16,3 +17,12 @@ vendor/
 /logos/
 /liftedpath-design-main/
 /Six-File+Context+Methodology/
+
+# Source documents, agent notes, and PDFs. Never push to GitHub.
+# Keep local copies for development; the live site does not need them.
+*.md
+*.pdf
+*.PDF
+
+# Oversized design export. Theme preview uses screenshot.png only.
+/liftedpath-screenshot.png

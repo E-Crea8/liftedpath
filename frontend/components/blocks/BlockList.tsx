@@ -187,6 +187,7 @@ function BlockView({
 			break;
 		case "core/heading":
 		case "core/paragraph":
+		case "core/list":
 		case "core/image":
 		case "core/columns":
 			view = <CoreContent block={block} images={images} />;

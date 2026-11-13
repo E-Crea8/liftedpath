@@ -77,7 +77,15 @@
             "type": "select",
             "instructions": "Contact messages.",
             "required": 0,
-            "conditional_logic": false,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_liftedpath_submission_type",
+                        "operator": "==",
+                        "value": "contact"
+                    }
+                ]
+            ],
             "wrapper": {
                 "width": "50",
                 "class": "",
@@ -108,7 +116,15 @@
             "type": "textarea",
             "instructions": "",
             "required": 0,
-            "conditional_logic": false,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_liftedpath_submission_type",
+                        "operator": "==",
+                        "value": "contact"
+                    }
+                ]
+            ],
             "wrapper": {
                 "width": "",
                 "class": "",
@@ -128,7 +144,15 @@
             "type": "select",
             "instructions": "Gift intents.",
             "required": 0,
-            "conditional_logic": false,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_liftedpath_submission_type",
+                        "operator": "==",
+                        "value": "donate"
+                    }
+                ]
+            ],
             "wrapper": {
                 "width": "25",
                 "class": "",
@@ -157,7 +181,15 @@
             "type": "number",
             "instructions": "",
             "required": 0,
-            "conditional_logic": false,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_liftedpath_submission_type",
+                        "operator": "==",
+                        "value": "donate"
+                    }
+                ]
+            ],
             "wrapper": {
                 "width": "25",
                 "class": "",
@@ -179,7 +211,15 @@
             "type": "select",
             "instructions": "",
             "required": 0,
-            "conditional_logic": false,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_liftedpath_submission_type",
+                        "operator": "==",
+                        "value": "donate"
+                    }
+                ]
+            ],
             "wrapper": {
                 "width": "25",
                 "class": "",
@@ -207,7 +247,15 @@
             "type": "select",
             "instructions": "",
             "required": 0,
-            "conditional_logic": false,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_liftedpath_submission_type",
+                        "operator": "==",
+                        "value": "donate"
+                    }
+                ]
+            ],
             "wrapper": {
                 "width": "25",
                 "class": "",
@@ -251,5 +299,5 @@
     "description": "",
     "show_in_rest": 1,
     "display_title": "",
-    "modified": 1792019360
+    "modified": 1794547200
 }

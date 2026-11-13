@@ -1,6 +1,6 @@
 import type { JSX } from "react";
 import { BlockPhoto } from "@/components/blocks/parts";
-import { headingLevel, imageAlt, richText } from "@/lib/blocks/html";
+import { headingLevel, imageAlt, listItems, paragraphHtml, richText } from "@/lib/blocks/html";
 import { blockHidden, imageId } from "@/lib/blocks/fields";
 import type { Block, FeaturedImage } from "@/lib/wp/types";
 
@@ -62,11 +62,39 @@ export function CoreContent({
 	}
 
 	if (block.name === "core/paragraph") {
-		const copy = richText(block.html);
+		const copy = paragraphHtml(block.html);
 		if (!copy) {
 			return null;
 		}
-		const node = <p>{copy}</p>;
+		const node = <p dangerouslySetInnerHTML={{ __html: copy }} />;
+		return nested ? node : <div className="liftedpath-copy">{node}</div>;
+	}
+
+	if (block.name === "core/list") {
+		const items = (block.attributes.innerBlocks ?? [])
+			.map((child) => richText(child.html || ""))
+			.filter((item) => item !== "");
+		if (items.length === 0) {
+			const fromHtml = listItems(block.html);
+			if (fromHtml.length === 0) {
+				return null;
+			}
+			const node = (
+				<ul>
+					{fromHtml.map((item) => (
+						<li key={item}>{item}</li>
+					))}
+				</ul>
+			);
+			return nested ? node : <div className="liftedpath-copy">{node}</div>;
+		}
+		const node = (
+			<ul>
+				{items.map((item) => (
+					<li key={item}>{item}</li>
+				))}
+			</ul>
+		);
 		return nested ? node : <div className="liftedpath-copy">{node}</div>;
 	}
 

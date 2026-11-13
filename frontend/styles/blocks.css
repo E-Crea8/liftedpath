@@ -1491,6 +1491,28 @@ button.liftedpath-gallery__play:focus-visible {
 	color: var(--color-muted);
 }
 
+.liftedpath-copy > ul {
+	max-width: 720px;
+	margin: 0 0 20px;
+	padding-left: 1.25rem;
+	color: var(--color-muted);
+}
+
+.liftedpath-copy > ul > li {
+	margin: 0 0 8px;
+	padding-left: 4px;
+}
+
+.liftedpath-copy > ul > li::marker {
+	color: var(--color-gold);
+}
+
+.liftedpath-copy a {
+	color: var(--color-teal);
+	text-decoration: underline;
+	text-underline-offset: 3px;
+}
+
 .liftedpath-copy > figure {
 	margin: 28px 0 8px;
 }

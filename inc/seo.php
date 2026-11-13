@@ -10,12 +10,12 @@
  */
 
 /**
- * Add Search & verification under the LiftedPath menu.
+ * Add Search & verification under LP Config.
  */
 function liftedpath_seo_menu(): void {
 	add_submenu_page(
 		'liftedpath-settings',
-		__( 'LiftedPath settings', 'liftedpath' ),
+		__( 'LP Config', 'liftedpath' ),
 		__( 'Settings', 'liftedpath' ),
 		'manage_options',
 		'liftedpath-settings'
