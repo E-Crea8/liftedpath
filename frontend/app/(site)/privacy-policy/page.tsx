@@ -1,4 +1,5 @@
-import { pageMetadata, WordPressPage } from "@/components/pages/WordPressPage";
+import { pageMetadata } from "@/components/pages/WordPressPage";
+import { PrivacyPolicyDocument } from "@/components/pages/PrivacyPolicyDocument";
 
 export const instant = false;
 
@@ -7,5 +8,5 @@ export function generateMetadata() {
 }
 
 export default function PrivacyPolicyPage() {
-	return <WordPressPage path="/privacy-policy" />;
+	return <PrivacyPolicyDocument />;
 }

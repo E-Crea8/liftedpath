@@ -188,9 +188,23 @@ function liftedpath_privacy_policy_core_blocks(): string {
 }
 
 /**
- * Append Privacy Policy to the footer Quick Links group when missing.
+ * Legacy helper kept for the first seed; Privacy Policy now sits beside RC in the Next.js footer.
+ *
+ * @param int $page_id Unused. Kept for call-site compatibility.
  */
 function liftedpath_privacy_policy_append_footer_link( int $page_id ): void {
+	unset( $page_id );
+	liftedpath_privacy_policy_remove_footer_nav_link();
+}
+
+/**
+ * Remove Privacy Policy from the footer Quick Links nav (moved to RC meta row).
+ */
+function liftedpath_privacy_policy_remove_footer_nav_link(): void {
+	if ( get_option( 'liftedpath_privacy_footer_meta_v1' ) ) {
+		return;
+	}
+
 	$posts = get_posts(
 		array(
 			'post_type'      => 'wp_navigation',
@@ -201,34 +215,28 @@ function liftedpath_privacy_policy_append_footer_link( int $page_id ): void {
 	);
 
 	if ( array() === $posts || ! $posts[0] instanceof WP_Post ) {
+		update_option( 'liftedpath_privacy_footer_meta_v1', 1, false );
 		return;
 	}
 
 	$nav     = $posts[0];
 	$content = (string) $nav->post_content;
-	if ( false !== strpos( $content, '/privacy-policy' ) || false !== strpos( $content, 'Privacy Policy' ) ) {
-		return;
-	}
-
-	$link = liftedpath_seed_nav_link( 'Privacy Policy', $page_id, home_url( '/privacy-policy/' ), false );
-
-	// Prefer inserting before the closing of the Quick Links group when present.
 	$updated = preg_replace(
-		'#(<!-- wp:navigation-link \{[^}]*"label":"Donate"[^}]*\} /-->)#',
-		'$1' . "\n" . $link,
-		$content,
-		1
+		'/\s*<!-- wp:navigation-link \{[^}]*"(?:label":"Privacy Policy"|url":"[^"]*privacy-policy[^"]*")[^}]*\} \/-->\s*/',
+		"\n",
+		$content
 	);
 
-	if ( ! is_string( $updated ) || $updated === $content ) {
-		$updated = $content . $link;
+	if ( is_string( $updated ) && $updated !== $content ) {
+		global $wpdb;
+		$wpdb->update(
+			$wpdb->posts,
+			array( 'post_content' => trim( $updated ) . "\n" ),
+			array( 'ID' => (int) $nav->ID )
+		);
+		clean_post_cache( (int) $nav->ID );
 	}
 
-	global $wpdb;
-	$wpdb->update(
-		$wpdb->posts,
-		array( 'post_content' => $updated ),
-		array( 'ID' => (int) $nav->ID )
-	);
-	clean_post_cache( (int) $nav->ID );
+	update_option( 'liftedpath_privacy_footer_meta_v1', 1, false );
 }
+add_action( 'init', 'liftedpath_privacy_policy_remove_footer_nav_link', 36 );

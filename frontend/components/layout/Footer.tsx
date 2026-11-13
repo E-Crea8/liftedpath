@@ -74,7 +74,13 @@ export function Footer({ items, settings }: FooterProps) {
 			</div>
 			<div className="column footer-meta">
 				{settings.copyrightText ? <CopyrightLine text={settings.copyrightText} /> : null}
-				{settings.registrationNumber ? <p>{settings.registrationNumber}</p> : null}
+				<div className="footer-meta__legal">
+					{settings.registrationNumber ? <p>{settings.registrationNumber}</p> : null}
+					{settings.registrationNumber ? <span aria-hidden="true" className="footer-meta__sep">|</span> : null}
+					<p>
+						<Link href="/privacy-policy">Privacy Policy</Link>
+					</p>
+				</div>
 			</div>
 			{wordmark ? <FooterWordmark text={wordmark} /> : null}
 		</footer>

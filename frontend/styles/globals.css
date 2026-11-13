@@ -757,6 +757,28 @@ body:has(.missing-page) .site-header {
 	line-height: 1.4;
 }
 
+.footer-meta__legal {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 0.45rem;
+}
+
+.footer-meta__sep {
+	color: var(--color-paper);
+	opacity: 0.55;
+}
+
+.footer-meta__legal a {
+	color: var(--color-paper);
+	text-decoration: underline;
+	text-underline-offset: 2px;
+}
+
+.footer-meta__legal a:hover {
+	color: var(--color-sand);
+}
+
 .footer-wordmark {
 	margin: 24px calc(50% - 50vw) -0.12em;
 	width: 100vw;

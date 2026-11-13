@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -228,11 +228,17 @@ function armTree(node: Node, arm: (section: HTMLElement) => boolean): boolean {
 
 export function PageMotion({ children }: { children: ReactNode }) {
 	const root = useRef<HTMLDivElement>(null);
+	// Wait until after hydration so GSAP does not stamp data-motion / opacity onto
+	// server HTML before React attaches (DonatePanel hydration mismatch).
+	const [ready, setReady] = useState(false);
+	useEffect(() => {
+		setReady(true);
+	}, []);
 
 	useGSAP(
 		() => {
 			const scope = root.current;
-			if (!scope) {
+			if (!scope || !ready) {
 				return;
 			}
 
@@ -340,7 +346,7 @@ export function PageMotion({ children }: { children: ReactNode }) {
 				motion.revert();
 			};
 		},
-		{ scope: root },
+		{ scope: root, dependencies: [ready] },
 	);
 
 	return <div ref={root}>{children}</div>;

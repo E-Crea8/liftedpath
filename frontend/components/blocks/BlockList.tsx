@@ -36,6 +36,7 @@ export function BlockList({
 	donateNotices,
 	email,
 	images,
+	motion = true,
 	paymentsConfigured = false,
 	phone,
 	phrases,
@@ -47,34 +48,36 @@ export function BlockList({
 	donateNotices?: DonateNotices;
 	email: string;
 	images: ReadonlyMap<number, FeaturedImage>;
+	motion?: boolean;
 	paymentsConfigured?: boolean;
 	phone: string;
 	phrases: readonly string[];
 	providerLabel?: string;
 }) {
 	const host = siteHost();
+	const content = blocks.map((block, index) => (
+		<BlockView
+			address={address}
+			block={block}
+			contactNotices={contactNotices}
+			donateNotices={donateNotices}
+			email={email}
+			images={images}
+			key={`${block.name}-${index}`}
+			paymentsConfigured={paymentsConfigured}
+			phone={phone}
+			phrases={phrases}
+			providerLabel={providerLabel}
+			radioKey={String(index)}
+			siteHost={host}
+		/>
+	));
 
-	return (
-		<PageMotion>
-			{blocks.map((block, index) => (
-				<BlockView
-					address={address}
-					block={block}
-					contactNotices={contactNotices}
-					donateNotices={donateNotices}
-					email={email}
-					images={images}
-					key={`${block.name}-${index}`}
-					paymentsConfigured={paymentsConfigured}
-					phone={phone}
-					phrases={phrases}
-					providerLabel={providerLabel}
-					radioKey={String(index)}
-					siteHost={host}
-				/>
-			))}
-		</PageMotion>
-	);
+	if (!motion) {
+		return <>{content}</>;
+	}
+
+	return <PageMotion>{content}</PageMotion>;
 }
 
 function BlockView({
