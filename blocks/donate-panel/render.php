@@ -216,6 +216,10 @@ $symbols    = array(
 					<span><?php echo esc_html( $item['detail'] ); ?></span>
 				</p>
 			<?php endforeach; ?>
+			<p class="liftedpath-donate__detail" data-for="custom">
+				<?php echo liftedpath_block_icon( 'graduation-cap' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static icon. ?>
+				<span><?php esc_html_e( 'We appreciate any amount donated to help inspire purpose in a child.', 'liftedpath' ); ?></span>
+			</p>
 
 			<p class="liftedpath-donate__rate" data-currency="NGN"><?php esc_html_e( 'Select a gift amount, or choose Custom to enter your own.', 'liftedpath' ); ?></p>
 			<p class="liftedpath-donate__rate" data-currency="USD">

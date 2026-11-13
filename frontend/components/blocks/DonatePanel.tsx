@@ -195,7 +195,12 @@ export function DonatePanel({
 							<strong>Custom</strong>
 						</label>
 					</div>
-					{!useCustom && choices[amountIndex]?.detail ? (
+					{useCustom ? (
+						<p className="liftedpath-donate__detail liftedpath-donate__detail--visible">
+							<BlockIcon name="graduation-cap" />
+							<span>We appreciate any amount donated to help inspire purpose in a child.</span>
+						</p>
+					) : choices[amountIndex]?.detail ? (
 						<p className="liftedpath-donate__detail liftedpath-donate__detail--visible">
 							<BlockIcon name={giftIcon(choices[amountIndex].title)} />
 							<span>{choices[amountIndex].detail}</span>
