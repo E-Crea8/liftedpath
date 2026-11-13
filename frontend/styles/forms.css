@@ -483,41 +483,40 @@
 	box-shadow: 0 12px 28px rgba(2, 39, 43, 0.28);
 }
 
-.donate-return__check {
-	display: block;
-	width: 52px;
-	height: 52px;
-}
-
-.donate-return__check-path {
-	stroke-dasharray: 48;
-	stroke-dashoffset: 0;
-	animation: donate-check-mark 2s ease-in-out infinite;
+.donate-return--paid .donate-return__glyph {
+	animation: donate-check-mark 2.2s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+	transform-origin: center;
+	will-change: transform, opacity;
 }
 
 @keyframes donate-check-mark {
 	0% {
-		stroke-dashoffset: 48;
-		opacity: 0.35;
+		transform: scale(0.78);
+		opacity: 0.4;
 	}
-	28% {
-		stroke-dashoffset: 0;
+	18% {
+		transform: scale(1.1);
 		opacity: 1;
 	}
-	72% {
-		stroke-dashoffset: 0;
+	32% {
+		transform: scale(0.96);
 		opacity: 1;
 	}
+	45% {
+		transform: scale(1.03);
+		opacity: 1;
+	}
+	58%,
 	100% {
-		stroke-dashoffset: 48;
-		opacity: 0.35;
+		transform: scale(1);
+		opacity: 1;
 	}
 }
 
 @media (prefers-reduced-motion: reduce) {
-	.donate-return__check-path {
+	.donate-return--paid .donate-return__glyph {
 		animation: none;
-		stroke-dashoffset: 0;
+		transform: none;
 		opacity: 1;
 	}
 }

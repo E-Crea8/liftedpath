@@ -40,13 +40,13 @@ const DONATE_NOTICES: DonateNotices = {
 	unconfigured: "Payments are not connected yet. An administrator can choose Stripe, Paystack, or Flutterwave in Form settings.",
 	checkoutNote: "Payments are processed securely.",
 	paidHeading: "Thank you. Your donation has been received.",
-	paidDetail: "The foundation has the confirmation from the payment provider.",
+	paidDetail: "We're grateful you're part of the LiftedPath vision with us. We've sent a receipt also.",
 	pendingHeading: "This donation is still being confirmed.",
-	pendingDetail: "The payment provider has not confirmed it yet. You can leave this page.",
+	pendingDetail: "Payment confirmation can take a moment. You can leave this page and come back with your reference if you need to check again.",
 	failedHeading: "This donation was not completed.",
-	failedDetail: "No donation was recorded as paid.",
+	failedDetail: "No payment was recorded. You can try again from the donate page whenever you're ready.",
 	unknownHeading: "This return link does not match a donation.",
-	unknownDetail: "Start again from the giving page if you still want to give.",
+	unknownDetail: "Start again from the donate page if you still want to give.",
 };
 
 /** Prefer “donation” over legacy “gift” copy from CMS or older defaults. */
@@ -57,12 +57,18 @@ export function donationWording(text: string): string {
 	}
 	const map: Record<string, string> = {
 		"Thank you. This gift is confirmed.": DONATE_NOTICES.paidHeading,
+		"The foundation has the confirmation from the payment provider.": DONATE_NOTICES.paidDetail,
+		"We've sent a receipt and a thank-you note to your email. If nothing arrives in a few minutes, check spam or promotions.":
+			DONATE_NOTICES.paidDetail,
 		"The payment page was closed before the gift was confirmed.": DONATE_NOTICES.cancelled,
+		"The payment page was closed before the donation was confirmed.": DONATE_NOTICES.cancelled,
 		"The gift could not be started. Please try again.": DONATE_NOTICES.error,
 		"The gift could not be started.": "The donation could not be started.",
 		"This gift is still being confirmed.": DONATE_NOTICES.pendingHeading,
+		"The payment provider has not confirmed it yet. You can leave this page.": DONATE_NOTICES.pendingDetail,
 		"This gift was not completed.": DONATE_NOTICES.failedHeading,
 		"No gift was recorded as paid.": DONATE_NOTICES.failedDetail,
+		"No donation was recorded as paid.": DONATE_NOTICES.failedDetail,
 		"This return link does not match a gift.": DONATE_NOTICES.unknownHeading,
 		"Start again from the giving page if you still want to give.": DONATE_NOTICES.unknownDetail,
 	};
@@ -103,7 +109,7 @@ export async function getFormConfig(): Promise<FormConfig> {
 				unconfigured: noticeText(donate.unconfigured, DONATE_NOTICES.unconfigured),
 				checkoutNote: noticeText(donate.checkoutNote, DONATE_NOTICES.checkoutNote),
 				paidHeading: donationWording(noticeText(donate.paidHeading, DONATE_NOTICES.paidHeading)),
-				paidDetail: noticeText(donate.paidDetail, DONATE_NOTICES.paidDetail),
+				paidDetail: donationWording(noticeText(donate.paidDetail, DONATE_NOTICES.paidDetail)),
 				pendingHeading: donationWording(noticeText(donate.pendingHeading, DONATE_NOTICES.pendingHeading)),
 				pendingDetail: noticeText(donate.pendingDetail, DONATE_NOTICES.pendingDetail),
 				failedHeading: donationWording(noticeText(donate.failedHeading, DONATE_NOTICES.failedHeading)),

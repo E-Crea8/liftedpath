@@ -23,7 +23,7 @@ export function DonateReturn({ status, heading, detail, reference = "" }: Donate
 			<div className="column donate-return__layout">
 				<div className={`donate-return__mark ${mark.tone}`} aria-hidden="true">
 					<span className="donate-return__badge">{mark.label}</span>
-					<span className="donate-return__glyph">{status === "paid" ? <PaidCheck /> : glyph(status)}</span>
+					<span className="donate-return__glyph">{glyph(status)}</span>
 					<span className="donate-return__trail">
 						<span />
 						<span />
@@ -32,7 +32,7 @@ export function DonateReturn({ status, heading, detail, reference = "" }: Donate
 				</div>
 
 				<div className="donate-return__copy">
-					<p className="liftedpath-eyebrow">Your donation</p>
+					<p className="liftedpath-eyebrow">{eyebrow(status)}</p>
 					<h1>{heading}</h1>
 					<p className="donate-return__lead">{detail}</p>
 
@@ -86,22 +86,23 @@ export function DonateReturn({ status, heading, detail, reference = "" }: Donate
 	);
 }
 
-function PaidCheck() {
-	return (
-		<svg className="donate-return__check" fill="none" viewBox="0 0 52 52">
-			<path
-				className="donate-return__check-path"
-				d="M14.5 26.5l8 8 15-16"
-				stroke="currentColor"
-				strokeLinecap="round"
-				strokeLinejoin="round"
-				strokeWidth="4"
-			/>
-		</svg>
-	);
+function eyebrow(status: DonateReturnProps["status"]) {
+	if (status === "paid") {
+		return "With our thanks";
+	}
+	if (status === "pending") {
+		return "Still confirming";
+	}
+	if (status === "failed") {
+		return "Not completed";
+	}
+	return "Donation status";
 }
 
 function glyph(status: DonateReturnProps["status"]) {
+	if (status === "paid") {
+		return "✓";
+	}
 	if (status === "pending") {
 		return "…";
 	}
