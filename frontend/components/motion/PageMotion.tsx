@@ -32,8 +32,6 @@ const REVEAL = [
 	".liftedpath-stewardship__copy",
 	".liftedpath-stewardship__media",
 	".liftedpath-contact__layout > *",
-	".liftedpath-donate__form",
-	".liftedpath-donate__aside",
 	".liftedpath-cta__content",
 	".liftedpath-sponsor__row",
 	".liftedpath-footer-cta__inner",
@@ -267,6 +265,12 @@ export function PageMotion({ children }: { children: ReactNode }) {
 				});
 
 				const arm = (section: HTMLElement): boolean => {
+					// Donate is an interactive form — never stamp data-motion / opacity
+					// (caused Next.js hydration mismatches on DonatePanel).
+					if (section.classList.contains("liftedpath-donate")) {
+						return false;
+					}
+
 					if (section.classList.contains("liftedpath-work")) {
 						// May mount before article nodes stream in; allow re-scan.
 						animateWork(section);

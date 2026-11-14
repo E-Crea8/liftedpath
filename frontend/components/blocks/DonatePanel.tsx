@@ -3,7 +3,7 @@
 import { useState, type FormEvent } from "react";
 import { useSearchParams } from "next/navigation";
 import { FormNotice, readFormResult, type NoticeLevel } from "@/components/blocks/FormNotice";
-import { ArrowIcon, BlockIcon } from "@/components/blocks/icons";
+import { ArrowIcon, BlockIcon, SecureLockIcon } from "@/components/blocks/icons";
 import { BlockPhoto } from "@/components/blocks/parts";
 import { imageId, numeric, rows, text } from "@/lib/blocks/fields";
 import type { DonateNotices } from "@/lib/forms";
@@ -250,13 +250,22 @@ export function DonatePanel({
 						</p>
 					) : null}
 					<p className="liftedpath-donate__rate">
-						{currency === "NGN"
-							? useCustom
-								? "Enter the amount you want to give."
-								: "Select a donation amount, or choose Custom to enter your own."
-							: currency === "USD"
-								? `Paystack will charge ${money(chargeAmount(), "USD")}.`
-								: `GBP is charged as NGN on Paystack: ${money(nairaToCharge(), "NGN")} (${money(gbpRate, "NGN")} ≈ ${money(1, "GBP")}).`}
+						{currency === "NGN" ? (
+							useCustom ? (
+								"Enter the amount you want to give."
+							) : (
+								"Select a donation amount, or choose Custom to enter your own."
+							)
+						) : currency === "USD" ? (
+							<>
+								Paystack will charge <strong>{money(chargeAmount(), "USD")}</strong>.
+							</>
+						) : (
+							<>
+								GBP is charged as NGN on Paystack: <strong>{money(nairaToCharge(), "NGN")}</strong>{" "}
+								(<strong>{money(gbpRate, "NGN")}</strong> ≈ <strong>{money(1, "GBP")}</strong>).
+							</>
+						)}
 					</p>
 					{useCustom ? (
 						<label className="liftedpath-field">
@@ -300,10 +309,13 @@ export function DonatePanel({
 						{sending ? <span aria-hidden="true" className="liftedpath-button__spinner" /> : <ArrowIcon />}
 					</button>
 					<p className="liftedpath-form-note">
-						{paymentsConfigured
-							? "Payments are processed securely."
-							: notices?.unconfigured ||
-								"Payments are not connected yet. An administrator can choose Stripe, Paystack, or Flutterwave in Form settings."}
+						{paymentsConfigured ? <SecureLockIcon /> : null}
+						<span>
+							{paymentsConfigured
+								? "Payments are processed securely."
+								: notices?.unconfigured ||
+									"Payments are not connected yet. An administrator can choose Stripe, Paystack, or Flutterwave in Form settings."}
+						</span>
 					</p>
 					{showCancelled ? (
 						<FormNotice

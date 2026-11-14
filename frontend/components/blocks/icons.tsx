@@ -126,6 +126,28 @@ export function ArrowIcon() {
 	);
 }
 
+export function SecureLockIcon() {
+	return (
+		<span aria-hidden="true" className="liftedpath-form-note__secure">
+			<svg
+				className="liftedpath-form-note__icon"
+				fill="none"
+				focusable="false"
+				height="14"
+				stroke="currentColor"
+				strokeLinecap="round"
+				strokeLinejoin="round"
+				strokeWidth="2"
+				viewBox="0 0 24 24"
+				width="14"
+			>
+				<path d="M20 13c0 5-3.5 7.5-8 10.5C7.5 20.5 4 18 4 13V6a2 2 0 0 1 2-2c2.5 0 5-1 8-3 3 2 5.5 3 8 3a2 2 0 0 1 2 2z" />
+				<path d="m9 12 2 2 4-4" />
+			</svg>
+		</span>
+	);
+}
+
 export function ChevronIcon() {
 	return (
 		<svg

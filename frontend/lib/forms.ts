@@ -25,8 +25,8 @@ export interface FormConfig {
 	provider: "" | "stripe" | "paystack" | "flutterwave";
 	providerLabel: string;
 	paymentsConfigured: boolean;
-	usdRate: number;
-	gbpRate: number;
+	usdRate?: number;
+	gbpRate?: number;
 	contact: ContactNotices;
 	donate: DonateNotices;
 }
@@ -81,8 +81,6 @@ const EMPTY_CONFIG: FormConfig = {
 	provider: "",
 	providerLabel: "",
 	paymentsConfigured: false,
-	usdRate: 1500,
-	gbpRate: 2000,
 	contact: CONTACT_NOTICES,
 	donate: DONATE_NOTICES,
 };
@@ -99,14 +97,20 @@ export async function getFormConfig(): Promise<FormConfig> {
 		const notices = isRecord(payload.notices) ? payload.notices : {};
 		const contact = isRecord(notices.contact) ? notices.contact : {};
 		const donate = isRecord(notices.donate) ? notices.donate : {};
-		const usdRate = typeof payload.usdRate === "number" && payload.usdRate > 0 ? payload.usdRate : 1500;
-		const gbpRate = typeof payload.gbpRate === "number" && payload.gbpRate > 0 ? payload.gbpRate : 2000;
+		const usdRaw = payload.usdRate;
+		const gbpRaw = payload.gbpRate;
+		const usdParsed = typeof usdRaw === "number" ? usdRaw : typeof usdRaw === "string" ? Number(usdRaw) : NaN;
+		const gbpParsed = typeof gbpRaw === "number" ? gbpRaw : typeof gbpRaw === "string" ? Number(gbpRaw) : NaN;
+		const usdRate = Number.isFinite(usdParsed) && usdParsed > 0 ? usdParsed : 1500;
+		const gbpRate = Number.isFinite(gbpParsed) && gbpParsed > 0 ? gbpParsed : 2000;
+		const hasLiveRates = Object.prototype.hasOwnProperty.call(payload, "usdRate") || Object.prototype.hasOwnProperty.call(payload, "gbpRate");
 		return {
 			provider: provider === "stripe" || provider === "paystack" || provider === "flutterwave" ? provider : "",
 			providerLabel: typeof providerLabel === "string" ? providerLabel : "",
 			paymentsConfigured: payload.paymentsConfigured === true,
-			usdRate,
-			gbpRate,
+			// Only prefer API rates when the CMS plugin actually returns them.
+			usdRate: hasLiveRates ? usdRate : undefined,
+			gbpRate: hasLiveRates ? gbpRate : undefined,
 			contact: {
 				success: noticeText(contact.success, CONTACT_NOTICES.success),
 				error: noticeText(contact.error, CONTACT_NOTICES.error),
