@@ -37,22 +37,26 @@ export function BlockList({
 	email,
 	images,
 	motion = true,
+	gbpRate,
 	paymentsConfigured = false,
 	phone,
 	phrases,
 	providerLabel = "",
+	usdRate,
 }: {
 	address: string;
 	blocks: Block[];
 	contactNotices?: ContactNotices;
 	donateNotices?: DonateNotices;
 	email: string;
+	gbpRate?: number;
 	images: ReadonlyMap<number, FeaturedImage>;
 	motion?: boolean;
 	paymentsConfigured?: boolean;
 	phone: string;
 	phrases: readonly string[];
 	providerLabel?: string;
+	usdRate?: number;
 }) {
 	const host = siteHost();
 	const content = blocks.map((block, index) => (
@@ -62,6 +66,7 @@ export function BlockList({
 			contactNotices={contactNotices}
 			donateNotices={donateNotices}
 			email={email}
+			gbpRate={gbpRate}
 			images={images}
 			key={`${block.name}-${index}`}
 			paymentsConfigured={paymentsConfigured}
@@ -70,6 +75,7 @@ export function BlockList({
 			providerLabel={providerLabel}
 			radioKey={String(index)}
 			siteHost={host}
+			usdRate={usdRate}
 		/>
 	));
 
@@ -87,18 +93,21 @@ function BlockView({
 	donateNotices,
 	email,
 	images,
+	gbpRate,
 	paymentsConfigured,
 	phone,
 	phrases,
 	providerLabel,
 	radioKey,
 	siteHost: host,
+	usdRate,
 }: {
 	address: string;
 	block: Block;
 	contactNotices?: ContactNotices;
 	donateNotices?: DonateNotices;
 	email: string;
+	gbpRate?: number;
 	images: ReadonlyMap<number, FeaturedImage>;
 	paymentsConfigured: boolean;
 	phone: string;
@@ -106,6 +115,7 @@ function BlockView({
 	providerLabel: string;
 	radioKey: string;
 	siteHost: string;
+	usdRate?: number;
 }) {
 	if (blockHidden(block)) {
 		return null;
@@ -184,7 +194,15 @@ function BlockView({
 		case "liftedpath/donate-panel":
 			view = (
 				<Suspense fallback={null}>
-					<DonatePanel block={block} images={images} notices={donateNotices} paymentsConfigured={paymentsConfigured} providerLabel={providerLabel} />
+					<DonatePanel
+						block={block}
+						gbpRate={gbpRate}
+						images={images}
+						notices={donateNotices}
+						paymentsConfigured={paymentsConfigured}
+						providerLabel={providerLabel}
+						usdRate={usdRate}
+					/>
 				</Suspense>
 			);
 			break;
@@ -209,6 +227,7 @@ function BlockView({
 							contactNotices={contactNotices}
 							donateNotices={donateNotices}
 							email={email}
+							gbpRate={gbpRate}
 							images={images}
 							key={`${child.name}-${childIndex}`}
 							paymentsConfigured={paymentsConfigured}
@@ -217,6 +236,7 @@ function BlockView({
 							providerLabel={providerLabel}
 							radioKey={`${radioKey}-${childIndex}`}
 							siteHost={host}
+							usdRate={usdRate}
 						/>
 					))}
 				</>

@@ -89,10 +89,12 @@ export async function WordPressPage({ form, path }: { form?: FormConfig; path: s
 				donateNotices={form?.donate}
 				email={settings.email}
 				images={images}
+				gbpRate={form?.gbpRate}
 				paymentsConfigured={form?.paymentsConfigured ?? false}
 				phone={settings.phone}
 				phrases={settings.marqueePhrases}
 				providerLabel={form?.providerLabel ?? ""}
+				usdRate={form?.usdRate}
 			/>
 		</>
 	);

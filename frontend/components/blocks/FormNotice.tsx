@@ -25,16 +25,35 @@ export function FormNotice({
 	);
 }
 
-export async function readFormResult(response: Response): Promise<{ ok: boolean; level: NoticeLevel; message: string; checkoutUrl: string }> {
+export async function readFormResult(response: Response): Promise<{
+	ok: boolean;
+	level: NoticeLevel;
+	message: string;
+	checkoutUrl: string;
+	accessCode: string;
+	reference: string;
+}> {
 	const text = await response.text();
-	let payload: { message?: unknown; level?: unknown; checkoutUrl?: unknown } = {};
+	let payload: {
+		message?: unknown;
+		level?: unknown;
+		checkoutUrl?: unknown;
+		accessCode?: unknown;
+		reference?: unknown;
+	} = {};
 	let parsed = text.trim() === "";
 
 	if (!parsed) {
 		try {
 			const value = JSON.parse(text) as unknown;
 			if (value && typeof value === "object" && !Array.isArray(value)) {
-				payload = value as { message?: unknown; level?: unknown; checkoutUrl?: unknown };
+				payload = value as {
+					message?: unknown;
+					level?: unknown;
+					checkoutUrl?: unknown;
+					accessCode?: unknown;
+					reference?: unknown;
+				};
 			}
 			parsed = true;
 		} catch {
@@ -45,7 +64,7 @@ export async function readFormResult(response: Response): Promise<{ ok: boolean;
 	if (!parsed || !response.ok) {
 		const message = typeof payload.message === "string" && payload.message ? payload.message : "The form could not be completed. Please try again.";
 		const level = payload.level === "warning" ? "warning" : "error";
-		return { ok: false, level, message, checkoutUrl: "" };
+		return { ok: false, level, message, checkoutUrl: "", accessCode: "", reference: "" };
 	}
 
 	return {
@@ -53,5 +72,7 @@ export async function readFormResult(response: Response): Promise<{ ok: boolean;
 		level: "success",
 		message: typeof payload.message === "string" ? payload.message : "",
 		checkoutUrl: typeof payload.checkoutUrl === "string" ? payload.checkoutUrl : "",
+		accessCode: typeof payload.accessCode === "string" ? payload.accessCode : "",
+		reference: typeof payload.reference === "string" ? payload.reference : "",
 	};
 }

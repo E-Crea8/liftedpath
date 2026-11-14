@@ -25,6 +25,8 @@ export interface FormConfig {
 	provider: "" | "stripe" | "paystack" | "flutterwave";
 	providerLabel: string;
 	paymentsConfigured: boolean;
+	usdRate: number;
+	gbpRate: number;
 	contact: ContactNotices;
 	donate: DonateNotices;
 }
@@ -79,6 +81,8 @@ const EMPTY_CONFIG: FormConfig = {
 	provider: "",
 	providerLabel: "",
 	paymentsConfigured: false,
+	usdRate: 1500,
+	gbpRate: 2000,
 	contact: CONTACT_NOTICES,
 	donate: DONATE_NOTICES,
 };
@@ -95,10 +99,14 @@ export async function getFormConfig(): Promise<FormConfig> {
 		const notices = isRecord(payload.notices) ? payload.notices : {};
 		const contact = isRecord(notices.contact) ? notices.contact : {};
 		const donate = isRecord(notices.donate) ? notices.donate : {};
+		const usdRate = typeof payload.usdRate === "number" && payload.usdRate > 0 ? payload.usdRate : 1500;
+		const gbpRate = typeof payload.gbpRate === "number" && payload.gbpRate > 0 ? payload.gbpRate : 2000;
 		return {
 			provider: provider === "stripe" || provider === "paystack" || provider === "flutterwave" ? provider : "",
 			providerLabel: typeof providerLabel === "string" ? providerLabel : "",
 			paymentsConfigured: payload.paymentsConfigured === true,
+			usdRate,
+			gbpRate,
 			contact: {
 				success: noticeText(contact.success, CONTACT_NOTICES.success),
 				error: noticeText(contact.error, CONTACT_NOTICES.error),

@@ -256,11 +256,16 @@ export function blockSurface(block: Block, images: ReadonlyMap<number, FeaturedI
 	const shade = rgba(color, opacity);
 	const className = `has-block-background has-block-background-${kind}`;
 
+	const tokens = {
+		"--block-bg": color,
+		"--block-opacity": String(Math.round(opacity) / 100),
+	};
+
 	if (kind === "color") {
 		return {
 			kind,
 			className,
-			style: { backgroundColor: shade, backgroundImage: "none" },
+			style: { ...tokens, backgroundColor: shade, backgroundImage: "none" },
 			shade,
 			videoUrl: "",
 		};
@@ -269,7 +274,7 @@ export function blockSurface(block: Block, images: ReadonlyMap<number, FeaturedI
 	if (kind === "image") {
 		const id = imageId(block.attributes.background_image);
 		const image = id !== null ? images.get(id) : undefined;
-		const style: Record<string, string> = { backgroundColor: "transparent" };
+		const style: Record<string, string> = { ...tokens, backgroundColor: "transparent" };
 		if (image?.url && !image.url.includes('"')) {
 			style.backgroundImage = `url("${image.url}")`;
 			style.backgroundSize = "cover";
@@ -285,7 +290,7 @@ export function blockSurface(block: Block, images: ReadonlyMap<number, FeaturedI
 	return {
 		kind,
 		className,
-		style: { backgroundColor: "transparent" },
+		style: { ...tokens, backgroundColor: "transparent" },
 		shade,
 		videoUrl,
 	};

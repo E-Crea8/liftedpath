@@ -1910,6 +1910,12 @@ button.liftedpath-gallery__play:focus-visible {
 	display: contents;
 }
 
+/* display:contents skips painting — block backgrounds from wp-admin need a real box. */
+.liftedpath-layout.has-block-background {
+	display: block;
+	width: 100%;
+}
+
 .is-heading-left :is(
 	.liftedpath-hero__content,
 	.liftedpath-page-hero__content,
@@ -2643,10 +2649,27 @@ div.has-block-background.has-block-background-color {
 	.liftedpath-cta,
 	.liftedpath-marquee,
 	.liftedpath-stat,
-	.liftedpath-stat-group
+	.liftedpath-stat-group,
+	.liftedpath-team,
+	.liftedpath-pillars,
+	.liftedpath-goals,
+	.liftedpath-story,
+	.liftedpath-beliefs,
+	.liftedpath-gallery,
+	.liftedpath-faq,
+	.liftedpath-stewardship,
+	.liftedpath-about,
+	.liftedpath-programs,
+	.liftedpath-actions,
+	.liftedpath-process,
+	.liftedpath-sponsor,
+	.liftedpath-contact,
+	.liftedpath-donate,
+	.liftedpath-work,
+	.liftedpath-footer-cta
 ) {
-	background-color: transparent;
-	background-image: none;
+	/* Clear section defaults (paper/surface) so the wp-admin surface shows. */
+	background: transparent;
 }
 
 @media (prefers-reduced-motion: reduce) {

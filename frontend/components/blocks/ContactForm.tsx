@@ -152,9 +152,9 @@ export function ContactForm({
 						Website
 						<input aria-hidden="true" autoComplete="off" name="website" tabIndex={-1} type="text" />
 					</label>
-					<button className="liftedpath-button" disabled={sending} type="submit">
+					<button aria-busy={sending} className={`liftedpath-button${sending ? " is-loading" : ""}`} disabled={sending} type="submit">
 						{sending ? "Sending" : buttonLabel}
-						<ArrowIcon />
+						{sending ? <span aria-hidden="true" className="liftedpath-button__spinner" /> : <ArrowIcon />}
 					</button>
 					{note ? <p className="liftedpath-form-note">{note}</p> : null}
 					{notice ? <FormNotice level={notice.level} message={notice.message} onClose={() => setNotice(null)} /> : null}

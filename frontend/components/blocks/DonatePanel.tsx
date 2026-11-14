@@ -7,6 +7,7 @@ import { ArrowIcon, BlockIcon } from "@/components/blocks/icons";
 import { BlockPhoto } from "@/components/blocks/parts";
 import { imageId, numeric, rows, text } from "@/lib/blocks/fields";
 import type { DonateNotices } from "@/lib/forms";
+import { openPaystackCheckout } from "@/lib/paystack";
 import type { Block, FeaturedImage } from "@/lib/wp/types";
 
 const DESIGNATIONS = [
@@ -33,12 +34,16 @@ export function DonatePanel({
 	notices,
 	paymentsConfigured,
 	providerLabel,
+	usdRate: checkoutUsdRate,
+	gbpRate: checkoutGbpRate,
 }: {
 	block: Block;
 	images: ReadonlyMap<number, FeaturedImage>;
 	notices?: DonateNotices;
 	paymentsConfigured: boolean;
 	providerLabel: string;
+	usdRate?: number;
+	gbpRate?: number;
 }) {
 	const params = useSearchParams();
 	const eyebrow = text(block.attributes.eyebrow);
@@ -58,8 +63,10 @@ export function DonatePanel({
 	const bankName = text(block.attributes.bank_name);
 	const bankCurrency = text(block.attributes.bank_currency);
 	const bankMobileOrder = text(block.attributes.bank_mobile_order);
-	const usdRate = numeric(block.attributes.usd_rate) > 0 ? numeric(block.attributes.usd_rate) : 1500;
-	const gbpRate = numeric(block.attributes.gbp_rate) > 0 ? numeric(block.attributes.gbp_rate) : 2000;
+	const blockUsd = numeric(block.attributes.usd_rate) > 0 ? numeric(block.attributes.usd_rate) : 1500;
+	const blockGbp = numeric(block.attributes.gbp_rate) > 0 ? numeric(block.attributes.gbp_rate) : 2000;
+	const usdRate = checkoutUsdRate && checkoutUsdRate > 0 ? checkoutUsdRate : blockUsd;
+	const gbpRate = checkoutGbpRate && checkoutGbpRate > 0 ? checkoutGbpRate : blockGbp;
 	const amounts = rows(block.attributes, "amounts")
 		.map((row) => ({ amount: numeric(row.amount), title: text(row.title), detail: text(row.detail) }))
 		.filter((item) => item.amount >= 1 && item.title && !/^custom$/i.test(item.title));
@@ -96,6 +103,17 @@ export function DonatePanel({
 		return converted(choices[amountIndex]?.amount ?? 0, currency, usdRate, gbpRate);
 	}
 
+	function nairaToCharge() {
+		const display = chargeAmount();
+		if (currency === "USD") {
+			return Math.round(display * usdRate);
+		}
+		if (currency === "GBP") {
+			return Math.round(display * gbpRate);
+		}
+		return display;
+	}
+
 	async function onSubmit(event: FormEvent<HTMLFormElement>) {
 		event.preventDefault();
 		const form = new FormData(event.currentTarget);
@@ -103,6 +121,7 @@ export function DonatePanel({
 		const designationLabel = gifts.find((item) => item.value === designation)?.label ?? designation;
 		setSending(true);
 		setNotice(null);
+		setShowCancelled(false);
 
 		try {
 			const response = await fetch("/api/donate", {
@@ -122,15 +141,39 @@ export function DonatePanel({
 			const result = await readFormResult(response);
 			if (!result.ok) {
 				setNotice({ level: result.level, message: result.message || notices?.error || "The donation could not be started." });
+				setSending(false);
+				return;
+			}
+			if (result.accessCode) {
+				await openPaystackCheckout({
+					accessCode: result.accessCode,
+					reference: result.reference,
+					onSuccess: (reference) => {
+						window.location.assign(`/donate/complete?reference=${encodeURIComponent(reference)}`);
+					},
+					onClose: () => {
+						setSending(false);
+						setShowCancelled(true);
+					},
+					onError: () => {
+						if (result.checkoutUrl) {
+							window.location.assign(result.checkoutUrl);
+							return;
+						}
+						setNotice({ level: "error", message: notices?.error || "The donation could not be started. Please try again." });
+						setSending(false);
+					},
+				});
 				return;
 			}
 			if (result.checkoutUrl) {
 				window.location.assign(result.checkoutUrl);
 				return;
 			}
+			setNotice({ level: "error", message: notices?.error || "The donation could not be started. Please try again." });
+			setSending(false);
 		} catch {
 			setNotice({ level: "error", message: notices?.error || "The donation could not be started. Please try again." });
-		} finally {
 			setSending(false);
 		}
 	}
@@ -211,7 +254,9 @@ export function DonatePanel({
 							? useCustom
 								? "Enter the amount you want to give."
 								: "Select a donation amount, or choose Custom to enter your own."
-							: `Indicative conversion: ${money(currency === "USD" ? usdRate : gbpRate, "NGN")} = ${money(1, currency)}. The amount you confirm is the amount charged.`}
+							: currency === "USD"
+								? `Paystack will charge ${money(chargeAmount(), "USD")}.`
+								: `GBP is charged as NGN on Paystack: ${money(nairaToCharge(), "NGN")} (${money(gbpRate, "NGN")} ≈ ${money(1, "GBP")}).`}
 					</p>
 					{useCustom ? (
 						<label className="liftedpath-field">
@@ -250,9 +295,9 @@ export function DonatePanel({
 						Website
 						<input aria-hidden="true" autoComplete="off" name="website" tabIndex={-1} type="text" />
 					</label>
-					<button className="liftedpath-button" disabled={sending} type="submit">
+					<button aria-busy={sending} className={`liftedpath-button${sending ? " is-loading" : ""}`} disabled={sending} type="submit">
 						{sending ? "Opening payment" : buttonLabel}
-						<ArrowIcon />
+						{sending ? <span aria-hidden="true" className="liftedpath-button__spinner" /> : <ArrowIcon />}
 					</button>
 					<p className="liftedpath-form-note">
 						{paymentsConfigured
