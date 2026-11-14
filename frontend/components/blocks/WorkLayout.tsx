@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowIcon, BlockIcon } from "@/components/blocks/icons";
+import { ArrowIcon, BlockIcon, workSupportIcon, workTopicIcon } from "@/components/blocks/icons";
 import { BlockPhoto, FieldAnchor, GoldButton } from "@/components/blocks/parts";
 import { fieldLink, flag, imageId, rows, telHref, text } from "@/lib/blocks/fields";
 import type { Block, FeaturedImage } from "@/lib/wp/types";
@@ -19,7 +19,9 @@ function WorkNavLink({ className, item }: { className: string; item: WorkNav }) 
 				{item.title ? <strong>{item.title}</strong> : null}
 				{item.subtitle ? <small>{item.subtitle}</small> : null}
 			</span>
-			<ArrowIcon />
+			<span aria-hidden="true" className="liftedpath-work__topic-icon">
+				<BlockIcon name={workTopicIcon(item.title)} />
+			</span>
 		</>
 	);
 
@@ -218,7 +220,7 @@ export function WorkLayout({
 										{support.map((item, index) => (
 											<div key={`${item.title}-${index}`}>
 												<span aria-hidden="true" className="liftedpath-work__support-icon">
-													<BlockIcon name={index === 0 ? "heart" : "sparkles"} />
+													<BlockIcon name={workSupportIcon(item.title, index)} />
 												</span>
 												{item.title ? <h3>{item.title}</h3> : null}
 												{item.text ? <p>{item.text}</p> : null}

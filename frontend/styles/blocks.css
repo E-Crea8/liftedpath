@@ -2890,7 +2890,7 @@ div.has-block-background.has-block-background-color {
 
 .liftedpath-work__sidebar {
 	position: sticky;
-	top: 116px;
+	top: calc(var(--header-height, 89px) + 40px);
 	min-width: 0;
 }
 
@@ -2940,17 +2940,29 @@ div.has-block-background.has-block-background-color {
 	line-height: 1.55;
 }
 
-.liftedpath-work__nav-link .liftedpath-button__icon {
+.liftedpath-work__nav-link .liftedpath-button__icon,
+.liftedpath-work__topic-icon {
 	flex: 0 0 auto;
-	transition: transform 0.25s;
+	display: inline-flex;
+	width: 20px;
+	height: 20px;
+	color: var(--color-gold);
+	transition: color 0.25s, transform 0.25s;
+}
+
+.liftedpath-work__topic-icon svg {
+	width: 20px;
+	height: 20px;
 }
 
 .liftedpath-work__nav-link:hover {
 	color: var(--color-bronze);
 }
 
-.liftedpath-work__nav-link:hover .liftedpath-button__icon {
-	transform: translate(2px, -2px);
+.liftedpath-work__nav-link:hover .liftedpath-button__icon,
+.liftedpath-work__nav-link:hover .liftedpath-work__topic-icon {
+	color: var(--color-bronze);
+	transform: translateY(-1px);
 }
 
 .liftedpath-work__nav > div > .liftedpath-work__nav-link:last-child {
